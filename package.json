@@ -1,0 +1,43 @@
+{
+  "name": "h5p-combine-pairs",
+  "version": "1.0.0",
+  "description": "The user should match two and two pairs",
+  "private": true,
+  "scripts": {
+    "test": "ava",
+    "build": "cross-env NODE_ENV='production' webpack -p",
+    "watch": "webpack --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/h5p/h5p-combine-pairs.git"
+  },
+  "keywords": [
+    "h5p",
+    "library"
+  ],
+  "author": "Joubel",
+  "license": "MIT",
+  "devDependencies": {
+    "ava": "^0.19.1",
+    "babel-cli": "^6.23.0",
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.3.2",
+    "babel-plugin-transform-object-assign": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-latest": "^6.22.0",
+    "cross-env": "^4.0.0",
+    "css-loader": "^0.27.3",
+    "require-extension-hooks-vue": "^0.2.1",
+    "resolve-url-loader": "^2.0.3",
+    "sass-loader": "^6.0.2",
+    "shuffle-array": "^1.0.1",
+    "style-loader": "^0.13.2",
+    "vue-loader": "^11.2.0",
+    "vue-template-compiler": "^2.2.4",
+    "webpack": "^2.2.1"
+  },
+  "dependencies": {
+    "vue": "^2.2.4"
+  }
+}

@@ -1,0 +1,92 @@
+[
+  {
+    "label": "Text",
+    "importance": "high",
+    "name": "title",
+    "type": "text",
+    "widget": "textarea",
+    "default": "Create pairs by combining words from the left and right list.",
+    "description": "Description of the task"
+  },
+  {
+    "name": "pairs",
+    "type": "list",
+    "label": "Pairs",
+    "importance": "high",
+    "entity": "pair",
+    "min": 2,
+    "max": 100,
+    "field": {
+      "type": "group",
+      "name": "pair",
+      "label": "Pair",
+      "importance": "high",
+      "fields": [
+        {
+          "type": "group",
+          "name": "left",
+          "label": "Left side",
+          "importance": "medium",
+          "fields": [
+            {
+              "name": "image",
+              "type": "image",
+              "label": "Image",
+              "importance": "low",
+              "ratio": 1,
+              "optional": true
+            },
+            {
+              "name": "title",
+              "type": "text",
+              "label": "Text",
+              "importance": "high",
+              "maxLength": 150,
+              "description": "The left side of your text"
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "name": "right",
+          "label": "Right side",
+          "importance": "medium",
+          "fields": [
+            {
+              "name": "image",
+              "type": "image",
+              "label": "Image",
+              "importance": "low",
+              "ratio": 1,
+              "optional": true
+            },
+            {
+              "name": "title",
+              "type": "text",
+              "label": "Text",
+              "importance": "high",
+              "maxLength": 150,
+              "description": "The right side of your text"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "label": "Localization",
+    "importance": "low",
+    "name": "l10n",
+    "type": "group",
+    "common": true,
+    "fields": [
+      {
+        "label": "Correct text",
+        "importance": "low",
+        "name": "textCorrect",
+        "type": "text",
+        "default": "Correct!"
+      }
+    ]
+  }
+]
