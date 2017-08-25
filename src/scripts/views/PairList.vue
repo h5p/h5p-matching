@@ -5,20 +5,21 @@
         v-bind:key="element.position"
         v-bind:data-index="index"
         class="h5p-element"
-        tabindex="0"
-        :class="{ 'h5p-element-matched' : element.matched, 'h5p-element-selected' : (index === selectedIndex)}"
+        v-keyboard="name"
+        :class="[{'h5p-element-selected' : (index === selectedIndex)}, stateClass(element)]"
         @click="select(index)">
       {{element.title}}</li>
   </transition-group>
 </template>
 
 <script>
-  import { mixin as focusMixin }  from 'vue-focus';
+  import Vue from 'vue';
+  import keyboardMixin  from '../mixins/keyboard-directive';
   const NO_SELECTION = undefined;
 
   export default {
-    mixins: [ focusMixin ],
-    props: ['listClass'],
+    mixins: [ keyboardMixin ],
+    props: ['listClass', 'name'],
     data: () => ({
       list: [],
       selectedIndex: NO_SELECTION,
@@ -32,8 +33,17 @@
         this.$emit('select', this.selectedIndex);
       },
 
+      setState: function(index, state){
+        const element = Object.assign({}, this.list[index], { state });
+        Vue.set(this.list, index, element);
+      },
+
       hasSelected: function() {
         return this.selectedIndex !== NO_SELECTION;
+      },
+
+      getSelectedIndex: function() {
+        return this.selectedIndex;
       },
 
       getSelected: function() {
@@ -48,13 +58,9 @@
         this.list[toIndex] = element;
       },
 
-      moveDown: function() {
-        this.focused = Math.min(this.focused + 1, this.items.length - 1);
-      },
-
-      moveUp: function() {
-        this.focused = Math.max(this.focused - 1, 0);
-      },
+      stateClass: function(element) {
+        return `h5p-element-${element.state}`;
+      }
     }
   }
 </script>
@@ -74,6 +80,10 @@
     background-color: blue;
     color: white;
     transition: all .2s ease-in;
+
+    &:focus {
+      background-color: cornflowerblue;
+    }
   }
 
   .h5p-element-selected {
