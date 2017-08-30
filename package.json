@@ -20,32 +20,33 @@
   "license": "MIT",
   "devDependencies": {
     "ava": "^0.19.1",
-    "babel-cli": "^6.23.0",
-    "babel-core": "^6.23.1",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
     "babel-loader": "^6.3.2",
     "babel-plugin-transform-object-assign": "^6.22.0",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-latest": "^6.22.0",
     "code-point-at": "^1.1.0",
     "cross-env": "^4.0.0",
     "css-loader": "^0.27.3",
     "extract-text-webpack-plugin": "^2.1.2",
+    "loader-utils": "^1.0.2",
     "node-sass": "^4.5.3",
     "ramda": "^0.24.1",
     "require-extension-hooks-vue": "^0.2.1",
-    "resolve-url-loader": "^2.0.3",
+    "resolve-url-loader": "^2.1.0",
     "sass-loader": "^6.0.2",
     "set-blocking": "^2.0.0",
     "shuffle-array": "^1.0.1",
     "style-loader": "^0.13.2",
     "vue-focus": "^2.1.0",
-    "vue-loader": "^12.2.1",
-    "vue-template-compiler": "^2.3.4",
-    "webpack": "^2.2.1",
+    "vue-loader": "^12.2.2",
+    "vue-template-compiler": "^2.4.2",
+    "webpack": "^2.7.0",
     "y18n": "^3.2.1",
     "yargs-parser": "^7.0.0"
   },
   "dependencies": {
-    "vue": "^2.3.4"
+    "vue": "^2.4.2"
   }
 }
