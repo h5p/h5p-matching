@@ -4,6 +4,7 @@ import ChoiceList from './views/ChoiceList.vue';
 import Choice from './views/Choice.vue';
 import ResultIndicator from './views/ResultIndicator.vue';
 import { EventDispatcher } from './components/globals'
+import appState from './components/app-state';
 
 // Register components
 Vue.component('choice', Choice);
@@ -57,6 +58,54 @@ export default class App extends EventDispatcher {
     this.attach = function ($wrapper) {
       $wrapper.get(0).appendChild(rootElement);
       viewModel.$mount(rootElement);
+    };
+
+    /**
+     * Returns true if answers have been given
+     *
+     * @return {boolean}
+     */
+    this.getAnswerGiven = () => {
+      return viewModel.getAnswerGiven();
+    };
+
+    /**
+     * Returns the score for this task
+     *
+     * @return {number}
+     */
+    this.getScore = () => {
+      return viewModel.getScore();
+    };
+
+    /**
+     * Returns the max score for this task
+     *
+     * @return {number}
+     */
+    this.getMaxScore = () => {
+      return config.pairs.length;
+    };
+
+    /**
+     * Displays the solution(s) for this task, should also hide all buttons.
+     */
+    this.showSolutions = () => {
+      viewModel.showSolution(appState.GLOBAL_SHOW_SOLUTION);
+    };
+
+    /**
+     *  Resets the task to its initial state
+     */
+    this.resetTask = () => {
+      viewModel.retry();
+    };
+
+    /**
+     * Retrieves the xAPI data necessary for generating result reports.
+     */
+    this.getXAPIData = () => {
+
     };
   }
 }

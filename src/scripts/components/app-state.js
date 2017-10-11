@@ -5,5 +5,6 @@
 export default {
   DEFAULT: 'default',
   CHECK_RESULT: 'check-result',
-  SHOW_SOLUTION: 'show-solution'
+  SHOW_SOLUTION: 'show-solution',
+  GLOBAL_SHOW_SOLUTION: 'global-show-solution'
 }

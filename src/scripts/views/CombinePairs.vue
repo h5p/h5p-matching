@@ -9,7 +9,7 @@
 
     <div ref="scoreBar" class="score-bar" v-show="state !== 'default'"></div>
 
-    <div class="h5p-question-buttons">
+    <div class="h5p-question-buttons" v-if="state !== 'global-show-solution'">
       <button class="h5p-question-check-answer h5p-joubelui-button" @click="showResults" v-if="state === 'default'">Check</button>
       <button class="h5p-question-show-solution h5p-joubelui-button" @click="showSolution" v-if="state !== 'default' && state !== 'show-solution'">Show Solution</button>
       <button class="h5p-question-try-again h5p-joubelui-button" @click="retry" v-if="state !== 'default'">Retry</button>
@@ -22,9 +22,7 @@
   import appState from '../components/app-state';
   import pairState from '../components/pair-state';
   import { jQuery as $, JoubelScoreBar } from '../components/globals'
-  import { range, zip, max, head, tail, length } from 'ramda';
-
-  const MIN_SCORE = 0;
+  import { range, head, tail, length } from 'ramda';
 
   /**
    * Switch places of two elements in an array
@@ -66,9 +64,10 @@
     }),
 
     methods: {
-      addPosition: function(el, index) {
-        el.position = index;
-        return el;
+      initChoice: function(choice, index) {
+        choice.position = index;
+        choice.state = pairState.NONE;
+        return choice;
       },
 
       isBothSidesSelected: function() {
@@ -132,7 +131,7 @@
         return leftElement.pairKey === rightElement.pairKey;
       },
 
-      showSolution: function () {
+      showSolution: function (newState = appState.SHOW_SOLUTION) {
         const leftList = this.$refs.left.list;
 
         leftList.forEach((choice, index) => {
@@ -145,7 +144,7 @@
           }
         });
 
-        this.state = appState.SHOW_SOLUTION;
+        this.state = newState;
       },
 
       retry: function () {
@@ -158,6 +157,11 @@
         this.$refs.left.selectedIndex = undefined;
         this.$refs.right.selectedIndex = undefined;
         this.state = appState.DEFAULT;
+      },
+
+      getAnswerGiven: function() {
+        this.$refs.left.list
+          .some(choice => choice.state !== pairState.NONE)
       },
 
       getScore: function() {
@@ -183,8 +187,8 @@
       pairs: function(pairs) {
         pairs.forEach(this.addPairKey);
 
-        this.$refs.left.list = shuffle(pairs.map(pair => pair.left)).map(this.addPosition);
-        this.$refs.right.list = shuffle(pairs.map(pair => pair.right)).map(this.addPosition);
+        this.$refs.left.list = shuffle(pairs.map(pair => pair.left)).map(this.initChoice);
+        this.$refs.right.list = shuffle(pairs.map(pair => pair.right)).map(this.initChoice);
 
         this.$refs.left.$on('select', () => {
           this.handleSelected(this.$refs.left, this.$refs.right);
