@@ -7,10 +7,12 @@
       <choice-list ref="right" name="right" list-class="h5p-choice-list-right"></choice-list>
     </div>
 
+    <div ref="scoreBar" class="score-bar" v-show="state !== 'default'"></div>
+
     <div class="h5p-question-buttons">
-      <button class="h5p-question-check-answer h5p-joubelui-button" @click="showResults" v-show="state === 'default'">Check</button>
-      <button class="h5p-question-show-solution h5p-joubelui-button" @click="showSolution" v-show="state !== 'default' && state !== 'show-solution'">Show Solution</button>
-      <button class="h5p-question-try-again h5p-joubelui-button" @click="retry" v-show="state !== 'default'">Retry</button>
+      <button class="h5p-question-check-answer h5p-joubelui-button" @click="showResults" v-if="state === 'default'">Check</button>
+      <button class="h5p-question-show-solution h5p-joubelui-button" @click="showSolution" v-if="state !== 'default' && state !== 'show-solution'">Show Solution</button>
+      <button class="h5p-question-try-again h5p-joubelui-button" @click="retry" v-if="state !== 'default'">Retry</button>
     </div>
   </div>
 </template>
@@ -19,6 +21,7 @@
   import shuffle from 'shuffle-array';
   import appState from '../components/app-state';
   import pairState from '../components/pair-state';
+  import { jQuery as $, JoubelScoreBar } from '../components/globals'
   import { range, zip, max, head, tail, length } from 'ramda';
 
   const MIN_SCORE = 0;
@@ -119,6 +122,7 @@
         }, 100);
 
         this.state = appState.CHECK_RESULT;
+        this.updateScoreBar();
       },
 
       isPairCorrect: function(index) {
@@ -157,8 +161,17 @@
       },
 
       getScore: function() {
-        return max(range(0, this.pairsLength)
-          .reduce((sum, index) =>  sum + this.isPairCorrect(index) ? 1 : 0, 0), MIN_SCORE);
+        return range(0, this.pairsLength)
+          .reduce((sum, index) => sum + (this.isPairCorrect(index) ? 1 : 0), 0);
+      },
+
+      initScoreBar: function(maxScore) {
+        this.scoreBar = new JoubelScoreBar(maxScore);
+        this.scoreBar.appendTo($(this.$refs.scoreBar));
+      },
+
+      updateScoreBar: function() {
+        this.scoreBar.setScore(this.getScore());
       }
     },
 
@@ -181,7 +194,9 @@
           this.handleSelected(this.$refs.right, this.$refs.left);
         });
 
-        this.pairsLength = pairs.length;
+        const maxScore = this.pairsLength = pairs.length;
+
+        this.initScoreBar(maxScore);
       }
     }
   }
@@ -193,6 +208,12 @@
   $border-radius-choice: 0.5em;
 
   .h5p-combine-pairs {
+    padding: 1em;
+
+    .hidden {
+      display: none;
+    }
+
     .h5p-choice-lists {
       max-width: $width-component;
       margin-left: auto;
@@ -232,6 +253,14 @@
         padding-left: 2.2em;
         transform: translateX(0);
       }
+    }
+
+    .score-bar {
+      margin-bottom: 1em;
+    }
+
+    .h5p-question-buttons .h5p-joubelui-button:first-child {
+      margin-left: 0;
     }
   }
 </style>

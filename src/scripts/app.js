@@ -3,6 +3,7 @@ import CombinePairs from './views/CombinePairs.vue';
 import ChoiceList from './views/ChoiceList.vue';
 import Choice from './views/Choice.vue';
 import ResultIndicator from './views/ResultIndicator.vue';
+import { EventDispatcher } from './components/globals'
 
 // Register components
 Vue.component('choice', Choice);
@@ -21,7 +22,7 @@ Vue.component('resultIndicator', ResultIndicator);
 /**
  * @class
  */
-export default class App extends H5P.EventDispatcher {
+export default class App extends EventDispatcher {
   /**
    * @constructor
    *
@@ -45,6 +46,8 @@ export default class App extends H5P.EventDispatcher {
 
     viewModel.title = config.title;
     viewModel.pairs = config.pairs;
+
+    viewModel.$watch('state', () => this.trigger('resize'));
 
     /**
      * Attach library to wrapper

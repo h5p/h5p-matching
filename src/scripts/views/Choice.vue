@@ -44,6 +44,7 @@
     transition: all .2s ease-in;
     box-sizing: border-box;
     text-align: left;
+    cursor: pointer;
 
     &:hover {
       @include choice-colors(#e6c6dd, #f9edf7, #f2e2ef, #353533);
