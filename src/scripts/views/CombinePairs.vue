@@ -7,7 +7,11 @@
       <choice-list ref="right" name="right" list-class="h5p-choice-list-right"></choice-list>
     </div>
 
-    <button @click="showResults">Check</button>
+    <div class="h5p-question-buttons">
+      <button class="h5p-question-check-answer h5p-joubelui-button" @click="showResults">Check</button>
+      <button class="h5p-question-show-solution h5p-joubelui-button" @click="showResults">Show Solution</button>
+      <button class="h5p-question-try-again h5p-joubelui-button" @click="showResults">Retry</button>
+    </div>
   </div>
 </template>
 
@@ -89,12 +93,10 @@
           }
 
           // set sides to matched
-          //setTimeout(() => {
-            current.setSelectedChoiceState(pairState.MATCHED);
-            other.setSelectedChoiceState(pairState.MATCHED);
-            current.selectedIndex = undefined;
-            other.selectedIndex = undefined;
-          //}, 600);
+          current.setSelectedChoiceState(pairState.MATCHED);
+          other.setSelectedChoiceState(pairState.MATCHED);
+          current.selectedIndex = undefined;
+          other.selectedIndex = undefined;
         }
       },
 

@@ -50,7 +50,7 @@
     }
 
     &.h5p-choice-matched,
-    &.h5p-choice.h5p-choice-selected {
+    &.h5p-choice-selected {
       @include choice-colors(#1c74cd, #4c93e5, #1b72db);
     }
 
