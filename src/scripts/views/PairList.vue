@@ -5,7 +5,6 @@
         v-bind:key="element.position"
         v-bind:data-index="index"
         class="h5p-element"
-        v-keyboard="name"
         :class="[{'h5p-element-selected' : (index === selectedIndex)}, stateClass(element)]"
         @click="select(index)">
       {{element.title}}</li>
@@ -52,12 +51,6 @@
         }
       },
 
-      switchElementPlaces: function(fromIndex, toIndex) {
-        const element = this.list[fromIndex];
-        this.list[fromIndex] = this.list[toIndex];
-        this.list[toIndex] = element;
-      },
-
       stateClass: function(element) {
         return `h5p-element-${element.state}`;
       }
@@ -66,31 +59,40 @@
 </script>
 
 <style lang="scss"  type="text/scss">
-  .h5p-pair-list {
-    width: 400px;
-    background-color: lightblue;
-    display: inline-block;
+  @import '../../styles/variables';
+  @import '../../styles/mixins';
+  @import '../../styles/colors';
+
+  @mixin listElement($border-color, $background-color1, $background-color2, $color: white) {
+    @include linear-gradient($background-color1, $background-color2);
+    border: 1px solid $border-color;
+    color: $color;
   }
 
   .h5p-element {
-    width: 150px;
-    margin: 10px;
-    padding: 10px;
+    @include listElement(#bbd8ea, #f1fbfd, #e3f1f4, #353533);
+    width: calc(100% - #{$element-displacement});
     display: block;
-    background-color: blue;
-    color: white;
+    padding: 1.7em;
+    margin-bottom: 1em;
     transition: all .2s ease-in;
+    box-sizing: border-box;
 
-    &:focus {
-      background-color: cornflowerblue;
+    &:hover {
+      @include listElement(#e6c6dd, #f9edf7, #f2e2ef, #353533);
     }
   }
 
-  .h5p-element-selected {
-    background-color: orange;
+  .h5p-element.h5p-element-matched,
+  .h5p-element.h5p-element-selected {
+    @include listElement(#1c74cd, #4c93e5, #1b72db);
   }
 
-  .h5p-element-matched {
-    background-color: gray;
+  .h5p-element.h5p-element-success {
+    @include listElement(#3ca587, #50c9a8, #3ea98b);
+  }
+
+  .h5p-element.h5p-element-failure {
+    @include listElement(#cb183f, #e54b55, #da1b44);
   }
 </style>

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import CombinePairs from './views/CombinePairs.vue';
 import PairList from './views/PairList.vue';
+import Choice from './views/Choice.vue';
 
 /**
  * @typedef {object} PairProperty
@@ -33,7 +34,8 @@ export default class App extends H5P.EventDispatcher {
     const viewModel = new Vue({
       ...CombinePairs,
       components: {
-        pairList: PairList
+        pairList: PairList,
+        choice: Choice
       }
     });
 

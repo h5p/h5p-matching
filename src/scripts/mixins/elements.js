@@ -1,4 +1,4 @@
-import {curry, inverseBooleanString} from './functional'
+import {curry, invoker, equals, lensProp, over} from 'ramda';
 
 /**
  * Get an attribute value from element
@@ -9,7 +9,7 @@ import {curry, inverseBooleanString} from './functional'
  * @function
  * @return {string}
  */
-export const getAttribute = curry((name, el) => el.getAttribute(name));
+export const getAttribute = invoker(1, 'getAttribute');
 
 /**
  * Set an attribute on a html element
@@ -20,7 +20,7 @@ export const getAttribute = curry((name, el) => el.getAttribute(name));
  *
  * @function
  */
-export const setAttribute = curry((name, value, el) => el.setAttribute(name, value));
+export const setAttribute = invoker(2, 'setAttribute');
 
 /**
  * Remove attribute from html element
@@ -30,7 +30,7 @@ export const setAttribute = curry((name, value, el) => el.setAttribute(name, val
  *
  * @function
  */
-export const removeAttribute = curry((name, el) => el.removeAttribute(name));
+export const removeAttribute = invoker(1, 'removeAttribute');
 
 /**
  * Check if element has an attribute
@@ -41,7 +41,7 @@ export const removeAttribute = curry((name, el) => el.removeAttribute(name));
  * @function
  * @return {boolean}
  */
-export const hasAttribute = curry((name, el) => el.hasAttribute(name));
+export const hasAttribute = invoker(1, 'hasAttribute');
 
 /**
  * Check if element has an attribute that equals
@@ -53,20 +53,8 @@ export const hasAttribute = curry((name, el) => el.hasAttribute(name));
  * @function
  * @return {boolean}
  */
-export const attributeEquals = curry((name, value, el) => el.getAttribute(name) === value);
+export const attributeEquals = curry((name, value, el) => equals(value, getAttribute(name, el)));
 
-/**
- * Toggles an attribute between 'true' and 'false';
- *
- * @param {string} name
- * @param {HTMLElement} el
- *
- * @function
- */
-export const toggleAttribute = curry((name, el) => {
-  const value = getAttribute(name, el);
-  setAttribute(name, inverseBooleanString(value), el);
-});
 
 /**
  * The appendChild() method adds a node to the end of the list of children of a specified parent node.
@@ -77,7 +65,7 @@ export const toggleAttribute = curry((name, el) => {
  * @function
  * @return {HTMLElement}
  */
-export const appendChild = curry((parent, child) => parent.appendChild(child));
+export const appendChild = invoker(1, 'appendChild');
 
 /**
  * Returns the first element that is a descendant of the element on which it is invoked
@@ -89,16 +77,7 @@ export const appendChild = curry((parent, child) => parent.appendChild(child));
  * @function
  * @return {HTMLElement}
  */
-export const querySelector = curry((selector, el) => el.querySelector(selector));
-
-/**
- * Transforms a NodeList to an Array
- *
- * @param {NodeList} nodeList
- *
- * @return {Node[]}
- */
-export const nodeListToArray = nodeList => Array.prototype.slice.call(nodeList);
+export const querySelector = invoker(1, 'querySelector');
 
 /**
  * Returns a non-live NodeList of all elements descended from the element on which it
@@ -110,7 +89,7 @@ export const nodeListToArray = nodeList => Array.prototype.slice.call(nodeList);
  * @function
  * @return {Node[]}
  */
-export const querySelectorAll = curry((selector, el) => nodeListToArray(el.querySelectorAll(selector)));
+export const querySelectorAll = invoker(1, 'querySelectorAll');
 
 /**
  * The removeChild() method removes a child node from the DOM. Returns removed node.
@@ -118,9 +97,16 @@ export const querySelectorAll = curry((selector, el) => nodeListToArray(el.query
  * @param {Node} parent
  * @param {Node} oldChild
  *
+ * @function
  * @return {Node}
  */
-export const removeChild = curry((parent, oldChild) => parent.removeChild(oldChild));
+export const removeChild = invoker(1, 'removeChild');
+
+/**
+ *
+ */
+export const classListLens = lensProp('classList');
+
 
 /**
  * Returns true if a node has a class
@@ -130,7 +116,8 @@ export const removeChild = curry((parent, oldChild) => parent.removeChild(oldChi
  *
  * @function
  */
-export const classListContains = curry((cls, el) => el.classList.contains(cls));
+export const classListContains = over(classListLens, );
+  curry((cls, el) => el.classList.contains(cls));
 
 /**
  * Adds a css class to an element
@@ -153,28 +140,6 @@ export const addClass = curry((cls, element) => element.classList.add(cls));
 export const removeClass = curry((cls, element) => element.classList.remove(cls));
 
 /**
- * Adds hidden class on an element
- *
- * @param {HTMLElement} element
- * @function
- */
-export const hide = addClass('hidden');
-
-/**
- * Removes hidden class from an element
- * @function
- */
-export const show = removeClass('hidden');
-
-/**
- * Toggles hidden class on an element
- *
- * @param {boolean} visible
- * @param {HTMLElement} element
- */
-export const toggleVisibility = curry((visible, element) => (visible ? show : hide)(element));
-
-/**
  * Toggles a class on an element
  *
  * @param {string} cls
@@ -184,31 +149,3 @@ export const toggleVisibility = curry((visible, element) => (visible ? show : hi
 export const toggleClass = curry((cls, add, element) => {
   element.classList[add ? 'add' : 'remove'](cls)
 });
-
-/**
- * Helper for creating a DOM element
- *
- * @function
- *
- * @param {string} tag
- * @param {string} [id]
- * @param {string[]} [classes] - array of strings
- * @param {Object} [attributes]
- *
- * @return {HTMLElement}
- */
-export const createElement = ({tag, id, classes, attributes}) => {
-  let element = document.createElement(tag);
-
-  if (id) {
-    element.id = id;
-  }
-  if (classes) {
-    classes.forEach(clazz => {element.classList.add(clazz)});
-  }
-  if (attributes) {
-    Object.keys(attributes).forEach(key => {element.setAttribute(key, attributes[key])})
-  }
-
-  return element;
-};

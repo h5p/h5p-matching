@@ -2,9 +2,12 @@
   <div role="region" class="h5p-combine-pairs">
     <h3 class="feedback-title" v-html="title"></h3>
 
-    <pair-list ref="left" name="left" list-class="h5p-pair-list-left"></pair-list>
-    <pair-list ref="right" name="right" list-class="h5p-pair-list-right"></pair-list>
-    <button @click="showResults">Show results</button>
+    <div class="h5p-pair-lists">
+      <pair-list ref="left" name="left" list-class="h5p-pair-list-left"></pair-list>
+      <pair-list ref="right" name="right" list-class="h5p-pair-list-right"></pair-list>
+    </div>
+
+    <button @click="showResults">Check</button>
   </div>
 </template>
 
@@ -15,6 +18,21 @@
 
   const MIN_SCORE = 0;
 
+  /**
+   * Switch places of two elements in an array
+   * @param {Array} arr
+   * @param {number} fromIndex
+   * @param {number} toIndex
+   */
+  const switchArrayElements = (arr, fromIndex, toIndex) => {
+    const element = arr[fromIndex];
+    arr[fromIndex] = arr[toIndex];
+    arr[toIndex] = element;
+  };
+
+  /**
+   * Vue configuration
+   */
   export default {
     data: () => ({
       pairs: [],
@@ -37,7 +55,7 @@
       handleSelected: function(current, other) {
         if(this.isBothSidesSelected()) {
           if(other.selectedIndex !== current.selectedIndex){
-            other.switchElementPlaces(other.selectedIndex, current.selectedIndex);
+            switchArrayElements(other.list, other.selectedIndex, current.selectedIndex);
             other.selectedIndex = current.selectedIndex;
           }
 
@@ -74,7 +92,7 @@
 
       getScore: function() {
         return max(range(0, this.pairsLength)
-          .reduce(index => this.isPairCorrect(index) ? 1 : 0, 0), MIN_SCORE);
+          .reduce((sum, index) =>  sum + this.isPairCorrect(index) ? 1 : 0, 0), MIN_SCORE);
       }
     },
 
@@ -104,53 +122,57 @@
 </script>
 
 <style lang="scss"  type="text/scss">
-  $width-component: 600px;
-  $width-selected-displacement: 40px;
-  $border-radius-element: 10px;
+  @import '../../styles/variables';
+
+  $border-radius-element: 0.5em;
+
+  $font-color: #353533;
 
   .h5p-combine-pairs {
-    .h5p-element-success {
-      background-color: green;
+    color: $font-color;
+
+    .h5p-pair-lists {
+      max-width: $width-component;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
     }
 
-    .h5p-element-failure {
-      background-color: red;
+    .h5p-pair-list {
+      flex: 1;
     }
 
     .h5p-pair-list-left {
-      background-color: lightblue;
-      text-align: right;
-
       .h5p-element {
         border-radius: $border-radius-element 0 0 $border-radius-element;
       }
 
       .h5p-element-selected {
-        transform: translateX($width-selected-displacement);
+        transform: translateX($element-displacement-half);
       }
 
       .h5p-element-success,
       .h5p-element-failure,
       .h5p-element-matched {
-        transform: translateX($width-selected-displacement * 2.7);
+        transform: translateX($element-displacement);
       }
     }
 
     .h5p-pair-list-right {
-      background-color: lightgreen;
 
       .h5p-element {
         border-radius: 0 $border-radius-element $border-radius-element 0;
+        transform: translateX($element-displacement);
       }
 
-      .h5p-element-selected {
-        transform: translateX($width-selected-displacement * -1);
+      .h5p-element.h5p-element-selected {
+        transform: translateX($element-displacement-half);
       }
 
       .h5p-element-success,
       .h5p-element-failure,
       .h5p-element-matched {
-        transform: translateX($width-selected-displacement * -2.7);
+        transform: translateX(0);
       }
     }
   }
