@@ -8,15 +8,16 @@
     </div>
 
     <div class="h5p-question-buttons">
-      <button class="h5p-question-check-answer h5p-joubelui-button" @click="showResults">Check</button>
-      <button class="h5p-question-show-solution h5p-joubelui-button" @click="showResults">Show Solution</button>
-      <button class="h5p-question-try-again h5p-joubelui-button" @click="showResults">Retry</button>
+      <button class="h5p-question-check-answer h5p-joubelui-button" @click="showResults" v-show="state === 'default'">Check</button>
+      <button class="h5p-question-show-solution h5p-joubelui-button" @click="showSolution" v-show="state !== 'default' && state !== 'show-solution'">Show Solution</button>
+      <button class="h5p-question-try-again h5p-joubelui-button" @click="retry" v-show="state !== 'default'">Retry</button>
     </div>
   </div>
 </template>
 
 <script>
   import shuffle from 'shuffle-array';
+  import appState from '../components/app-state';
   import pairState from '../components/pair-state';
   import { range, zip, max, head, tail, length } from 'ramda';
 
@@ -57,7 +58,8 @@
       pairs: [],
       title: 'Combine the data',
       i18n: {},
-      solution: {}
+      solution: {},
+      state: appState.DEFAULT
     }),
 
     methods: {
@@ -115,6 +117,8 @@
           this.$refs.left.setState(index, state);
           this.$refs.right.setState(index, state);
         }, 100);
+
+        this.state = appState.CHECK_RESULT;
       },
 
       isPairCorrect: function(index) {
@@ -122,6 +126,34 @@
         const rightElement = this.$refs.right.list[index];
 
         return leftElement.pairKey === rightElement.pairKey;
+      },
+
+      showSolution: function () {
+        const leftList = this.$refs.left.list;
+
+        leftList.forEach((choice, index) => {
+          if(choice.state !== pairState.SUCCESS) {
+            const otherIndex = this.$refs.right.getIndexPairKey(choice.pairKey);
+
+            switchArrayElements(this.$refs.right.list, index, otherIndex);
+            this.$refs.left.setState(index ,pairState.SHOW_SOLUTION);
+            this.$refs.right.setState(index ,pairState.SHOW_SOLUTION);
+          }
+        });
+
+        this.state = appState.SHOW_SOLUTION;
+      },
+
+      retry: function () {
+        const indexes = range(0, this.pairsLength);
+        indexes.forEach(index => {
+          this.$refs.left.setState(index, pairState.NONE);
+          this.$refs.right.setState(index, pairState.NONE);
+        });
+
+        this.$refs.left.selectedIndex = undefined;
+        this.$refs.right.selectedIndex = undefined;
+        this.state = appState.DEFAULT;
       },
 
       getScore: function() {
@@ -180,7 +212,8 @@
       .h5p-choice-selected,
       .h5p-choice-success,
       .h5p-choice-failure,
-      .h5p-choice-matched {
+      .h5p-choice-matched,
+      .h5p-choice-show-solution {
         transform: translateX($element-displacement);
       }
     }
@@ -194,7 +227,8 @@
       .h5p-choice-selected,
       .h5p-choice-success,
       .h5p-choice-failure,
-      .h5p-choice-matched {
+      .h5p-choice-matched,
+      .h5p-choice-show-solution {
         padding-left: 2.2em;
         transform: translateX(0);
       }

@@ -13,7 +13,7 @@
 </template>
 
 <script>
-  import { contains, prop } from 'ramda';
+  import { contains, prop, propEq, findIndex } from 'ramda';
   import Vue from 'vue';
   import pairState from '../components/pair-state';
   const NO_SELECTION = undefined;
@@ -57,6 +57,10 @@
         return this.selectedIndex;
       },
 
+      getIndexPairKey: function (pairKey) {
+        return findIndex(propEq('pairKey', pairKey), this.list);
+      },
+
       getSelected: function() {
         if(this.selectedIndex !== NO_SELECTION) {
           return this.list[this.selectedIndex];
@@ -64,7 +68,7 @@
       },
 
       showSuccessIndicator: function(state) {
-        return this.name === 'left' && contains(state, [pairState.SUCCESS, pairState.FAILURE]);
+        return this.name === 'left' && contains(state, [pairState.SUCCESS, pairState.FAILURE, pairState.SHOW_SOLUTION]);
       }
     }
   }

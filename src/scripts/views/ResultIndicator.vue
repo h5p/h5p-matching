@@ -17,6 +17,15 @@
 <style lang="scss"  type="text/scss">
   $indicator-diameter: 2.5em;
 
+  @mixin result-indicator($border-color, $background-color, $content) {
+    background-color: $background-color;
+    border-color: $border-color;
+
+    &:before {
+      content: $content;
+    }
+  }
+
   .h5p-combine-pairs {
     .h5p-indicator {
       position: absolute;
@@ -38,21 +47,15 @@
       }
 
       &.h5p-indicator-success {
-        background-color: #3ea98b;
-        border-color: #50c9a8;
-
-        &:before {
-          content: "\f00c";
-        }
+        @include result-indicator(#50c9a8, #3ea98b, "\f00c");
       }
 
       &.h5p-indicator-failure {
-        background-color: #da1b44;
-        border-color: #e54b55;
+        @include result-indicator(#e54b55, #da1b44, "\f00d");
+      }
 
-        &:before {
-          content: "\f00d";
-        }
+      &.h5p-indicator-show-solution {
+        @include result-indicator(#4c93e5, #1b72db, "\f00d");
       }
     }
   }

@@ -6,5 +6,6 @@ export default {
   NONE: 'none',
   MATCHED: 'matched',
   SUCCESS: 'success',
-  FAILURE: 'failure'
+  FAILURE: 'failure',
+  SHOW_SOLUTION: 'show-solution'
 }
