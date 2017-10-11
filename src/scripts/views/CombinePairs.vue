@@ -2,9 +2,9 @@
   <div role="region" class="h5p-combine-pairs">
     <h3 class="feedback-title" v-html="title"></h3>
 
-    <div class="h5p-pair-lists">
-      <pair-list ref="left" name="left" list-class="h5p-pair-list-left"></pair-list>
-      <pair-list ref="right" name="right" list-class="h5p-pair-list-right"></pair-list>
+    <div class="h5p-choice-lists">
+      <choice-list ref="left" name="left" list-class="h5p-choice-list-left"></choice-list>
+      <choice-list ref="right" name="right" list-class="h5p-choice-list-right"></choice-list>
     </div>
 
     <button @click="showResults">Check</button>
@@ -107,6 +107,8 @@
         this.$refs.left.list = shuffle(pairs.map(pair => pair.left)).map(this.addPosition);
         this.$refs.right.list = shuffle(pairs.map(pair => pair.right)).map(this.addPosition);
 
+        console.log(this.$refs.left.list);
+
         this.$refs.left.$on('select', () => {
           this.handleSelected(this.$refs.left, this.$refs.right);
         });
@@ -124,54 +126,49 @@
 <style lang="scss"  type="text/scss">
   @import '../../styles/variables';
 
-  $border-radius-element: 0.5em;
-
-  $font-color: #353533;
+  $border-radius-choice: 0.5em;
 
   .h5p-combine-pairs {
-    color: $font-color;
-
-    .h5p-pair-lists {
+    .h5p-choice-lists {
       max-width: $width-component;
       margin-left: auto;
       margin-right: auto;
       display: flex;
     }
 
-    .h5p-pair-list {
+    .h5p-choice-list {
       flex: 1;
     }
 
-    .h5p-pair-list-left {
-      .h5p-element {
-        border-radius: $border-radius-element 0 0 $border-radius-element;
+    .h5p-choice-list-left {
+      .h5p-choice {
+        border-radius: $border-radius-choice 0 0 $border-radius-choice;
       }
 
-      .h5p-element-selected {
+      .h5p-choice-selected {
         transform: translateX($element-displacement-half);
       }
 
-      .h5p-element-success,
-      .h5p-element-failure,
-      .h5p-element-matched {
+      .h5p-choice-success,
+      .h5p-choice-failure,
+      .h5p-choice-matched {
         transform: translateX($element-displacement);
       }
     }
 
-    .h5p-pair-list-right {
-
-      .h5p-element {
-        border-radius: 0 $border-radius-element $border-radius-element 0;
+    .h5p-choice-list-right {
+      .h5p-choice {
+        border-radius: 0 $border-radius-choice $border-radius-choice 0;
         transform: translateX($element-displacement);
       }
 
-      .h5p-element.h5p-element-selected {
+      .h5p-choice.h5p-choice-selected {
         transform: translateX($element-displacement-half);
       }
 
-      .h5p-element-success,
-      .h5p-element-failure,
-      .h5p-element-matched {
+      .h5p-choice-success,
+      .h5p-choice-failure,
+      .h5p-choice-matched {
         transform: translateX(0);
       }
     }
