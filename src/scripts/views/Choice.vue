@@ -1,10 +1,11 @@
 <template>
-  <button
+  <div
+      role="button"
       class="h5p-choice"
       :class="[{'h5p-choice-selected  ' : selected}, stateClass(state)]"
       @click="onClick">
     <slot></slot>
-  </button>
+  </div>
 </template>
 <script>
   export default {

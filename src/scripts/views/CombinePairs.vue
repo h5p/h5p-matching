@@ -13,7 +13,7 @@
 
 <script>
   import shuffle from 'shuffle-array';
-  import State from '../components/state';
+  import pairState from '../components/pair-state';
   import { range, zip, max } from 'ramda';
 
   const MIN_SCORE = 0;
@@ -61,8 +61,8 @@
 
           // set sides to matched
           setTimeout(() => {
-            current.setState(current.getSelectedIndex(), State.MATCHED);
-            other.setState(other.getSelectedIndex(), State.MATCHED);
+            current.setState(current.getSelectedIndex(), pairState.MATCHED);
+            other.setState(other.getSelectedIndex(), pairState.MATCHED);
             current.selectedIndex = undefined;
             other.selectedIndex = undefined;
           }, 600);
@@ -78,8 +78,8 @@
         range(0, this.pairsLength).forEach(index => {
           const isCorrect = this.isPairCorrect(index);
 
-          this.$refs.left.setState(index, isCorrect ? State.SUCCESS : State.FAILURE);
-          this.$refs.right.setState(index, isCorrect ? State.SUCCESS : State.FAILURE);
+          this.$refs.left.setState(index, isCorrect ? pairState.SUCCESS : pairState.FAILURE);
+          this.$refs.right.setState(index, isCorrect ? pairState.SUCCESS : pairState.FAILURE);
         });
       },
 

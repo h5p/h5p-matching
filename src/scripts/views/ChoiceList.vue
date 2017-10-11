@@ -7,12 +7,15 @@
           @select="select(index)">
           {{element.title}}
       </choice>
+      <result-indicator v-bind:state="element.state" v-show="showSuccessIndicator(element.state)"></result-indicator>
     </li>
   </transition-group>
 </template>
 
 <script>
+  import { contains } from 'ramda';
   import Vue from 'vue';
+  import pairState from '../components/pair-state';
   const NO_SELECTION = undefined;
 
   export default {
@@ -46,6 +49,10 @@
         if(this.selectedIndex !== NO_SELECTION) {
           return this.list[this.selectedIndex];
         }
+      },
+
+      showSuccessIndicator: function(state) {
+        return this.name === 'left' && contains(state, [pairState.SUCCESS, pairState.FAILURE]);
       }
     }
   }
@@ -53,6 +60,7 @@
 <style lang="scss"  type="text/scss">
   .h5p-combine-pairs {
     .h5p-choice-list li {
+      position: relative;
       transition: all .2s ease-in;
     }
   }

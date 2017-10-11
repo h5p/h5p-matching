@@ -2,6 +2,11 @@ import Vue from 'vue'
 import CombinePairs from './views/CombinePairs.vue';
 import ChoiceList from './views/ChoiceList.vue';
 import Choice from './views/Choice.vue';
+import ResultIndicator from './views/ResultIndicator.vue';
+
+// Register components
+Vue.component('choice', Choice);
+Vue.component('resultIndicator', ResultIndicator);
 
 /**
  * @typedef {object} PairProperty
@@ -30,8 +35,6 @@ export default class App extends H5P.EventDispatcher {
   constructor(config, contentId, contentData = {}) {
     super();
     const rootElement = document.createElement('div');
-
-    Vue.component('choice', Choice);
 
     const viewModel = new Vue({
       ...CombinePairs,

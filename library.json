@@ -21,6 +21,12 @@
       "path": "dist/h5p-combine-pairs.css"
     }
   ],
-  "preloadedDependencies": [],
+  "preloadedDependencies": [
+    {
+      "machineName": "FontAwesome",
+      "majorVersion": 4,
+      "minorVersion": 5
+    }
+  ],
   "editorDependencies": []
 }
