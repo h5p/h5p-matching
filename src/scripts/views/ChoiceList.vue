@@ -13,7 +13,7 @@
 </template>
 
 <script>
-  import { contains } from 'ramda';
+  import { contains, prop } from 'ramda';
   import Vue from 'vue';
   import pairState from '../components/pair-state';
   const NO_SELECTION = undefined;
@@ -35,6 +35,18 @@
       setState: function(index, state){
         const element = Object.assign({}, this.list[index], { state });
         Vue.set(this.list, index, element);
+      },
+
+      getState: function(index) {
+        return prop('state', this.list[index]);
+      },
+
+      setSelectedChoiceState: function(state) {
+        this.setState(this.selectedIndex, state)
+      },
+
+      getSelectedChoiceState: function() {
+        return this.getState(this.selectedIndex);
       },
 
       hasSelected: function() {

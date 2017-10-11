@@ -1,8 +1,8 @@
 /**
  * Enum indicating the state of a pair
- * @enum {string}
+ * @enum {string} pairState
  */
-export default pairState = {
+export default {
   NONE: 'none',
   MATCHED: 'matched',
   SUCCESS: 'success',

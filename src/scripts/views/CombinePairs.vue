@@ -14,7 +14,7 @@
 <script>
   import shuffle from 'shuffle-array';
   import pairState from '../components/pair-state';
-  import { range, zip, max } from 'ramda';
+  import { range, zip, max, head, tail, length } from 'ramda';
 
   const MIN_SCORE = 0;
 
@@ -28,6 +28,21 @@
     const element = arr[fromIndex];
     arr[fromIndex] = arr[toIndex];
     arr[toIndex] = element;
+  };
+
+  /**
+   * Calls the callback with each element after a given timeout
+   *
+   * @param {Array} arr
+   * @param {Function} callback
+   * @param {number} delay
+   */
+  const forEachDelayed = (arr, callback, delay) => {
+    callback(head(arr));
+
+    if(length(arr) > 1) {
+      setTimeout(() => forEachDelayed(tail(arr), callback, delay), delay)
+    }
   };
 
   /**
@@ -52,20 +67,34 @@
           && this.$refs.right.hasSelected();
       },
 
+      isMatched: function(index) {
+        return index !== undefined
+          && this.$refs.left.getState(index) === pairState.MATCHED
+          && this.$refs.right.getState(index) === pairState.MATCHED;
+      },
+
       handleSelected: function(current, other) {
-        if(this.isBothSidesSelected()) {
-          if(other.selectedIndex !== current.selectedIndex){
+        const index = current.getSelectedIndex();
+
+        if (this.isMatched(index)) {
+          current.setState(index, pairState.NONE);
+          other.setState(index, pairState.NONE);
+          current.selectedIndex = undefined;
+          other.selectedIndex = undefined;
+        }
+        else if(this.isBothSidesSelected()) {
+          if(other.selectedIndex !== current.selectedIndex) {
             switchArrayElements(other.list, other.selectedIndex, current.selectedIndex);
             other.selectedIndex = current.selectedIndex;
           }
 
           // set sides to matched
-          setTimeout(() => {
-            current.setState(current.getSelectedIndex(), pairState.MATCHED);
-            other.setState(other.getSelectedIndex(), pairState.MATCHED);
+          //setTimeout(() => {
+            current.setSelectedChoiceState(pairState.MATCHED);
+            other.setSelectedChoiceState(pairState.MATCHED);
             current.selectedIndex = undefined;
             other.selectedIndex = undefined;
-          }, 600);
+          //}, 600);
         }
       },
 
@@ -75,12 +104,15 @@
       },
 
       showResults: function() {
-        range(0, this.pairsLength).forEach(index => {
-          const isCorrect = this.isPairCorrect(index);
+        const indexes = range(0, this.pairsLength);
 
-          this.$refs.left.setState(index, isCorrect ? pairState.SUCCESS : pairState.FAILURE);
-          this.$refs.right.setState(index, isCorrect ? pairState.SUCCESS : pairState.FAILURE);
-        });
+        forEachDelayed(indexes, index => {
+          const isCorrect = this.isPairCorrect(index);
+          const state = isCorrect ? pairState.SUCCESS : pairState.FAILURE;
+
+          this.$refs.left.setState(index, state);
+          this.$refs.right.setState(index, state);
+        }, 100);
       },
 
       isPairCorrect: function(index) {
@@ -106,8 +138,6 @@
 
         this.$refs.left.list = shuffle(pairs.map(pair => pair.left)).map(this.addPosition);
         this.$refs.right.list = shuffle(pairs.map(pair => pair.right)).map(this.addPosition);
-
-        console.log(this.$refs.left.list);
 
         this.$refs.left.$on('select', () => {
           this.handleSelected(this.$refs.left, this.$refs.right);
@@ -145,10 +175,7 @@
         border-radius: $border-radius-choice 0 0 $border-radius-choice;
       }
 
-      .h5p-choice-selected {
-        transform: translateX($element-displacement-half);
-      }
-
+      .h5p-choice-selected,
       .h5p-choice-success,
       .h5p-choice-failure,
       .h5p-choice-matched {
@@ -162,13 +189,11 @@
         transform: translateX($element-displacement);
       }
 
-      .h5p-choice.h5p-choice-selected {
-        transform: translateX($element-displacement-half);
-      }
-
+      .h5p-choice-selected,
       .h5p-choice-success,
       .h5p-choice-failure,
       .h5p-choice-matched {
+        padding-left: 2.2em;
         transform: translateX(0);
       }
     }
