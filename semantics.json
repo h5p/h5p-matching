@@ -30,6 +30,12 @@
   {
     "name": "pairs",
     "type": "list",
+    "widgets": [
+      {
+        "name": "VerticalTabs",
+        "label": "Default"
+      }
+    ],
     "label": "Pairs",
     "importance": "high",
     "entity": "pair",
