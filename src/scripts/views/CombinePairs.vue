@@ -1,10 +1,10 @@
 <template>
-  <div role="region" class="h5p-combine-pairs">
+  <div role="region" class="h5p-combine-pairs" :class="'h5p-combine-pairs-' + choiceType">
     <h3 class="feedback-title" v-html="title"></h3>
 
     <div class="h5p-choice-lists">
-      <choice-list ref="left" name="left" list-class="h5p-choice-list-left"></choice-list>
-      <choice-list ref="right" name="right" list-class="h5p-choice-list-right"></choice-list>
+      <choice-list ref="left" name="left" list-class="h5p-choice-list-left" v-bind:choice-type="choiceType"></choice-list>
+      <choice-list ref="right" name="right" list-class="h5p-choice-list-right" choice-type="text"></choice-list>
     </div>
 
     <div ref="scoreBar" class="score-bar" v-show="state !== 'default'"></div>
@@ -22,7 +22,7 @@
   import appState from '../components/app-state';
   import pairState from '../components/pair-state';
   import { jQuery as $, JoubelScoreBar } from '../components/globals'
-  import { range, head, tail, length } from 'ramda';
+  import { range, head, tail, length, assoc } from 'ramda';
 
   /**
    * Switch places of two elements in an array
@@ -56,20 +56,14 @@
    */
   export default {
     data: () => ({
-      pairs: [],
+      pairs: {},
       title: 'Combine the data',
       i18n: {},
-      solution: {},
-      state: appState.DEFAULT
+      state: appState.DEFAULT,
+      choiceType: 'text'
     }),
 
     methods: {
-      initChoice: function(choice, index) {
-        choice.position = index;
-        choice.state = pairState.NONE;
-        return choice;
-      },
-
       isBothSidesSelected: function() {
         return this.$refs.left.hasSelected()
           && this.$refs.right.hasSelected();
@@ -81,14 +75,17 @@
           && this.$refs.right.getState(index) === pairState.MATCHED;
       },
 
+      /**
+       * Handle click on choice
+       */
       handleSelected: function(current, other) {
         const index = current.getSelectedIndex();
 
         if (this.isMatched(index)) {
           current.setState(index, pairState.NONE);
           other.setState(index, pairState.NONE);
-          current.selectedIndex = undefined;
-          other.selectedIndex = undefined;
+          current.unsetSelectedIndex();
+          other.unsetSelectedIndex();
         }
         else if(this.isBothSidesSelected()) {
           if(other.selectedIndex !== current.selectedIndex) {
@@ -99,20 +96,13 @@
           // set sides to matched
           current.setSelectedChoiceState(pairState.MATCHED);
           other.setSelectedChoiceState(pairState.MATCHED);
-          current.selectedIndex = undefined;
-          other.selectedIndex = undefined;
+          current.unsetSelectedIndex();
+          other.unsetSelectedIndex();
         }
       },
 
-      addPairKey: function(pair, index) {
-        pair.left.pairKey = index;
-        pair.right.pairKey = index;
-      },
-
       showResults: function() {
-        const indexes = range(0, this.pairsLength);
-
-        forEachDelayed(indexes, index => {
+        forEachDelayed(this.range(), index => {
           const isCorrect = this.isPairCorrect(index);
           const state = isCorrect ? pairState.SUCCESS : pairState.FAILURE;
 
@@ -122,13 +112,28 @@
 
         this.state = appState.CHECK_RESULT;
         this.updateScoreBar();
+        this.$emit('answered', {
+          pairs: this.getPairs()
+        });
+      },
+
+      /**
+       * Returns answers in pairs
+       *
+       * @return {Pair[]}
+       */
+      getPairs: function () {
+        return this.range().map(index => ({
+          left: this.$refs.left.list[index],
+          right: this.$refs.right.list[index],
+        }));
       },
 
       isPairCorrect: function(index) {
         const leftElement = this.$refs.left.list[index];
         const rightElement = this.$refs.right.list[index];
 
-        return leftElement.pairKey === rightElement.pairKey;
+        return leftElement.id === rightElement.id;
       },
 
       showSolution: function (newState = appState.SHOW_SOLUTION) {
@@ -136,7 +141,7 @@
 
         leftList.forEach((choice, index) => {
           if(choice.state !== pairState.SUCCESS) {
-            const otherIndex = this.$refs.right.getIndexPairKey(choice.pairKey);
+            const otherIndex = this.$refs.right.getIndexById(choice.id);
 
             switchArrayElements(this.$refs.right.list, index, otherIndex);
             this.$refs.left.setState(index ,pairState.SHOW_SOLUTION);
@@ -148,14 +153,13 @@
       },
 
       retry: function () {
-        const indexes = range(0, this.pairsLength);
-        indexes.forEach(index => {
+        this.range().forEach(index => {
           this.$refs.left.setState(index, pairState.NONE);
           this.$refs.right.setState(index, pairState.NONE);
         });
 
-        this.$refs.left.selectedIndex = undefined;
-        this.$refs.right.selectedIndex = undefined;
+        this.$refs.left.unsetSelectedIndex();
+        this.$refs.right.unsetSelectedIndex();
         this.state = appState.DEFAULT;
       },
 
@@ -165,17 +169,27 @@
       },
 
       getScore: function() {
-        return range(0, this.pairsLength)
-          .reduce((sum, index) => sum + (this.isPairCorrect(index) ? 1 : 0), 0);
+        return this.range().reduce((sum, index) => sum + (this.isPairCorrect(index) ? 1 : 0), 0);
       },
 
       initScoreBar: function(maxScore) {
-        this.scoreBar = new JoubelScoreBar(maxScore);
-        this.scoreBar.appendTo($(this.$refs.scoreBar));
+        if (!this.scoreBar) {
+          this.scoreBar = new JoubelScoreBar(maxScore);
+          this.scoreBar.appendTo($(this.$refs.scoreBar));
+        }
       },
 
       updateScoreBar: function() {
         this.scoreBar.setScore(this.getScore());
+      },
+
+      /**
+       * Returns a range with indexes for choice lists
+       * Example: [0, 1, 2, 3]
+       * @return {number[]}
+       */
+      range: function() {
+        return range(0, this.pairsLength);
       }
     },
 
@@ -184,23 +198,24 @@
        * Generates shuffled right and left lists
        * @param {Pair[]} pairs
        */
-      pairs: function(pairs) {
-        pairs.forEach(this.addPairKey);
+      pairs: function({ sourceList, targetList }) {
+        const initPosition = (choice, index) => assoc('position', index, choice);
 
-        this.$refs.left.list = shuffle(pairs.map(pair => pair.left)).map(this.initChoice);
-        this.$refs.right.list = shuffle(pairs.map(pair => pair.right)).map(this.initChoice);
+        this.$refs.left.list = shuffle(sourceList).map(initPosition);
+        this.$refs.right.list = shuffle(targetList).map(initPosition);
 
         this.$refs.left.$on('select', () => {
           this.handleSelected(this.$refs.left, this.$refs.right);
+          this.$emit('interacted')
         });
 
         this.$refs.right.$on('select', () => {
           this.handleSelected(this.$refs.right, this.$refs.left);
+          this.$emit('interacted')
         });
 
-        const maxScore = this.pairsLength = pairs.length;
-
-        this.initScoreBar(maxScore);
+        this.pairsLength = sourceList.length;
+        this.initScoreBar(sourceList.length);
       }
     }
   }
@@ -219,13 +234,19 @@
     }
 
     .h5p-choice-lists {
-      max-width: $width-component;
-      margin-left: auto;
       margin-right: auto;
       display: flex;
     }
 
-    .h5p-choice-list {
+    &.h5p-combine-pairs-image .h5p-choice-lists {
+      max-width: ($width-component / 2) + $choice-height + $choice-padding;
+    }
+
+    &.h5p-combine-pairs-text .h5p-choice-lists {
+      max-width: $width-component;
+    }
+
+    .h5p-text-choice-list {
       flex: 1;
     }
 

@@ -1,12 +1,23 @@
 <template>
-  <transition-group name="pair-list" tag="ul" class="h5p-choice-list unstyled-list" :class="listClass">
+  <transition-group name="pair-list" tag="ul" class="h5p-choice-list unstyled-list" :class="['h5p-' + choiceType + '-choice-list' ,listClass]">
     <li v-for="(element, index) in list" v-bind:key="element.position" v-bind:data-index="index">
-      <choice
+      <text-choice
+          v-if="choiceType !== 'image'"
           v-bind:selected="index === selectedIndex"
           v-bind:state="element.state"
           @select="select(index)">
           {{element.title}}
-      </choice>
+      </text-choice>
+
+      <image-choice
+          v-if="choiceType === 'image'"
+          v-bind:selected="index === selectedIndex"
+          v-bind:state="element.state"
+          v-bind:image="element.image"
+          v-bind:alt="element.title"
+          @select="select(index)">
+      </image-choice>
+
       <result-indicator v-bind:state="element.state" v-show="showSuccessIndicator(element.state)"></result-indicator>
     </li>
   </transition-group>
@@ -19,7 +30,7 @@
   const NO_SELECTION = undefined;
 
   export default {
-    props: ['listClass', 'name'],
+    props: ['listClass', 'name', 'choiceType'],
     data: () => ({
       list: [],
       selectedIndex: NO_SELECTION
@@ -57,14 +68,18 @@
         return this.selectedIndex;
       },
 
-      getIndexPairKey: function (pairKey) {
-        return findIndex(propEq('pairKey', pairKey), this.list);
+      getIndexById: function (id) {
+        return findIndex(propEq('id', id), this.list);
       },
 
       getSelected: function() {
         if(this.selectedIndex !== NO_SELECTION) {
           return this.list[this.selectedIndex];
         }
+      },
+
+      unsetSelectedIndex: function(){
+        this.selectedIndex = NO_SELECTION;
       },
 
       showSuccessIndicator: function(state) {

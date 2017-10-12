@@ -1,9 +1,9 @@
 <template>
   <div
       role="button"
-      class="h5p-choice"
-      :class="[{'h5p-choice-selected  ' : selected}, stateClass(state)]"
-      @click="onClick">
+      class="h5p-choice h5p-text-choice"
+      :class="[{'h5p-choice-selected  ' : selected}, 'h5p-choice-' + state]"
+      @click="select">
     <div class="h5p-choice-title">
       <slot></slot>
     </div>
@@ -12,16 +12,9 @@
 <script>
   export default {
     props: ['selected','state'],
-    data: () => ({}),
     methods: {
-      onClick: function() {
+      select: function() {
         this.$emit('select')
-      },
-
-      stateClass: function(state) {
-        if(state) {
-          return `h5p-choice-${state}`;
-        }
       }
     }
   };
@@ -30,22 +23,20 @@
   @import '../../styles/variables';
   @import '../../styles/mixins';
 
-  $padding: 1.458em;
-
   @mixin choice-colors($border-color, $background-color1, $background-color2, $color: white) {
     @include linear-gradient($background-color1, $background-color2);
     border: 0.083em solid $border-color;
     color: $color;
   }
 
-  .h5p-choice {
+  .h5p-text-choice {
     @include choice-colors(#bbd8ea, #f1fbfd, #e3f1f4, #353533);
     width: calc(100% - #{$element-displacement});
     display: block;
     font-size: 1.042em;
-    height: 1em + ($padding * 2);
-    padding-left: $padding;
-    padding-right: $padding;
+    height: 1em + ($choice-padding * 2);
+    padding-left: $choice-padding;
+    padding-right: $choice-padding;
     margin-bottom: 0.667em;
     transition: transform .2s ease-in, padding .2s ease-in;
     box-sizing: border-box;

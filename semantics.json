@@ -1,11 +1,30 @@
 [
   {
+    "name": "choiceType",
+    "type": "select",
+    "label": "Activity type",
+    "description": "Choose the activity type",
+    "importance": "low",
+    "optional": false,
+    "default": "text",
+    "options": [
+      {
+        "value": "text",
+        "label": "Match a text with a text"
+      },
+      {
+        "value": "image",
+        "label": "Match an image with a text"
+      }
+    ]
+  },
+  {
     "label": "Text",
     "importance": "high",
     "name": "title",
     "type": "text",
     "widget": "textarea",
-    "default": "Create pairs by combining words from the left and right list.",
+    "default": "Match text on the left side with the corresponding text on the right side",
     "description": "Description of the task"
   },
   {
@@ -23,52 +42,37 @@
       "importance": "high",
       "fields": [
         {
-          "type": "group",
-          "name": "left",
-          "label": "Left side",
+          "name": "image",
+          "type": "image",
+          "label": "Left side image",
           "importance": "medium",
-          "fields": [
-            {
-              "name": "image",
-              "type": "image",
-              "label": "Image",
-              "importance": "low",
-              "ratio": 1,
-              "optional": true
-            },
-            {
-              "name": "title",
-              "type": "text",
-              "label": "Text",
-              "importance": "high",
-              "maxLength": 150,
-              "description": "The left side of your text"
-            }
-          ]
+          "ratio": 1,
+          "optional": true,
+          "widget": "showWhen",
+          "showWhen": {
+            "rules": [
+              {
+                "field": "../../choiceType",
+                "equals": "image"
+              }
+            ]
+          }
         },
         {
-          "type": "group",
-          "name": "right",
-          "label": "Right side",
+          "name": "source",
+          "type": "text",
+          "label": "Left side text",
           "importance": "medium",
-          "fields": [
-            {
-              "name": "image",
-              "type": "image",
-              "label": "Image",
-              "importance": "low",
-              "ratio": 1,
-              "optional": true
-            },
-            {
-              "name": "title",
-              "type": "text",
-              "label": "Text",
-              "importance": "high",
-              "maxLength": 150,
-              "description": "The right side of your text"
-            }
-          ]
+          "maxLength": 150,
+          "description": "The left side of your text. (The text will be used as the \"alt\" attribute if matching with an image)"
+        },
+        {
+          "name": "target",
+          "type": "text",
+          "label": "Right side text",
+          "importance": "medium",
+          "maxLength": 150,
+          "description": "The right side of your text."
         }
       ]
     }
