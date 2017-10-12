@@ -13,7 +13,7 @@
 </template>
 
 <script>
-  import { contains, prop, propEq, find } from 'ramda';
+  import { contains, prop, propEq, findIndex } from 'ramda';
   import Vue from 'vue';
   import pairState from '../components/pair-state';
   const NO_SELECTION = undefined;
@@ -58,7 +58,7 @@
       },
 
       getIndexPairKey: function (pairKey) {
-        return find(propEq('pairKey', pairKey), this.list);
+        return findIndex(propEq('pairKey', pairKey), this.list);
       },
 
       getSelected: function() {
