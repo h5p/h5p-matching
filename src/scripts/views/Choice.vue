@@ -47,7 +47,7 @@
     padding-left: $padding;
     padding-right: $padding;
     margin-bottom: 0.667em;
-    transition: all .2s ease-in;
+    transition: transform .2s ease-in, padding .2s ease-in;
     box-sizing: border-box;
     text-align: left;
     cursor: pointer;

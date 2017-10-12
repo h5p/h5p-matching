@@ -77,7 +77,7 @@
   .h5p-combine-pairs {
     .h5p-choice-list li {
       position: relative;
-      transition: all .2s ease-in;
+      transition: transform .2s ease-in;
     }
   }
 </style>
