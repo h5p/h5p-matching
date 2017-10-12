@@ -4,7 +4,9 @@
       class="h5p-choice"
       :class="[{'h5p-choice-selected  ' : selected}, stateClass(state)]"
       @click="onClick">
-    <slot></slot>
+    <div class="h5p-choice-title">
+      <slot></slot>
+    </div>
   </div>
 </template>
 <script>
@@ -28,6 +30,8 @@
   @import '../../styles/variables';
   @import '../../styles/mixins';
 
+  $padding: 1.458em;
+
   @mixin choice-colors($border-color, $background-color1, $background-color2, $color: white) {
     @include linear-gradient($background-color1, $background-color2);
     border: 0.083em solid $border-color;
@@ -39,7 +43,9 @@
     width: calc(100% - #{$element-displacement});
     display: block;
     font-size: 1.042em;
-    padding: 1.458em;
+    height: 1em + ($padding * 2);
+    padding-left: $padding;
+    padding-right: $padding;
     margin-bottom: 0.667em;
     transition: all .2s ease-in;
     box-sizing: border-box;
@@ -63,5 +69,15 @@
     &.h5p-choice-failure {
       @include choice-colors(#cb183f, #e54b55, #da1b44);
     }
+  }
+
+  .h5p-choice-title {
+    @include vertical-align();
+    max-height: 2.6em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 </style>
