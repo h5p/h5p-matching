@@ -1,0 +1,80 @@
+{
+  "semantics": [
+    {
+      "label": "Activity type",
+      "description": "Choose the activity type",
+      "default": "text",
+      "options": [
+        {
+          "label": "Match a text with a text"
+        },
+        {
+          "label": "Match an image with a text"
+        }
+      ]
+    },
+    {
+      "label": "Headline",
+      "default": "Match text on the left side with the corresponding text on the right side",
+      "description": "Description of the task"
+    },
+    {
+      "widgets": [
+        {
+          "label": "Default"
+        }
+      ],
+      "label": "Pairs",
+      "entity": "pair",
+      "field": {
+        "label": "Pair",
+        "fields": [
+          {
+            "label": "Left side image",
+            "showWhen": {
+              "rules": [
+                {}
+              ]
+            }
+          },
+          {
+            "label": "Left side text",
+            "description": "The text will be used as the \"alt\" attribute if matching with an image"
+          },
+          {
+            "label": "Right side text"
+          }
+        ]
+      }
+    },
+    {
+      "label": "Localization",
+      "fields": [
+        {
+          "label": "Text for \"Check\" button",
+          "default": "Check"
+        },
+        {
+          "label": "Text for \"Show solution\" button",
+          "default": "Show solution"
+        },
+        {
+          "label": "Text for \"Retry\" button",
+          "default": "Retry"
+        }
+      ]
+    },
+    {
+      "label": "Behavioural settings",
+      "description": "These options will let you control how the task behaves.",
+      "fields": [
+        {
+          "label": "Enable \"Retry\" button"
+        },
+        {
+          "label": "Enable \"Show Solution\" button"
+        }
+      ]
+    }
+  ]
+}

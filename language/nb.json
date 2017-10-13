@@ -1,0 +1,80 @@
+{
+  "semantics": [
+    {
+      "label": "Aktivitets type",
+      "description": "Velg en aktivitetstype",
+      "default": "text",
+      "options": [
+        {
+          "label": "Kombinér en tekst med en annen tekst"
+        },
+        {
+          "label": "Kombinér en tekst med et bilde"
+        }
+      ]
+    },
+    {
+      "label": "Overskrift",
+      "default": "Kombinér teksten på venstre side med den tilhørende høyre side",
+      "description": "Beskrivelse av oppgaven"
+    },
+    {
+      "widgets": [
+        {
+          "label": "Default"
+        }
+      ],
+      "label": "Par",
+      "entity": "par",
+      "field": {
+        "label": "Par",
+        "fields": [
+          {
+            "label": "Bilde på venstre side",
+            "showWhen": {
+              "rules": [
+                {}
+              ]
+            }
+          },
+          {
+            "label": "Tekst på venstre side",
+            "description": "The text will be used as the \"alt\" attribute if matching with an image"
+          },
+          {
+            "label": "Tekst på høyre side"
+          }
+        ]
+      }
+    },
+    {
+      "label": "Oversettelser",
+      "fields": [
+        {
+          "label": "Etikett for \"Sjekk\"-knapp",
+          "default": "Sjekk"
+        },
+        {
+          "label": "Etikett for \"Fasit\"-knapp",
+          "default": "Fasit"
+        },
+        {
+          "label": "Etikett for \"Prøv igjen\"-knappen.",
+          "default": "Prøv igjen"
+        }
+      ]
+    },
+    {
+      "label": "Innstillinger for oppgaveoppførsel",
+      "description": "Disse instillingene lar deg bestemme hvordan oppgavetypen skal oppføre seg.",
+      "fields": [
+        {
+          "label": "Aktiver \"Prøv igjen\" knapp"
+        },
+        {
+          "label": "Aktiver \"Fasit\" knapp"
+        }
+      ]
+    }
+  ]
+}
