@@ -6,8 +6,10 @@ import ImageChoiceView from './views/ImageChoice.vue';
 import ResultIndicatorView from './views/ResultIndicator.vue';
 import { EventDispatcher, getPath } from './components/globals';
 import { setDefinitionOnXapiEvent, setResponseOnXApiEvent } from './components/xapi';
+import { path } from 'ramda';
 import appState from './components/app-state';
 import pairState from './components/pair-state';
+import defaultTranslations from './components/default-translations';
 
 // Register components
 Vue.component('textChoice', TextChoiceView);
@@ -21,6 +23,14 @@ const side = {
   SOURCE: 'source',
   TARGET: 'target'
 };
+
+/**
+ * Returns the absolute path, if a path exists
+ *
+ * @param {string} path
+ * @param {string} contentId
+ */
+const getAbsolutePath = (path, contentId) => path ? getPath(path, contentId) : undefined;
 
 /**
  * @typedef {object} PairConfig
@@ -50,15 +60,15 @@ const side = {
  *
  * @return {Choice[]}
  */
-const initPairs = (pairConfigs, side, contentId) =>
-   pairConfigs.map((config, index) => ({
+const initPairs = (pairConfigs, side, contentId) => {
+   return pairConfigs.map((config, index) => ({
     id: index,
     title: config[side],
     state: pairState.NONE,
-    image: getPath(config.image.path, contentId),
+    image: getAbsolutePath(path(['image', 'path'], config), contentId),
     position: index
   }));
-
+};
 
 /**
  * @class
@@ -72,16 +82,20 @@ export default class App extends EventDispatcher {
    * @param {PairConfig[]} config.pairs
    * @param {string} config.title
    * @param {string} config.choiceType
-   * @param {object} config.i18n
+   * @param {object} config.l10n
+   * @param {object} config.behaviour
+   * @param {boolean} config.behaviour.enableRetry
+   * @param {boolean} config.behaviour.enableSolutionsButton
    * @param {string} contentId
    * @param {object} contentData
    */
   constructor(config, contentId, contentData = {}) {
     super();
-    const rootElement = document.createElement('div');
 
+    const rootElement = document.createElement('div');
     const sourceList = initPairs(config.pairs, side.SOURCE, contentId);
     const targetList = initPairs(config.pairs, side.TARGET, contentId);
+    const i18n = Object.assign({}, defaultTranslations, config.l10n);
 
     const maxScore = config.pairs.length;
 
@@ -95,6 +109,9 @@ export default class App extends EventDispatcher {
     viewModel.choiceType = config.choiceType;
     viewModel.title = config.title;
     viewModel.pairs = { sourceList, targetList };
+    viewModel.enableRetry = config.behaviour.enableRetry;
+    viewModel.enableSolutionsButton = config.behaviour.enableSolutionsButton;
+    viewModel.i18n = i18n;
 
     // Resize on state change
     viewModel.$watch('state', () => this.trigger('resize'));

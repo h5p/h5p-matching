@@ -10,9 +10,9 @@
     <div ref="scoreBar" class="score-bar" v-show="state !== 'default'"></div>
 
     <div class="h5p-question-buttons" v-if="state !== 'global-show-solution'">
-      <button class="h5p-question-check-answer h5p-joubelui-button" @click="showResults" v-if="state === 'default'">Check</button>
-      <button class="h5p-question-show-solution h5p-joubelui-button" @click="showSolution" v-if="state !== 'default' && state !== 'show-solution'">Show Solution</button>
-      <button class="h5p-question-try-again h5p-joubelui-button" @click="retry" v-if="state !== 'default'">Retry</button>
+      <button class="h5p-question-check-answer h5p-joubelui-button" @click="showResults" v-if="state === 'default'">{{i18n.checkAnswer}}</button>
+      <button class="h5p-question-show-solution h5p-joubelui-button" @click="showSolution" v-if="displayShowSolutionButton(state)">{{i18n.showSolutionButton}}</button>
+      <button class="h5p-question-try-again h5p-joubelui-button" @click="retry" v-if="displayRetrySolutionButton(state)">{{i18n.tryAgain}}</button>
     </div>
   </div>
 </template>
@@ -21,6 +21,7 @@
   import shuffle from 'shuffle-array';
   import appState from '../components/app-state';
   import pairState from '../components/pair-state';
+  import defaultTranslations from '../components/default-translations';
   import { jQuery as $, JoubelScoreBar } from '../components/globals'
   import { range, head, tail, length, assoc } from 'ramda';
 
@@ -58,17 +59,46 @@
     data: () => ({
       pairs: {},
       title: 'Combine the data',
-      i18n: {},
+      i18n: defaultTranslations,
       state: appState.DEFAULT,
-      choiceType: 'text'
+      choiceType: 'text',
+      enableRetry: true,
+      enableSolutionsButton: true
     }),
 
     methods: {
+      /**
+       * Returns true if the "Show solutions" button should be displayed
+       */
+      displayShowSolutionButton: function(state) {
+        return this.enableSolutionsButton
+          && state !== 'default'
+          && state !== 'show-solution';
+      },
+
+      /**
+       * Returns true if the retry button should be displayed
+       * @return {boolean}
+       */
+      displayRetrySolutionButton: function(state) {
+        return this.enableRetry && state !== 'default';
+      },
+
+      /**
+       * Returns true if both sides has a selected choice
+       * @return {boolean}
+       */
       isBothSidesSelected: function() {
         return this.$refs.left.hasSelected()
           && this.$refs.right.hasSelected();
       },
 
+      /**
+       * Returns true if the pair at an index is matched
+       *
+       * @param {number} index
+       * @return {boolean}
+       */
       isMatched: function(index) {
         return index !== undefined
           && this.$refs.left.getState(index) === pairState.MATCHED
@@ -101,6 +131,9 @@
         }
       },
 
+      /**
+       * Displays the results and updates the score bar
+       */
       showResults: function() {
         forEachDelayed(this.range(), index => {
           const isCorrect = this.isPairCorrect(index);
@@ -129,6 +162,11 @@
         }));
       },
 
+      /**
+       * Returns true if the pair at an index is correct
+       * @param {number} index
+       * @return {boolean}
+       */
       isPairCorrect: function(index) {
         const leftElement = this.$refs.left.list[index];
         const rightElement = this.$refs.right.list[index];
@@ -136,6 +174,10 @@
         return leftElement.id === rightElement.id;
       },
 
+      /**
+       * Displays the solution, and sets the view in a new state
+       * @param {appState} newState
+       */
       showSolution: function (newState = appState.SHOW_SOLUTION) {
         const leftList = this.$refs.left.list;
 
@@ -152,6 +194,9 @@
         this.state = newState;
       },
 
+      /**
+       * Resets the state to the initial state
+       */
       retry: function () {
         this.range().forEach(index => {
           this.$refs.left.setState(index, pairState.NONE);
@@ -163,15 +208,27 @@
         this.state = appState.DEFAULT;
       },
 
+      /**
+       * Returns true if the user has started answering
+       * @return {boolean}
+       */
       getAnswerGiven: function() {
-        this.$refs.left.list
+        return this.$refs.left.list
           .some(choice => choice.state !== pairState.NONE)
       },
 
+      /**
+       * Returns the current score
+       * @return {number}
+       */
       getScore: function() {
         return this.range().reduce((sum, index) => sum + (this.isPairCorrect(index) ? 1 : 0), 0);
       },
 
+      /**
+       * Initializes the scorebar if it doesn't exist
+       * @param {number} maxScore
+       */
       initScoreBar: function(maxScore) {
         if (!this.scoreBar) {
           this.scoreBar = new JoubelScoreBar(maxScore);
@@ -179,6 +236,9 @@
         }
       },
 
+      /**
+       * Updates the scorebar
+       */
       updateScoreBar: function() {
         this.scoreBar.setScore(this.getScore());
       },

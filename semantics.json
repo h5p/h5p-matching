@@ -19,7 +19,7 @@
     ]
   },
   {
-    "label": "Text",
+    "label": "Headline",
     "importance": "high",
     "name": "title",
     "type": "text",
@@ -70,15 +70,14 @@
           "label": "Left side text",
           "importance": "medium",
           "maxLength": 150,
-          "description": "The left side of your text. (The text will be used as the \"alt\" attribute if matching with an image)"
+          "description": "The text will be used as the \"alt\" attribute if matching with an image"
         },
         {
           "name": "target",
           "type": "text",
           "label": "Right side text",
           "importance": "medium",
-          "maxLength": 150,
-          "description": "The right side of your text."
+          "maxLength": 150
         }
       ]
     }
@@ -91,11 +90,48 @@
     "common": true,
     "fields": [
       {
-        "label": "Correct text",
+        "label": "Text for \"Check\" button",
         "importance": "low",
-        "name": "textCorrect",
+        "name": "checkAnswer",
         "type": "text",
-        "default": "Correct!"
+        "default": "Check"
+      },
+      {
+        "label": "Text for \"Show solution\" button",
+        "importance": "low",
+        "name": "showSolutionButton",
+        "type": "text",
+        "default": "Show solution"
+      },
+      {
+        "label": "Text for \"Retry\" button",
+        "importance": "low",
+        "name": "tryAgain",
+        "type": "text",
+        "default": "Retry"
+      }
+    ]
+  },
+  {
+    "name": "behaviour",
+    "type": "group",
+    "label": "Behavioural settings",
+    "importance": "low",
+    "description": "These options will let you control how the task behaves.",
+    "fields": [
+      {
+        "name": "enableRetry",
+        "type": "boolean",
+        "label": "Enable \"Retry\" button",
+        "importance": "low",
+        "default": true
+      },
+      {
+        "name": "enableSolutionsButton",
+        "type": "boolean",
+        "label": "Enable \"Show Solution\" button",
+        "importance": "low",
+        "default": true
       }
     ]
   }
