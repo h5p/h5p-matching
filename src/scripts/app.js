@@ -86,6 +86,7 @@ export default class App extends EventDispatcher {
    * @param {object} config.behaviour
    * @param {boolean} config.behaviour.enableRetry
    * @param {boolean} config.behaviour.enableSolutionsButton
+   * @param {number} config.behaviour.passPercentage
    * @param {string} contentId
    * @param {object} contentData
    */
@@ -125,7 +126,7 @@ export default class App extends EventDispatcher {
     viewModel.$on('answered', ({ pairs }) => {
       const score = viewModel.getScore();
       const event = this.createXAPIEventTemplate('answered');
-      event.setScoredResult(score, maxScore, this, true, score === maxScore); // TODO var success = (100 * score / maxScore) >= params.behaviour.passPercentage;
+      event.setScoredResult(score, maxScore, this, true, (100 * score / maxScore) >= config.behaviour.passPercentage);
       setDefinitionOnXapiEvent(event, config.title, pairs);
       setResponseOnXApiEvent(event, pairs);
       this.trigger(event)
