@@ -24,7 +24,7 @@
 </template>
 
 <script>
-  import { contains, prop, propEq, findIndex } from 'ramda';
+  import { contains, findIndex, map, prop, propEq } from 'ramda';
   import Vue from 'vue';
   import pairState from '../components/pair-state';
   const NO_SELECTION = undefined;
@@ -84,6 +84,16 @@
 
       showSuccessIndicator: function(state) {
         return this.name === 'left' && contains(state, [pairState.SUCCESS, pairState.FAILURE, pairState.SHOW_SOLUTION]);
+      },
+
+      getCurrentState: function() {
+        const getIds = map(prop('id'));
+        const getStates = map(prop('state'));
+
+        return {
+          states: getStates(this.list),
+          ids: getIds(this.list),
+        };
       }
     }
   }

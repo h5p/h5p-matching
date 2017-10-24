@@ -6,10 +6,11 @@ import ImageChoiceView from './views/ImageChoice.vue';
 import ResultIndicatorView from './views/ResultIndicator.vue';
 import { EventDispatcher, getPath } from './components/globals';
 import { setDefinitionOnXapiEvent, setResponseOnXApiEvent } from './components/xapi';
-import { path } from 'ramda';
+import { always, assoc, curry, equals, path, map, unless, zipWith } from 'ramda';
 import appState from './components/app-state';
-import pairState from './components/pair-state';
+import { pairState } from './components/pair-state';
 import defaultTranslations from './components/default-translations';
+import shuffle from 'shuffle-array';
 
 // Register components
 Vue.component('textChoice', TextChoiceView);
@@ -52,23 +53,57 @@ const getAbsolutePath = (path, contentId) => path ? getPath(path, contentId) : u
  * @property {Choice} right
  */
 /**
+ * @typedef {object} CurrentState
+ * @property {number[]} source
+ * @property {number[]} target
+ * @property {pairState[]} pairStates
+ */
+
+/**
+ * Orders the choices in a list based on a previous state
+ *
+ * @param {number[]} order
+ * @param {Choice[]} choices
+ * return {Choice[]}
+ */
+const orderChoices = curry((order, choices) => map(index => choices[index], order));
+
+/**
  * Initializes choices
  *
  * @param {PairConfig[]} pairConfigs
- * @param {string} side
+ * @param {side} side
  * @param {string} contentId
+ * @param {CurrentState} previousState
  *
  * @return {Choice[]}
  */
-const initPairs = (pairConfigs, side, contentId) => {
-   return pairConfigs.map((config, index) => ({
+const initPairs = (pairConfigs, side, contentId, previousState) => {
+   const choices = pairConfigs.map((config, index) => ({
     id: index,
     title: config[side],
     state: pairState.NONE,
     image: getAbsolutePath(path(['image', 'path'], config), contentId),
     position: index
   }));
+
+  if(previousState[side]) {
+    const orderedChoices = orderChoices(previousState[side], choices);
+    return zipWith(assoc('state'), previousState.pairStates, orderedChoices);
+  }
+  else {
+    return shuffle(choices);
+  }
 };
+
+/**
+ * Any choice with a state, is given state "MATCHED"
+ *
+ * @function
+ * @param {pairState} state
+ * @return {pairState}
+ */
+const removeSuccessState =  unless(equals(pairState.NONE), always(pairState.MATCHED));
 
 /**
  * @class
@@ -89,15 +124,16 @@ export default class App extends EventDispatcher {
    * @param {number} config.behaviour.passPercentage
    * @param {string} contentId
    * @param {object} contentData
+   * @param {CurrentState|undefined} contentData.previousState
    */
   constructor(config, contentId, contentData = {}) {
     super();
 
     const rootElement = document.createElement('div');
-    const sourceList = initPairs(config.pairs, side.SOURCE, contentId);
-    const targetList = initPairs(config.pairs, side.TARGET, contentId);
-    const i18n = Object.assign({}, defaultTranslations, config.l10n);
+    const sourceList = initPairs(config.pairs, side.SOURCE, contentId, contentData.previousState);
+    const targetList = initPairs(config.pairs, side.TARGET, contentId, contentData.previousState);
 
+    const i18n = Object.assign({}, defaultTranslations, config.l10n);
     const maxScore = config.pairs.length;
 
     const viewModel = new Vue({
@@ -140,6 +176,20 @@ export default class App extends EventDispatcher {
     this.attach = function ($wrapper) {
       $wrapper.get(0).appendChild(rootElement);
       viewModel.$mount(rootElement);
+    };
+
+    /**
+     * Returns the current state of the application
+     * @return {CurrentState}
+     */
+    this.getCurrentState = () => {
+      const { source, target } = viewModel.getCurrentState();
+
+      return {
+        pairStates: map(removeSuccessState, source.states),
+        [side.SOURCE]: source.ids,
+        [side.TARGET]: target.ids
+      };
     };
 
     /**

@@ -18,12 +18,17 @@
 </template>
 
 <script>
-  import shuffle from 'shuffle-array';
   import appState from '../components/app-state';
   import pairState from '../components/pair-state';
   import defaultTranslations from '../components/default-translations';
   import { jQuery as $, JoubelScoreBar } from '../components/globals'
-  import { range, head, tail, length, assoc } from 'ramda';
+  import { addIndex, assoc, equals, forEach, head, length, map, range, tail } from 'ramda';
+
+  /**
+   * Function map
+   * @function
+   */
+  const mapIndexed = addIndex(map);
 
   /**
    * Switch places of two elements in an array
@@ -112,10 +117,10 @@
         const index = current.getSelectedIndex();
 
         if (this.isMatched(index)) {
-          current.setState(index, pairState.NONE);
-          other.setState(index, pairState.NONE);
-          current.unsetSelectedIndex();
-          other.unsetSelectedIndex();
+          this.forEachSide((side) => {
+            side.setState(index, pairState.NONE);
+            side.unsetSelectedIndex();
+          });
         }
         else if(this.isBothSidesSelected()) {
           if(other.selectedIndex !== current.selectedIndex) {
@@ -124,10 +129,10 @@
           }
 
           // set sides to matched
-          current.setSelectedChoiceState(pairState.MATCHED);
-          other.setSelectedChoiceState(pairState.MATCHED);
-          current.unsetSelectedIndex();
-          other.unsetSelectedIndex();
+          this.forEachSide((side) => {
+            side.setSelectedChoiceState(pairState.MATCHED);
+            side.unsetSelectedIndex();
+          });
         }
       },
 
@@ -139,8 +144,7 @@
           const isCorrect = this.isPairCorrect(index);
           const state = isCorrect ? pairState.SUCCESS : pairState.FAILURE;
 
-          this.$refs.left.setState(index, state);
-          this.$refs.right.setState(index, state);
+          this.forEachSide(side => side.setState(index, state));
         }, 100);
 
         this.state = appState.CHECK_RESULT;
@@ -171,7 +175,7 @@
         const leftElement = this.$refs.left.list[index];
         const rightElement = this.$refs.right.list[index];
 
-        return leftElement.id === rightElement.id;
+        return equals(leftElement.id, rightElement.id);
       },
 
       /**
@@ -186,8 +190,9 @@
             const otherIndex = this.$refs.right.getIndexById(choice.id);
 
             switchArrayElements(this.$refs.right.list, index, otherIndex);
-            this.$refs.left.setState(index ,pairState.SHOW_SOLUTION);
-            this.$refs.right.setState(index ,pairState.SHOW_SOLUTION);
+
+            // apply show solution to both lists on THIS index
+            this.forEachSide(side => side.setState(index ,pairState.SHOW_SOLUTION))
           }
         });
 
@@ -203,9 +208,28 @@
           this.$refs.right.setState(index, pairState.NONE);
         });
 
-        this.$refs.left.unsetSelectedIndex();
-        this.$refs.right.unsetSelectedIndex();
+        this.forEachSide(side => side.unsetSelectedIndex());
+
         this.state = appState.DEFAULT;
+      },
+
+      /**
+       * Calls the callback function on both ChoiceLists
+       *
+       * @param {function} callback
+       */
+      forEachSide: function(callback) {
+        forEach(callback, [this.$refs.left, this.$refs.right]);
+      },
+
+      /**
+       *
+       */
+      getCurrentState: function() {
+        return {
+          source: this.$refs.left.getCurrentState(),
+          target: this.$refs.right.getCurrentState()
+        }
       },
 
       /**
@@ -259,10 +283,10 @@
        * @param {Pair[]} pairs
        */
       pairs: function({ sourceList, targetList }) {
-        const initPosition = (choice, index) => assoc('position', index, choice);
+        const initPosition = mapIndexed((choice, index) => assoc('position', index, choice));
 
-        this.$refs.left.list = shuffle(sourceList).map(initPosition);
-        this.$refs.right.list = shuffle(targetList).map(initPosition);
+        this.$refs.left.list = initPosition(sourceList);
+        this.$refs.right.list = initPosition(targetList);
 
         this.$refs.left.$on('select', () => {
           this.handleSelected(this.$refs.left, this.$refs.right);

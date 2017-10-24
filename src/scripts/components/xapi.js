@@ -1,11 +1,11 @@
-import { compose, assocPath, map, join, length, range, prop } from 'ramda';
+import { compose, map, join, length, range, prop } from 'ramda';
 
 const TYPE = 'http://adlnet.gov/expapi/activities/cmi.interaction';
 
 /**
  * @enum {string}
  */
-const interactionType = {
+const xAPIInteractionType = {
   MATCHING: "matching"
 };
 
@@ -67,7 +67,7 @@ export const setDefinitionOnXapiEvent = (event, title, pairs) => {
   Object.assign(definition, {
     description: localizeString(title),
     type: TYPE,
-    interactionType: interactionType.MATCHING,
+    interactionType: xAPIInteractionType.MATCHING,
     correctResponsesPattern: [createCorrectResponsesPattern(pairs)],
     source: map(choiceToXapiOption, source),
     target: map(choiceToXapiOption, target)
