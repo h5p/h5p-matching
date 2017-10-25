@@ -216,7 +216,10 @@ export default class App extends EventDispatcher {
     /**
      * Displays the solution(s) for this task, should also hide all buttons.
      */
-    this.showSolutions = () => viewModel.showSolution(appState.GLOBAL_SHOW_SOLUTION);
+    this.showSolutions = () => {
+      viewModel.showSolution();
+      viewModel.state = appState.GLOBAL_SHOW_SOLUTION;
+    };
 
     /**
      *  Resets the task to its initial state

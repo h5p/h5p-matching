@@ -21,8 +21,9 @@
   import appState from '../components/app-state';
   import pairState from '../components/pair-state';
   import defaultTranslations from '../components/default-translations';
+  import shuffle from 'shuffle-array';
   import { jQuery as $, JoubelScoreBar } from '../components/globals'
-  import { addIndex, assoc, equals, forEach, head, length, map, range, tail } from 'ramda';
+  import { addIndex, all, assoc, compose, equals, forEach, head, length, map, prop, range, tail } from 'ramda';
 
   /**
    * Function map
@@ -77,8 +78,9 @@
        */
       displayShowSolutionButton: function(state) {
         return this.enableSolutionsButton
-          && state !== 'default'
-          && state !== 'show-solution';
+          && state !== appState.DEFAULT
+          && state !== appState.SHOW_SOLUTION
+          && !this.isAllPairsCorrect();
       },
 
       /**
@@ -86,7 +88,9 @@
        * @return {boolean}
        */
       displayRetrySolutionButton: function(state) {
-        return this.enableRetry && state !== 'default';
+        return this.enableRetry
+          && (state !== appState.DEFAULT && !this.isAllPairsCorrect())
+          || state === appState.SHOW_SOLUTION;
       },
 
       /**
@@ -167,6 +171,15 @@
       },
 
       /**
+       * Returns true if all pairs are correct
+       *
+       * @return {boolean}
+       */
+      isAllPairsCorrect: function() {
+        return all(equals(true), this.range().map(index => this.isPairCorrect(index)));
+      },
+
+      /**
        * Returns true if the pair at an index is correct
        * @param {number} index
        * @return {boolean}
@@ -180,9 +193,8 @@
 
       /**
        * Displays the solution, and sets the view in a new state
-       * @param {appState} newState
        */
-      showSolution: function (newState = appState.SHOW_SOLUTION) {
+      showSolution: function () {
         const leftList = this.$refs.left.list;
 
         leftList.forEach((choice, index) => {
@@ -196,7 +208,7 @@
           }
         });
 
-        this.state = newState;
+        this.state = appState.SHOW_SOLUTION;
       },
 
       /**
@@ -208,7 +220,10 @@
           this.$refs.right.setState(index, pairState.NONE);
         });
 
-        this.forEachSide(side => side.unsetSelectedIndex());
+        this.forEachSide(side => {
+          side.unsetSelectedIndex();
+          side.list = shuffle(side.list);
+        });
 
         this.state = appState.DEFAULT;
       },
