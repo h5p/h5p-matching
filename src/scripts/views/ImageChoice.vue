@@ -22,7 +22,7 @@
 
   .h5p-image-choice {
     border: 0.083em solid #bbd8ea;
-    width: calc(100% - #{$element-displacement});
+    width: $choice-width;
     height: 1em + ($choice-padding * 2);
     display: block;
     font-size: 1.042em;

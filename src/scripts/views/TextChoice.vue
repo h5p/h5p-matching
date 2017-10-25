@@ -34,7 +34,7 @@
 
   .h5p-text-choice {
     @include choice-colors(#bbd8ea, #f1fbfd, #e3f1f4, #353533);
-    width: calc(100% - #{$element-displacement});
+    width: $choice-width;
     display: block;
     font-size: 1.042em;
     height: 1em + ($choice-padding * 2);
