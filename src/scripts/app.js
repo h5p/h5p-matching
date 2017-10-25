@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import Vue from 'vue';
 import CombinePairsView from './views/CombinePairs.vue';
 import ChoiceListView from './views/ChoiceList.vue';
 import TextChoiceView from './views/TextChoice.vue';
@@ -11,8 +11,10 @@ import appState from './components/app-state';
 import { pairState } from './components/pair-state';
 import defaultTranslations from './components/default-translations';
 import shuffle from 'shuffle-array';
+import KeyboardMixin from './mixins/keyboard';
 
 // Register components
+Vue.mixin(KeyboardMixin);
 Vue.component('textChoice', TextChoiceView);
 Vue.component('imageChoice', ImageChoiceView);
 Vue.component('resultIndicator', ResultIndicatorView);

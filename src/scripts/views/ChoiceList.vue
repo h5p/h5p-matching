@@ -1,10 +1,11 @@
 <template>
-  <transition-group name="pair-list" tag="ul" class="h5p-choice-list unstyled-list" :class="['h5p-' + choiceType + '-choice-list' ,listClass]">
+  <transition-group name="pair-list" tag="ol" class="h5p-choice-list unstyled-list" :class="['h5p-' + choiceType + '-choice-list' ,listClass]">
     <li v-for="(element, index) in list" v-bind:key="element.position" v-bind:data-index="index">
       <text-choice
           v-if="choiceType !== 'image'"
           v-bind:selected="index === selectedIndex"
           v-bind:state="element.state"
+          v-bind:keyboardListName="name"
           @select="select(index)">
           {{element.title}}
       </text-choice>
@@ -59,10 +60,6 @@
         this.setState(this.selectedIndex, state)
       },
 
-      getSelectedChoiceState: function () {
-        return this.getState(this.selectedIndex);
-      },
-
       hasSelected: function () {
         return this.selectedIndex !== NO_SELECTION;
       },
@@ -73,12 +70,6 @@
 
       getIndexById: function (id) {
         return findIndex(propEq('id', id), this.list);
-      },
-
-      getSelected: function () {
-        if (this.selectedIndex !== NO_SELECTION) {
-          return this.list[this.selectedIndex];
-        }
       },
 
       unsetSelectedIndex: function () {
@@ -109,6 +100,7 @@
 
       [role="button"]:focus {
         outline: 2px solid #179fff;
+        outline-offset: 1px;
       }
     }
   }

@@ -1,9 +1,9 @@
 <template>
   <div
       role="button"
-      tabindex="0"
       class="h5p-choice h5p-text-choice"
       :class="[{'h5p-choice-selected  ' : selected}, 'h5p-choice-' + state]"
+      v-keyboard.sort="keyboardListName"
       @click="select"
       @keyup.enter="select"
       @keyup.space="select">
@@ -13,8 +13,20 @@
   </div>
 </template>
 <script>
+  import Vue from 'vue'
+  import { forEachObjIndexed, invoker } from 'ramda';
+
+  /**
+   * Calls compareDocumentPosition on two elements
+   *
+   * @param {Element} a
+   * @param {Element} b
+   * @return {number}
+   */
+  const compareDocumentPosition = invoker(1, 'compareDocumentPosition');
+
   export default {
-    props: ['selected','state'],
+    props: ['selected','state', 'keyboardListName'],
     methods: {
       select: function() {
         this.$emit('select')
