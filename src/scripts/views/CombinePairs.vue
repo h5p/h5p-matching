@@ -3,8 +3,8 @@
     <h3 class="feedback-title" v-html="title"></h3>
 
     <div class="h5p-choice-lists">
-      <choice-list ref="left" name="left" list-class="h5p-choice-list-left" v-bind:choice-type="choiceType"></choice-list>
-      <choice-list ref="right" name="right" list-class="h5p-choice-list-right" choice-type="text"></choice-list>
+      <choice-list ref="left" name="left" list-class="h5p-choice-list-left" v-bind:choice-type="choiceType" v-bind:i18n="i18n"></choice-list>
+      <choice-list ref="right" name="right" list-class="h5p-choice-list-right" choice-type="text"  v-bind:i18n="i18n"></choice-list>
     </div>
 
     <div ref="scoreBar" class="score-bar" v-show="state !== 'default'"></div>

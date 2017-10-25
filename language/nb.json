@@ -3,7 +3,6 @@
     {
       "label": "Aktivitets type",
       "description": "Velg en aktivitetstype",
-      "default": "text",
       "options": [
         {
           "label": "Kombinér en tekst med en annen tekst"
@@ -30,12 +29,7 @@
         "label": "Par",
         "fields": [
           {
-            "label": "Bilde på venstre side",
-            "showWhen": {
-              "rules": [
-                {}
-              ]
-            }
+            "label": "Bilde på venstre side"
           },
           {
             "label": "Tekst på venstre side",
@@ -61,6 +55,18 @@
         {
           "label": "Etikett for \"Prøv igjen\"-knappen.",
           "default": "Prøv igjen"
+        },
+        {
+          "label": "Etikett for et riktig kombinert par",
+          "default": "Riktig!"
+        },
+        {
+          "label": "Etikett for et feil kombinert par",
+          "default": "Feil!"
+        },
+        {
+          "label": "Etikett for fasit på et par",
+          "default": "Fasit"
         }
       ]
     },
@@ -73,6 +79,10 @@
         },
         {
           "label": "Aktiver \"Fasit\" knapp"
+        },
+        {
+          "label": "Pass percentage",
+          "description": "Percentage of Total score required for passing the task."
         }
       ]
     }

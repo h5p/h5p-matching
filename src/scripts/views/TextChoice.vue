@@ -1,9 +1,12 @@
 <template>
   <div
       role="button"
+      tabindex="0"
       class="h5p-choice h5p-text-choice"
       :class="[{'h5p-choice-selected  ' : selected}, 'h5p-choice-' + state]"
-      @click="select">
+      @click="select"
+      @keyup.enter="select"
+      @keyup.space="select">
     <div class="h5p-choice-title">
       <slot></slot>
     </div>

@@ -133,6 +133,7 @@ export default class App extends EventDispatcher {
     const sourceList = initPairs(config.pairs, side.SOURCE, contentId, contentData.previousState);
     const targetList = initPairs(config.pairs, side.TARGET, contentId, contentData.previousState);
 
+    // defaultTranslations can be replaced by a flat json language file .en
     const i18n = Object.assign({}, defaultTranslations, config.l10n);
     const maxScore = config.pairs.length;
 

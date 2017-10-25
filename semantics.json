@@ -109,6 +109,27 @@
         "name": "tryAgain",
         "type": "text",
         "default": "Retry"
+      },
+      {
+        "label": "Label for a correct matched pair",
+        "importance": "low",
+        "name": "correct",
+        "type": "text",
+        "default": "Correct!"
+      },
+      {
+        "label": "Label for a incorrect matched pair",
+        "importance": "low",
+        "name": "incorrect",
+        "type": "text",
+        "default": "Incorrect!"
+      },
+      {
+        "label": "Label for the correct solution",
+        "importance": "low",
+        "name": "correctSolution",
+        "type": "text",
+        "default": "Correct solution"
       }
     ]
   },

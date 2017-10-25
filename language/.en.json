@@ -3,7 +3,6 @@
     {
       "label": "Activity type",
       "description": "Choose the activity type",
-      "default": "text",
       "options": [
         {
           "label": "Match a text with a text"
@@ -30,12 +29,7 @@
         "label": "Pair",
         "fields": [
           {
-            "label": "Left side image",
-            "showWhen": {
-              "rules": [
-                {}
-              ]
-            }
+            "label": "Left side image"
           },
           {
             "label": "Left side text",
@@ -61,6 +55,18 @@
         {
           "label": "Text for \"Retry\" button",
           "default": "Retry"
+        },
+        {
+          "label": "Label for a correct matched pair",
+          "default": "Correct!"
+        },
+        {
+          "label": "Label for a incorrect matched pair",
+          "default": "Incorrect!"
+        },
+        {
+          "label": "Label for the correct solution",
+          "default": "Correct solution"
         }
       ]
     },
@@ -73,6 +79,10 @@
         },
         {
           "label": "Enable \"Show Solution\" button"
+        },
+        {
+          "label": "Pass percentage",
+          "description": "Percentage of Total score required for passing the task."
         }
       ]
     }

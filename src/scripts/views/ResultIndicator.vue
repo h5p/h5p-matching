@@ -1,15 +1,27 @@
 <template>
-  <div class="h5p-indicator" :class="stateClass(state)"></div>
+  <div class="h5p-indicator" :title="titles[state]" :class="stateClass(state)"></div>
 </template>
 <script>
+  import pairState from '../components/pair-state';
+
   export default {
-    props: ['state'],
-    data: () => ({}),
+    props: ['state', 'i18n'],
+    data: () => ({
+      titles: {}
+    }),
     methods: {
       stateClass: function(state) {
         if(state) {
           return `h5p-indicator-${state}`
         }
+      }
+    },
+
+    mounted: function() {
+      this.titles = {
+        [pairState.SUCCESS]: this.i18n.correct,
+        [pairState.FAILURE]: this.i18n.incorrect,
+        [pairState.SHOW_SOLUTION]: this.i18n.correctSolution
       }
     }
   };
