@@ -1,5 +1,9 @@
 <template>
-  <div role="region" class="h5p-combine-pairs" :class="'h5p-combine-pairs-' + choiceType">
+  <div
+      role="region"
+      :class="combinePairsClasses"
+      @click="keyboardMode = false"
+      @keyup="keyboardMode = true">
     <h3 class="feedback-title" v-html="title"></h3>
 
     <div class="h5p-choice-lists">
@@ -100,6 +104,7 @@
       choiceType: 'text',
       enableRetry: true,
       enableSolutionsButton: true,
+      keyboardMode: false,
       textual: {
         source: [],
         target: []
@@ -381,6 +386,16 @@
         this.initScoreBar(sourceList.length);
         this.updateTextualLists();
       }
+    },
+
+    computed: {
+      combinePairsClasses: function() {
+        return {
+          'h5p-combine-pairs': true,
+          [`h5p-combine-pairs-${this.choiceType}`]: true,
+          'h5p-combine-pairs-keyboard': this.keyboardMode
+        };
+      }
     }
   }
 </script>
@@ -393,8 +408,15 @@
 
     button:focus,
     [role="button"]:focus {
-      outline: 2px solid #179fff;
-      outline-offset: 3px;
+      outline: none;
+    }
+
+    &.h5p-combine-pairs-keyboard {
+      button:focus,
+      [role="button"]:focus {
+        outline: 2px solid #179fff;
+        outline-offset: 3px;
+      }
     }
 
     .hidden {
