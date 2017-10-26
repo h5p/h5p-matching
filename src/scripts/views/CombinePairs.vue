@@ -286,6 +286,8 @@
         this.range().forEach(index => {
           this.$refs.left.setState(index, pairState.NONE);
           this.$refs.right.setState(index, pairState.NONE);
+          this.$refs.left.setMatchCompleted(index, false);
+          this.$refs.right.setMatchCompleted(index, false);
         });
 
         this.forEachSide(side => {
