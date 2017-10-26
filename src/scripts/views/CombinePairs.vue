@@ -3,59 +3,87 @@
     <h3 class="feedback-title" v-html="title"></h3>
 
     <div class="h5p-choice-lists">
-      <choice-list ref="left" name="left" list-class="h5p-choice-list-left" v-bind:choice-type="choiceType" v-bind:i18n="i18n"></choice-list>
-      <choice-list ref="right" name="right" list-class="h5p-choice-list-right" choice-type="text"  v-bind:i18n="i18n"></choice-list>
+      <!-- Source choice list-->
+      <choice-list
+          ref="left"
+          name="left"
+          list-class="h5p-choice-list-left"
+          v-bind:choice-type="choiceType"
+          v-bind:i18n="i18n"
+          v-bind:oppositeAnswers="textual.target">
+      </choice-list>
+
+      <!-- Target choice list -->
+      <choice-list
+          ref="right"
+          name="right"
+          list-class="h5p-choice-list-right"
+          choice-type="text"
+          v-bind:i18n="i18n"
+          v-bind:oppositeAnswers="textual.source">
+      </choice-list>
     </div>
 
+    <!-- Score bar -->
     <div ref="scoreBar" class="score-bar" v-show="state !== 'default'"></div>
 
     <div class="h5p-question-buttons" v-if="state !== 'global-show-solution'">
-      <button class="h5p-question-check-answer h5p-joubelui-button" @click="showResults" v-if="state === 'default'">{{i18n.checkAnswer}}</button>
-      <button class="h5p-question-show-solution h5p-joubelui-button" @click="showSolution" v-if="displayShowSolutionButton(state)">{{i18n.showSolutionButton}}</button>
-      <button class="h5p-question-try-again h5p-joubelui-button" @click="retry" v-if="displayRetrySolutionButton(state)">{{i18n.tryAgain}}</button>
+      <!-- Check button -->
+      <button
+          ref="showResultsButton"
+          v-if="state === 'default'"
+          class="h5p-question-check-answer h5p-joubelui-button"
+          @click="showResults"
+          @keyup.enter="showResults"
+          @keyup.space="showResults">
+        {{i18n.checkAnswer}}
+      </button>
+
+      <!-- Show solution button -->
+      <button
+          ref="showSolutionButton"
+          v-if="displayShowSolutionButton(state)"
+          class="h5p-question-show-solution h5p-joubelui-button"
+          @click="showSolution"
+          @keyup.enter="showSolution"
+          @keyup.space="showSolution">
+        {{i18n.showSolutionButton}}
+      </button>
+
+      <!-- Retry button -->
+      <button
+          ref="retryButton"
+          v-if="displayRetrySolutionButton(state)"
+          class="h5p-question-try-again h5p-joubelui-button"
+          @click="retry"
+          @keyup.enter="retry"
+          @keyup.space="retry">
+        {{i18n.tryAgain}}
+      </button>
     </div>
   </div>
 </template>
 
 <script>
+  import Vue from 'vue';
   import appState from '../components/app-state';
   import pairState from '../components/pair-state';
+  import listSide from '../components/side';
   import defaultTranslations from '../components/default-translations';
   import shuffle from 'shuffle-array';
-  import { jQuery as $, JoubelScoreBar } from '../components/globals'
-  import { addIndex, all, assoc, compose, equals, forEach, head, length, map, prop, range, tail } from 'ramda';
+  import { jQuery as $, JoubelScoreBar } from '../components/globals';
+  import { switchArrayElements, forEachDelayed, mapIndexed } from '../components/array-utils';
+  import { all, assoc, compose, equals, forEach, head, length, map, prop, range, tail } from 'ramda';
 
-  /**
-   * Function map
-   * @function
-   */
-  const mapIndexed = addIndex(map);
+  const refocus = () => {
+    Vue.nextTick(() => {
+      const element = document.activeElement;
 
-  /**
-   * Switch places of two elements in an array
-   * @param {Array} arr
-   * @param {number} fromIndex
-   * @param {number} toIndex
-   */
-  const switchArrayElements = (arr, fromIndex, toIndex) => {
-    const element = arr[fromIndex];
-    arr[fromIndex] = arr[toIndex];
-    arr[toIndex] = element;
-  };
-
-  /**
-   * Calls the callback with each element after a given timeout
-   *
-   * @param {Array} arr
-   * @param {Function} callback
-   * @param {number} delay
-   */
-  const forEachDelayed = (arr, callback, delay) => {
-    callback(head(arr));
-
-    if(length(arr) > 1) {
-      setTimeout(() => forEachDelayed(tail(arr), callback, delay), delay)
-    }
+      if(element) {
+        element.blur();
+        element.focus();
+      }
+    });
   };
 
   /**
@@ -69,7 +97,11 @@
       state: appState.DEFAULT,
       choiceType: 'text',
       enableRetry: true,
-      enableSolutionsButton: true
+      enableSolutionsButton: true,
+      textual: {
+        source: [],
+        target: []
+      }
     }),
 
     methods: {
@@ -137,7 +169,11 @@
             side.setSelectedChoiceState(pairState.MATCHED);
             side.unsetSelectedIndex();
           });
+
+          this.updateTextualLists();
         }
+
+        refocus();
       },
 
       /**
@@ -156,6 +192,16 @@
         this.$emit('answered', {
           pairs: this.getPairs()
         });
+
+        Vue.nextTick(() => this.$refs.retryButton.focus());
+      },
+
+      /**
+       * Creates textual lists with the titles
+       */
+      updateTextualLists: function () {
+        this.textual[listSide.SOURCE] = this.$refs.left.list.map(prop('title'));
+        this.textual[listSide.TARGET] = this.$refs.right.list.map(prop('title'));
       },
 
       /**
@@ -209,6 +255,8 @@
         });
 
         this.state = appState.SHOW_SOLUTION;
+        this.updateTextualLists();
+        Vue.nextTick(() => this.$refs.retryButton.focus());
       },
 
       /**
@@ -226,6 +274,7 @@
         });
 
         this.state = appState.DEFAULT;
+        Vue.nextTick(() => this.$refs.left.$el.querySelector('[tabindex="0"]').focus());
       },
 
       /**
@@ -315,6 +364,7 @@
 
         this.pairsLength = sourceList.length;
         this.initScoreBar(sourceList.length);
+        this.updateTextualLists();
       }
     }
   }
@@ -327,6 +377,12 @@
 
   .h5p-combine-pairs {
     padding: 1em;
+
+    button:focus,
+    [role="button"]:focus {
+      outline: 2px solid #179fff;
+      outline-offset: 2px;
+    }
 
     .hidden {
       display: none;

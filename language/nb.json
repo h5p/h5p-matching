@@ -67,6 +67,18 @@
         {
           "label": "Etikett for fasit på et par",
           "default": "Fasit"
+        },
+        {
+          "label": "Etikett som indikerer at et valg ikke er kombinert i et par",
+          "default": "@title. Ikke kombinert"
+        },
+        {
+          "label": "Etikett som indikerer at et valg er kombinert med et annet valg",
+          "default": "@title er kombinert med @oppositeTitle"
+        },
+        {
+          "label": "Etikett for fasitløsning",
+          "default": "@title skulle vært kombinert med @oppositeTitle"
         }
       ]
     },

@@ -3,6 +3,7 @@
       role="button"
       class="h5p-choice h5p-text-choice"
       :class="[{'h5p-choice-selected  ' : selected}, 'h5p-choice-' + state]"
+      :aria-label="ariaLabel()"
       v-keyboard.sort="keyboardListName"
       @click="select"
       @keyup.enter="select"
@@ -14,6 +15,7 @@
 </template>
 <script>
   import Vue from 'vue'
+  import pairState from '../components/pair-state';
   import { forEachObjIndexed, invoker } from 'ramda';
 
   /**
@@ -26,11 +28,40 @@
   const compareDocumentPosition = invoker(1, 'compareDocumentPosition');
 
   export default {
-    props: ['selected','state', 'keyboardListName'],
+    props: ['title', 'selected','state', 'keyboardListName', 'i18n', 'oppositeAnswer'],
+
+    data: () => ({
+      labels: {}
+    }),
+
     methods: {
+      /**
+       * Triggers the 'selcet' event
+       */
       select: function() {
         this.$emit('select')
+      },
+
+      /**
+       * Returns the aria-label for this choice
+       */
+      ariaLabel: function() {
+        if (this.labels[this.state]) {
+          return this.labels[this.state]
+            .replace('@title', this.title)
+            .replace('@oppositeTitle', this.oppositeAnswer);
+        }
       }
+    },
+
+    mounted: function() {
+      this.labels = {
+        [pairState.NONE]: this.i18n.choiceUnMatched,
+        [pairState.MATCHED]: this.i18n.choiceMatched,
+        [pairState.SUCCESS]: `${this.i18n.choiceMatched}. ${this.i18n.correct}`,
+        [pairState.FAILURE]: `${this.i18n.choiceMatched}. ${this.i18n.incorrect}`,
+        [pairState.SHOW_SOLUTION]: this.i18n.choiceShouldBeMatched
+      };
     }
   };
 </script>

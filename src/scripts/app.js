@@ -9,6 +9,7 @@ import { setDefinitionOnXapiEvent, setResponseOnXApiEvent } from './components/x
 import { always, assoc, curry, equals, path, map, unless, zipWith } from 'ramda';
 import appState from './components/app-state';
 import { pairState } from './components/pair-state';
+import side from './components/side';
 import defaultTranslations from './components/default-translations';
 import shuffle from 'shuffle-array';
 import KeyboardMixin from './mixins/keyboard';
@@ -18,14 +19,6 @@ Vue.mixin(KeyboardMixin);
 Vue.component('textChoice', TextChoiceView);
 Vue.component('imageChoice', ImageChoiceView);
 Vue.component('resultIndicator', ResultIndicatorView);
-
-/**
- * @enum {string}
- */
-const side = {
-  SOURCE: 'source',
-  TARGET: 'target'
-};
 
 /**
  * Returns the absolute path, if a path exists
@@ -89,7 +82,7 @@ const initPairs = (pairConfigs, side, contentId, previousState) => {
     position: index
   }));
 
-  if(previousState[side]) {
+  if(previousState && previousState[side]) {
     const orderedChoices = orderChoices(previousState[side], choices);
     return zipWith(assoc('state'), previousState.pairStates, orderedChoices);
   }

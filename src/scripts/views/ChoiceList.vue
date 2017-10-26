@@ -6,6 +6,9 @@
           v-bind:selected="index === selectedIndex"
           v-bind:state="element.state"
           v-bind:keyboardListName="name"
+          v-bind:oppositeAnswer="oppositeAnswers[index]"
+          v-bind:i18n="i18n"
+          v-bind:title="element.title"
           @select="select(index)">
           {{element.title}}
       </text-choice>
@@ -13,9 +16,12 @@
       <image-choice
           v-if="choiceType === 'image'"
           v-bind:selected="index === selectedIndex"
+          v-bind:keyboardListName="name"
           v-bind:state="element.state"
           v-bind:image="element.image"
-          v-bind:alt="element.title"
+          v-bind:title="element.title"
+          v-bind:oppositeAnswer="oppositeAnswers[index]"
+          v-bind:i18n="i18n"
           @select="select(index)">
       </image-choice>
 
@@ -34,7 +40,7 @@
   const getStates = map(prop('state'));
 
   export default {
-    props: ['listClass', 'name', 'choiceType', 'i18n'],
+    props: ['listClass', 'name', 'choiceType', 'i18n', 'oppositeAnswers'],
     data: () => ({
       list: [],
       selectedIndex: NO_SELECTION
@@ -96,11 +102,6 @@
       li {
         position: relative;
         transition: transform .2s ease-in;
-      }
-
-      [role="button"]:focus {
-        outline: 2px solid #179fff;
-        outline-offset: 1px;
       }
     }
   }

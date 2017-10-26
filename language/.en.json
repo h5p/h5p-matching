@@ -67,6 +67,18 @@
         {
           "label": "Label for the correct solution",
           "default": "Correct solution"
+        },
+        {
+          "label": "Label indicating that a choice is unmatched",
+          "default": "@title. Un-matched"
+        },
+        {
+          "label": "Label indicating that a choice is matched",
+          "default": "@title matched with @oppositeTitle"
+        },
+        {
+          "label": "Label for solution mode indicating what would be the correct solution",
+          "default": "@title should have been matched with @oppositeTitle"
         }
       ]
     },

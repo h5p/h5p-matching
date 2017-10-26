@@ -130,6 +130,27 @@
         "name": "correctSolution",
         "type": "text",
         "default": "Correct solution"
+      },
+      {
+        "label": "Label indicating that a choice is unmatched",
+        "importance": "low",
+        "name": "choiceUnMatched",
+        "type": "text",
+        "default": "@title. Un-matched"
+      },
+      {
+        "label": "Label indicating that a choice is matched",
+        "importance": "low",
+        "name": "choiceMatched",
+        "type": "text",
+        "default": "@title matched with @oppositeTitle"
+      },
+      {
+        "label": "Label for solution mode indicating what would be the correct solution",
+        "importance": "low",
+        "name": "choiceShouldBeMatched",
+        "type": "text",
+        "default": "@title should have been matched with @oppositeTitle"
       }
     ]
   },

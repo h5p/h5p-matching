@@ -4,5 +4,8 @@
   "tryAgain": "Retry",
   "correct": "Correct!",
   "incorrect": "Incorrect!",
-  "correctSolution": "Correct solution"
+  "correctSolution": "Correct solution",
+  "choiceUnMatched": "@title. Un-matched",
+  "choiceMatched": "@title matched with @oppositeTitle",
+  "choiceShouldBeMatched": "@title should have been matched with @oppositeTitle"
 }
