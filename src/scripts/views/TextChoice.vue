@@ -11,6 +11,7 @@
     <div class="h5p-choice-title">
       <slot></slot>
     </div>
+    <puzzle :choiceListName="keyboardListName" :matchCompleted="matchCompleted"></puzzle>
   </div>
 </template>
 <script>
@@ -28,7 +29,7 @@
   const compareDocumentPosition = invoker(1, 'compareDocumentPosition');
 
   export default {
-    props: ['title', 'selected','state', 'keyboardListName', 'i18n', 'oppositeAnswer'],
+    props: ['title', 'selected','state', 'keyboardListName', 'i18n', 'oppositeAnswer', 'matchCompleted'],
 
     data: () => ({
       labels: {}
@@ -73,6 +74,10 @@
     @include linear-gradient($background-color1, $background-color2);
     border: 0.083em solid $border-color;
     color: $color;
+
+    .st1 {
+      fill: $border-color;
+    }
   }
 
   .h5p-text-choice {

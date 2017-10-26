@@ -10,7 +10,8 @@
           list-class="h5p-choice-list-left"
           v-bind:choice-type="choiceType"
           v-bind:i18n="i18n"
-          v-bind:oppositeAnswers="textual.target">
+          v-bind:oppositeAnswers="textual.target"
+          @matchAnimationCompleted="setMatchCompleted">
       </choice-list>
 
       <!-- Target choice list -->
@@ -20,7 +21,8 @@
           list-class="h5p-choice-list-right"
           choice-type="text"
           v-bind:i18n="i18n"
-          v-bind:oppositeAnswers="textual.source">
+          v-bind:oppositeAnswers="textual.source"
+          @matchAnimationCompleted="setMatchCompleted">
       </choice-list>
     </div>
 
@@ -105,6 +107,10 @@
     }),
 
     methods: {
+      setMatchCompleted: function({ index }) {
+        this.forEachSide(side => side.setMatchCompleted(index, true));
+      },
+
       /**
        * Returns true if the "Show solutions" button should be displayed
        */
@@ -153,13 +159,16 @@
         const index = current.getSelectedIndex();
         const isSelectable = this.state === appState.DEFAULT;
 
+        // undo match
         if (isSelectable && this.isMatched(index)) {
           this.forEachSide((side) => {
             side.setState(index, pairState.NONE);
             side.unsetSelectedIndex();
+            side.setMatchCompleted(index, false);
           });
           refocus();
         }
+        // do match
         else if(isSelectable && this.isBothSidesSelected()) {
           if(other.selectedIndex !== current.selectedIndex) {
             switchArrayElements(other.list, other.selectedIndex, current.selectedIndex);
@@ -376,10 +385,8 @@
   }
 </script>
 
-<style lang="scss"  type="text/scss">
+<style lang="scss" type="text/scss">
   @import '../../styles/variables';
-
-  $border-radius-choice: 0.5em;
 
   .h5p-combine-pairs {
     padding: 1em;
@@ -387,7 +394,7 @@
     button:focus,
     [role="button"]:focus {
       outline: 2px solid #179fff;
-      outline-offset: 2px;
+      outline-offset: 3px;
     }
 
     .hidden {
@@ -414,6 +421,8 @@
     .h5p-choice-list-left {
       .h5p-choice {
         border-radius: $border-radius-choice 0 0 $border-radius-choice;
+        border-right: 0;
+        z-index: 1;
       }
 
       .h5p-choice-selected,
@@ -428,6 +437,7 @@
     .h5p-choice-list-right {
       .h5p-choice {
         border-radius: 0 $border-radius-choice $border-radius-choice 0;
+        border-left: 0;
         transform: translateX($element-displacement);
       }
 

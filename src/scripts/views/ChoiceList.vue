@@ -1,6 +1,14 @@
 <template>
-  <transition-group name="pair-list" tag="ol" class="h5p-choice-list unstyled-list" :class="['h5p-' + choiceType + '-choice-list' ,listClass]">
-    <li v-for="(element, index) in list" v-bind:key="element.position" v-bind:data-index="index">
+  <transition-group
+      name="pair-list"
+      tag="ol"
+      class="h5p-choice-list unstyled-list"
+      :class="['h5p-' + choiceType + '-choice-list' ,listClass]">
+    <li
+        v-for="(element, index) in list"
+        v-bind:key="element.position"
+        v-bind:data-index="index"
+        @transitionend="transitionEnd(element, index)">
       <text-choice
           v-if="choiceType !== 'image'"
           v-bind:selected="index === selectedIndex"
@@ -9,6 +17,7 @@
           v-bind:oppositeAnswer="oppositeAnswers[index]"
           v-bind:i18n="i18n"
           v-bind:title="element.title"
+          v-bind:matchCompleted="element.matchCompleted"
           @select="select(index)">
           {{element.title}}
       </text-choice>
@@ -21,6 +30,7 @@
           v-bind:image="element.image"
           v-bind:title="element.title"
           v-bind:oppositeAnswer="oppositeAnswers[index]"
+          v-bind:matchCompleted="element.matchCompleted"
           v-bind:i18n="i18n"
           @select="select(index)">
       </image-choice>
@@ -47,6 +57,11 @@
     }),
 
     methods: {
+      transitionEnd: function(choice, index) {
+        if(choice.state !== pairState.NONE) {
+          this.$emit('matchAnimationCompleted', { choice, index });
+        }
+      },
       select: function (index) {
         const alreadySelected = (this.selectedIndex === index);
         this.selectedIndex = alreadySelected ? NO_SELECTION : index;
@@ -85,6 +100,10 @@
       showSuccessIndicator: function (state) {
         return this.name === 'left'
           && contains(state, [pairState.SUCCESS, pairState.FAILURE, pairState.SHOW_SOLUTION]);
+      },
+
+      setMatchCompleted: function(index, matchCompleted) {
+        this.list[index].matchCompleted = matchCompleted;
       },
 
       getCurrentState: function () {

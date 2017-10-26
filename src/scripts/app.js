@@ -3,6 +3,7 @@ import CombinePairsView from './views/CombinePairs.vue';
 import ChoiceListView from './views/ChoiceList.vue';
 import TextChoiceView from './views/TextChoice.vue';
 import ImageChoiceView from './views/ImageChoice.vue';
+import PuzzleView from './views/Puzzle.vue';
 import ResultIndicatorView from './views/ResultIndicator.vue';
 import { EventDispatcher, getPath } from './components/globals';
 import { setDefinitionOnXapiEvent, setResponseOnXApiEvent } from './components/xapi';
@@ -16,6 +17,7 @@ import KeyboardMixin from './mixins/keyboard';
 
 // Register components
 Vue.mixin(KeyboardMixin);
+Vue.component('puzzle', PuzzleView);
 Vue.component('textChoice', TextChoiceView);
 Vue.component('imageChoice', ImageChoiceView);
 Vue.component('resultIndicator', ResultIndicatorView);
@@ -41,6 +43,7 @@ const getAbsolutePath = (path, contentId) => path ? getPath(path, contentId) : u
  * @property {string} image
  * @property {pairState} state
  * @property {number} position
+ * @property {boolean} matchCompleted
  */
 /**
  * @typedef {object} Pair
@@ -74,17 +77,19 @@ const orderChoices = curry((order, choices) => map(index => choices[index], orde
  * @return {Choice[]}
  */
 const initPairs = (pairConfigs, side, contentId, previousState) => {
-   const choices = pairConfigs.map((config, index) => ({
+  const choices = pairConfigs.map((config, index) => ({
     id: index,
     title: config[side],
     state: pairState.NONE,
     image: getAbsolutePath(path(['image', 'path'], config), contentId),
-    position: index
+    position: index,
+    matchCompleted: false
   }));
 
   if(previousState && previousState[side]) {
     const orderedChoices = orderChoices(previousState[side], choices);
-    return zipWith(assoc('state'), previousState.pairStates, orderedChoices);
+    const restoredChoices = zipWith(assoc('state'), previousState.pairStates, orderedChoices);
+    return map(choice => assoc('matchCompleted', choice.state !== pairState.NONE, choice), restoredChoices);
   }
   else {
     return shuffle(choices);

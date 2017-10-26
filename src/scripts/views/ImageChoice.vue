@@ -8,14 +8,17 @@
       @keyup.enter="select"
       @keyup.space="select"
       @click="select">
-    <img v-bind:src="image" v-bind:alt="title" />
+    <div class="h5p-image-choice-image">
+      <img v-bind:src="image" v-bind:alt="title" />
+    </div>
+    <puzzle :choiceListName="keyboardListName" :matchCompleted="matchCompleted"></puzzle>
   </div>
 </template>
 <script>
   import pairState from '../components/pair-state';
 
   export default {
-    props: ['selected','state', 'image', 'title', 'oppositeAnswer', 'i18n', 'keyboardListName'],
+    props: ['selected','state', 'image', 'title', 'oppositeAnswer', 'i18n', 'keyboardListName', 'matchCompleted'],
     data: () => ({
       labels: {}
     }),
@@ -52,6 +55,14 @@
   @import '../../styles/variables';
   @import '../../styles/mixins';
 
+  @mixin image-choice-colors($border-color) {
+    border: 0.083em solid $border-color;
+
+    .st1 {
+      fill: $border-color;
+    }
+  }
+
   .h5p-image-choice {
     border: 0.083em solid #bbd8ea;
     width: $choice-width;
@@ -63,8 +74,15 @@
     box-sizing: border-box;
     text-align: left;
     cursor: pointer;
-    overflow: hidden;
     padding-right: $choice-padding;
+
+    .h5p-image-choice-image {
+      overflow: hidden;
+      border-radius: $border-radius-choice 0 0 $border-radius-choice;
+      box-sizing: border-box;
+      height: 100%;
+      max-width: 100%;
+    }
 
     img {
       max-height: 100%;
@@ -72,22 +90,18 @@
       margin-right: auto;
     }
 
-    &:hover {
-      border-color: #e6c6dd;
-    }
-
     &.h5p-choice-matched,
     &.h5p-choice-selected,
     &.h5p-choice-show-solution {
-      border-color: #1c74cd;
+      @include image-choice-colors(#1c74cd);
     }
 
     &.h5p-choice-success {
-      border-color: #3ca587;
+      @include image-choice-colors(#3ca587);
     }
 
     &.h5p-choice-failure {
-      border-color: #cb183f;
+      @include image-choice-colors(#cb183f);
     }
   }
 </style>

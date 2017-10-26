@@ -45,6 +45,7 @@
     "yargs-parser": "^8.0.0"
   },
   "dependencies": {
+    "svg-inline-loader": "^0.8.0",
     "vue": "^2.5.2"
   }
 }
