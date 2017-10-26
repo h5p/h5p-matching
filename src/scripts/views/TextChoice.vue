@@ -4,6 +4,7 @@
       class="h5p-choice h5p-text-choice"
       :class="[{'h5p-choice-selected  ' : selected}, 'h5p-choice-' + state]"
       :aria-label="ariaLabel()"
+      :title="titleIfOverflow()"
       v-keyboard.sort="keyboardListName"
       @click="select"
       @keyup.enter="select"
@@ -51,6 +52,18 @@
           return this.labels[this.state]
             .replace('@title', this.title)
             .replace('@oppositeTitle', this.oppositeAnswer);
+        }
+      },
+
+      titleIfOverflow: function() {
+        if(this.$el) {
+          const element = this.$el.querySelector('.h5p-choice-title');
+          const horizontalOverflow = element.clientWidth < element.scrollWidth;
+          const verticalOverflow = element.clientHeight < element.scrollHeight;
+
+          if(horizontalOverflow || verticalOverflow) {
+            return this.title;
+          }
         }
       }
     },
