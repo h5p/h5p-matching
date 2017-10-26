@@ -151,14 +151,16 @@
        */
       handleSelected: function(current, other) {
         const index = current.getSelectedIndex();
+        const isSelectable = this.state === appState.DEFAULT;
 
-        if (this.isMatched(index)) {
+        if (isSelectable && this.isMatched(index)) {
           this.forEachSide((side) => {
             side.setState(index, pairState.NONE);
             side.unsetSelectedIndex();
           });
+          refocus();
         }
-        else if(this.isBothSidesSelected()) {
+        else if(isSelectable && this.isBothSidesSelected()) {
           if(other.selectedIndex !== current.selectedIndex) {
             switchArrayElements(other.list, other.selectedIndex, current.selectedIndex);
             other.selectedIndex = current.selectedIndex;
@@ -171,9 +173,8 @@
           });
 
           this.updateTextualLists();
+          refocus();
         }
-
-        refocus();
       },
 
       /**
@@ -193,7 +194,12 @@
           pairs: this.getPairs()
         });
 
-        Vue.nextTick(() => this.$refs.retryButton.focus());
+        Vue.nextTick(() => {
+          const button = this.$refs.retryButton;
+          if(button) {
+            button.focus()
+          }
+        });
       },
 
       /**
