@@ -7,7 +7,7 @@
   import imagePuzzleRight from '../../images/puzzle-right.svg';
 
   export default {
-    props: ['choiceListName', 'matchCompleted'],
+    props: ['choiceListName'],
 
     data: () => ({
       images: {
@@ -20,8 +20,7 @@
       puzzleClasses: function() {
         return {
           'h5p-puzzle': true,
-          [`h5p-puzzle-${this.choiceListName}`]: true,
-          'h5p-puzzle-match-completed': this.matchCompleted
+          [`h5p-puzzle-${this.choiceListName}`]: true
         };
       }
     }
@@ -36,28 +35,27 @@
     .h5p-puzzle {
       position: absolute;
       top: -0.083em;
-      width: auto;
+      width: 0.55em;
       height: 1em + ($choice-padding * 2);
 
       svg {
         height: 100%;
       }
     }
+  }
 
-    .h5p-puzzle-source {
-      right: -0.083em;
+  .h5p-choice-list-source .h5p-choice {
+    background-repeat: no-repeat;
+    background-size: calc(100% - 8px) 100%;
+    background-origin: border-box;
 
-      &.h5p-puzzle-match-completed .st0 {
-        fill: transparent;
-      }
+    .h5p-puzzle {
+      right: 0;
     }
+  }
 
-    .h5p-puzzle-target {
-      left: -0.083em;
-
-      &.h5p-puzzle-match-completed {
-        display: none;
-      }
-    }
+  .h5p-puzzle-target {
+    left: 0;
+    transform: translateX(-100%);
   }
 </style>

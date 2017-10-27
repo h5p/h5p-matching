@@ -43,7 +43,6 @@ const getAbsolutePath = (path, contentId) => path ? getPath(path, contentId) : u
  * @property {string} image
  * @property {pairState} state
  * @property {number} position
- * @property {boolean} matchCompleted
  */
 /**
  * @typedef {object} Pair
@@ -82,16 +81,12 @@ const initPairs = (pairConfigs, side, contentId, previousState) => {
     title: config[side],
     state: pairState.NONE,
     image: getAbsolutePath(path(['image', 'path'], config), contentId),
-    position: index,
-    matchCompleted: false
+    position: index
   }));
 
   if(previousState && previousState[side]) {
     const orderedChoices = orderChoices(previousState[side], choices);
-    return zipWith((state, choice) => {
-      const setState = compose(assoc('state', state),  assoc('matchCompleted', choice.state !== pairState.NONE));
-      return setState(choice);
-    }, previousState.pairStates, orderedChoices);
+    return zipWith(assoc('state'), previousState.pairStates, orderedChoices);
   }
   else {
     return shuffle(choices);

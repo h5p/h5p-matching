@@ -11,14 +11,14 @@
     <div class="h5p-image-choice-image">
       <img v-bind:src="image" v-bind:alt="title" />
     </div>
-    <puzzle :choiceListName="keyboardListName" :matchCompleted="matchCompleted"></puzzle>
+    <puzzle choiceListName="source"></puzzle>
   </div>
 </template>
 <script>
   import pairState from '../components/pair-state';
 
   export default {
-    props: ['selected','state', 'image', 'title', 'oppositeAnswer', 'i18n', 'keyboardListName', 'matchCompleted'],
+    props: ['selected','state', 'image', 'title', 'oppositeAnswer', 'i18n', 'keyboardListName'],
     data: () => ({
       labels: {}
     }),
@@ -58,7 +58,7 @@
   @mixin image-choice-colors($border-color) {
     border: 0.083em solid $border-color;
 
-    .st1 {
+    .puzzle-border {
       fill: $border-color;
     }
   }
@@ -73,8 +73,12 @@
     transition: transform .2s ease-in, padding .2s ease-in;
     box-sizing: border-box;
     text-align: left;
-    cursor: pointer;
     padding-right: $choice-padding;
+
+    &.h5p-choice-none,
+    &.h5p-choice-matched {
+      cursor: pointer;
+    }
 
     .h5p-image-choice-image {
       overflow: hidden;

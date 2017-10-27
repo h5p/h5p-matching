@@ -12,7 +12,7 @@
     <div class="h5p-choice-title">
       <slot></slot>
     </div>
-    <puzzle :choiceListName="keyboardListName" :matchCompleted="matchCompleted"></puzzle>
+    <puzzle :choiceListName="keyboardListName"></puzzle>
   </div>
 </template>
 <script>
@@ -30,7 +30,7 @@
   const compareDocumentPosition = invoker(1, 'compareDocumentPosition');
 
   export default {
-    props: ['title', 'selected','state', 'keyboardListName', 'i18n', 'oppositeAnswer', 'matchCompleted'],
+    props: ['title', 'selected','state', 'keyboardListName', 'i18n', 'oppositeAnswer'],
 
     data: () => ({
       labels: {}
@@ -83,18 +83,23 @@
   @import '../../styles/variables';
   @import '../../styles/mixins';
 
-  @mixin choice-colors($border-color, $background-color1, $background-color2, $color: white) {
+  @mixin choice-colors($border-color, $background-color1, $background-color2, $puzzle-fill, $color: white) {
     @include linear-gradient($background-color1, $background-color2);
+    background-origin: border-box;
     border: 0.083em solid $border-color;
     color: $color;
 
-    .st1 {
+    .puzzle-inner {
+      fill: url($puzzle-fill);
+    }
+
+    .puzzle-border {
       fill: $border-color;
     }
   }
 
   .h5p-text-choice {
-    @include choice-colors(#bbd8ea, #f1fbfd, #e3f1f4, #353533);
+    @include choice-colors(#bbd8ea, #f1fbfd, #e3f1f4, #puzzle-none, #353533);
     width: $choice-width;
     display: block;
     font-size: 1.042em;
@@ -105,24 +110,28 @@
     transition: transform .2s ease-in, padding .2s ease-in;
     box-sizing: border-box;
     text-align: left;
-    cursor: pointer;
 
     &:hover {
-      @include choice-colors(#e6c6dd, #f9edf7, #f2e2ef, #353533);
+      @include choice-colors(#e6c6dd, #f9edf7, #f2e2ef, #puzzle-hover, #353533);
+    }
+
+    &.h5p-choice-none,
+    &.h5p-choice-matched {
+      cursor: pointer;
     }
 
     &.h5p-choice-matched,
     &.h5p-choice-selected,
     &.h5p-choice-show-solution {
-      @include choice-colors(#1c74cd, #4c93e5, #1b72db);
+      @include choice-colors(#1c74cd, #4c93e5, #1b72db, #puzzle-matched);
     }
 
     &.h5p-choice-success {
-      @include choice-colors(#3ca587, #50c9a8, #3ea98b);
+      @include choice-colors(#3ca587, #50c9a8, #3ea98b, #puzzle-success);
     }
 
     &.h5p-choice-failure {
-      @include choice-colors(#cb183f, #e54b55, #da1b44);
+      @include choice-colors(#cb183f, #e54b55, #da1b44, #puzzle-failure);
     }
   }
 

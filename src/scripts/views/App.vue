@@ -14,8 +14,7 @@
           list-class="h5p-choice-list-source"
           v-bind:choice-type="choiceType"
           v-bind:i18n="i18n"
-          v-bind:oppositeAnswers="textual.target"
-          @matchAnimationCompleted="setMatchCompleted">
+          v-bind:oppositeAnswers="textual.target">
       </choice-list>
 
       <!-- Target choice list -->
@@ -25,8 +24,7 @@
           list-class="h5p-choice-list-target"
           choice-type="text"
           v-bind:i18n="i18n"
-          v-bind:oppositeAnswers="textual.source"
-          @matchAnimationCompleted="setMatchCompleted">
+          v-bind:oppositeAnswers="textual.source">
       </choice-list>
     </div>
 
@@ -113,10 +111,6 @@
     }),
 
     methods: {
-      setMatchCompleted: function({ index }) {
-        this.forEachSide(side => side.setMatchCompleted(index, true));
-      },
-
       /**
        * Returns true if the "Show solutions" button should be displayed
        */
@@ -170,7 +164,6 @@
           this.forEachSide((side) => {
             side.setState(index, pairState.NONE);
             side.unsetSelectedIndex();
-            side.setMatchCompleted(index, false);
           });
           refocus();
         }
@@ -287,8 +280,6 @@
         this.range().forEach(index => {
           this.$refs.source.setState(index, pairState.NONE);
           this.$refs.target.setState(index, pairState.NONE);
-          this.$refs.source.setMatchCompleted(index, false);
-          this.$refs.target.setMatchCompleted(index, false);
         });
 
         this.forEachSide(side => {
@@ -462,7 +453,7 @@
     .h5p-choice-list-target {
       .h5p-choice {
         border-radius: 0 $border-radius-choice $border-radius-choice 0;
-        border-left: 0;
+        border-left-color: transparent;
         transform: translateX($element-displacement);
       }
 

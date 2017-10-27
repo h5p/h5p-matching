@@ -17,7 +17,6 @@
           v-bind:oppositeAnswer="oppositeAnswers[index]"
           v-bind:i18n="i18n"
           v-bind:title="element.title"
-          v-bind:matchCompleted="element.matchCompleted"
           @select="select(index)">
           {{element.title}}
       </text-choice>
@@ -30,7 +29,6 @@
           v-bind:image="element.image"
           v-bind:title="element.title"
           v-bind:oppositeAnswer="oppositeAnswers[index]"
-          v-bind:matchCompleted="element.matchCompleted"
           v-bind:i18n="i18n"
           @select="select(index)">
       </image-choice>
@@ -101,10 +99,6 @@
       showSuccessIndicator: function (state) {
         return this.name === choiceListName.SOURCE
           && contains(state, [pairState.SUCCESS, pairState.FAILURE, pairState.SHOW_SOLUTION]);
-      },
-
-      setMatchCompleted: function(index, matchCompleted) {
-        this.list[index].matchCompleted = matchCompleted;
       },
 
       getCurrentState: function () {
