@@ -136,7 +136,7 @@
         "importance": "low",
         "name": "choiceUnMatched",
         "type": "text",
-        "default": "@title. Un-matched"
+        "default": "@title. Unmatched"
       },
       {
         "label": "Label indicating that a choice is matched",

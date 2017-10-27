@@ -5,7 +5,7 @@
   "correct": "Correct!",
   "incorrect": "Incorrect!",
   "correctSolution": "Correct solution",
-  "choiceUnMatched": "@title. Un-matched",
+  "choiceUnMatched": "@title. Unmatched",
   "choiceMatched": "@title matched with @oppositeTitle",
   "choiceShouldBeMatched": "@title should have been matched with @oppositeTitle"
 }

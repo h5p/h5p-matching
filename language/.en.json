@@ -70,7 +70,7 @@
         },
         {
           "label": "Label indicating that a choice is unmatched",
-          "default": "@title. Un-matched"
+          "default": "@title. Unmatched"
         },
         {
           "label": "Label indicating that a choice is matched",
