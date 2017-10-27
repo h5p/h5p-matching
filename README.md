@@ -19,3 +19,7 @@ Run tests:
 ```bash
 npm test
 ```
+
+## License
+
+*H5P Matching* is [MIT licenced](LICENCE.md)

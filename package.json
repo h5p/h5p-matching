@@ -1,7 +1,7 @@
 {
-  "name": "h5p-combine-pairs",
+  "name": "h5p-matching",
   "version": "1.0.0",
-  "description": "The user should match two and two pairs",
+  "description": "An H5P for matching two texts, or an image and a text",
   "private": true,
   "scripts": {
     "test": "ava",
@@ -10,13 +10,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/h5p/h5p-combine-pairs.git"
+    "url": "git+https://github.com/h5p/h5p-matching.git"
   },
   "keywords": [
     "h5p",
     "library"
   ],
-  "author": "Joubel",
+  "author": "Tom Arild Jakobsen <tajakobsen@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "ava": "^0.23.0",

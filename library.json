@@ -1,13 +1,13 @@
 {
-  "title": "Combine Pairs",
-  "description": "The user should match two and two pairs",
+  "title": "Matching",
+  "description": "Match two texts, or an image and a text",
   "majorVersion": 1,
   "minorVersion": 0,
   "patchVersion": 0,
   "runnable": 1,
   "author": "Joubel",
   "license": "MIT",
-  "machineName": "H5P.CombinePairs",
+  "machineName": "H5P.Matching",
   "embedTypes": [
     "iframe"
   ],

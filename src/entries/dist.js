@@ -1,6 +1,6 @@
 import "../styles/list.scss";
-import CombinePairs from "../scripts/app";
+import Matching from "../scripts/app";
 
 // Load library
 H5P = H5P || {};
-H5P.CombinePairs = CombinePairs;
+H5P.Matching = Matching;
