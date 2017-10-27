@@ -102,50 +102,52 @@
     }
   }
 
-  .h5p-text-choice {
-    @include choice-colors(#bbd8ea, #f1fbfd, #e3f1f4, #puzzle-none, #353533);
-    width: $choice-width;
-    display: block;
-    font-size: 1.042em;
-    height: 1em + ($choice-padding * 2);
-    padding-left: $choice-padding;
-    padding-right: $choice-padding;
-    margin-bottom: 0.667em;
-    transition: transform .2s ease-in, padding .2s ease-in;
-    box-sizing: border-box;
-    text-align: left;
+  .h5p-matching {
+    .h5p-text-choice {
+      @include choice-colors(#bbd8ea, #f1fbfd, #e3f1f4, #puzzle-none, #353533);
+      width: $choice-width;
+      display: block;
+      font-size: 1.042em;
+      height: 1em + ($choice-padding * 2);
+      padding-left: $choice-padding;
+      padding-right: $choice-padding;
+      margin-bottom: 0.667em;
+      transition: transform .2s ease-in, padding .2s ease-in;
+      box-sizing: border-box;
+      text-align: left;
 
-    &:hover {
-      @include choice-colors(#e6c6dd, #f9edf7, #f2e2ef, #puzzle-hover, #353533);
+      &:hover {
+        @include choice-colors(#e6c6dd, #f9edf7, #f2e2ef, #puzzle-hover, #353533);
+      }
+
+      &.h5p-choice-none,
+      &.h5p-choice-matched {
+        cursor: pointer;
+      }
+
+      &.h5p-choice-matched,
+      &.h5p-choice-selected,
+      &.h5p-choice-show-solution {
+        @include choice-colors(#1c74cd, #4c93e5, #1b72db, #puzzle-matched);
+      }
+
+      &.h5p-choice-success {
+        @include choice-colors(#3ca587, #50c9a8, #3ea98b, #puzzle-success);
+      }
+
+      &.h5p-choice-failure {
+        @include choice-colors(#cb183f, #e54b55, #da1b44, #puzzle-failure);
+      }
     }
 
-    &.h5p-choice-none,
-    &.h5p-choice-matched {
-      cursor: pointer;
+    .h5p-choice-title {
+      @include vertical-align();
+      max-height: 2.6em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
     }
-
-    &.h5p-choice-matched,
-    &.h5p-choice-selected,
-    &.h5p-choice-show-solution {
-      @include choice-colors(#1c74cd, #4c93e5, #1b72db, #puzzle-matched);
-    }
-
-    &.h5p-choice-success {
-      @include choice-colors(#3ca587, #50c9a8, #3ea98b, #puzzle-success);
-    }
-
-    &.h5p-choice-failure {
-      @include choice-colors(#cb183f, #e54b55, #da1b44, #puzzle-failure);
-    }
-  }
-
-  .h5p-choice-title {
-    @include vertical-align();
-    max-height: 2.6em;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
   }
 </style>

@@ -4,16 +4,14 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const isProd = (process.env.NODE_ENV === 'production');
 
 const extractSass = new ExtractTextPlugin({
-  filename: "h5p-combine-pairs.css"
+  filename: "h5p-matching.css"
 });
 
 const config = {
   entry: "./src/entries/dist.js",
-  devtool:  isProd ? 'source-map' : 'inline-source-map',
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: "h5p-combine-pairs.js",
-    sourceMapFilename: '[file].map'
+    filename: "h5p-matching.js"
   },
   resolve: {
     alias: {
@@ -74,5 +72,9 @@ const config = {
     })
   ]
 };
+
+if(!isProd) {
+  config.devtool = 'inline-source-map';
+}
 
 module.exports = config;

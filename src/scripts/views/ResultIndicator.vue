@@ -38,7 +38,7 @@
     }
   }
 
-  .h5p-combine-pairs {
+  .h5p-matching {
     .h5p-indicator {
       position: absolute;
       right: 0;

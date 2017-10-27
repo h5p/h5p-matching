@@ -1,10 +1,10 @@
 <template>
   <div
       role="region"
-      :class="combinePairsClasses"
+      :class="matchingClasses"
       @click="keyboardMode = false"
       @keyup="keyboardMode = true">
-    <h3 class="feedback-title" v-html="title"></h3>
+    <h3 class="h5p-matching-title" v-html="title"></h3>
 
     <div class="h5p-choice-lists">
       <!-- Source choice list-->
@@ -70,11 +70,10 @@
 
 <script>
   import Vue from 'vue';
+  import shuffle from 'shuffle-array';
   import appState from '../components/app-state';
   import pairState from '../components/pair-state';
   import listSide from '../components/choice-list-name';
-  import defaultTranslations from '../components/default-translations';
-  import shuffle from 'shuffle-array';
   import choiceListName from '../components/choice-list-name';
   import { jQuery as $, JoubelScoreBar } from '../components/globals';
   import { switchArrayElements, forEachDelayed, mapIndexed } from '../components/array-utils';
@@ -98,7 +97,7 @@
     data: () => ({
       pairs: {},
       title: 'Combine the data',
-      i18n: defaultTranslations,
+      i18n: {},
       state: appState.DEFAULT,
       choiceType: 'text',
       enableRetry: true,
@@ -383,11 +382,11 @@
     },
 
     computed: {
-      combinePairsClasses: function() {
+      matchingClasses: function() {
         return {
-          'h5p-combine-pairs': true,
-          [`h5p-combine-pairs-${this.choiceType}`]: true,
-          'h5p-combine-pairs-keyboard': this.keyboardMode
+          'h5p-matching': true,
+          [`h5p-matching-${this.choiceType}`]: true,
+          'h5p-matching-keyboard': this.keyboardMode
         };
       }
     }
@@ -397,7 +396,7 @@
 <style lang="scss" type="text/scss">
   @import '../../styles/variables';
 
-  .h5p-combine-pairs {
+  .h5p-matching {
     padding: 1em;
 
     button:focus,
@@ -405,7 +404,7 @@
       outline: none;
     }
 
-    &.h5p-combine-pairs-keyboard {
+    &.h5p-matching-keyboard {
       button:focus,
       [role="button"]:focus {
         outline: 2px solid #179fff;
@@ -422,11 +421,11 @@
       display: flex;
     }
 
-    &.h5p-combine-pairs-image .h5p-choice-lists {
+    &.h5p-matching-image .h5p-choice-lists {
       max-width: ($width-component / 2) + $choice-height + $choice-padding;
     }
 
-    &.h5p-combine-pairs-text .h5p-choice-lists {
+    &.h5p-matching-text .h5p-choice-lists {
       max-width: $width-component;
     }
 
@@ -435,7 +434,8 @@
     }
 
     .h5p-choice-list-source {
-      .h5p-choice {
+      .h5p-choice.h5p-text-choice,
+      .h5p-choice.h5p-image-choice {
         border-radius: $border-radius-choice 0 0 $border-radius-choice;
         border-right: 0;
       }
@@ -452,8 +452,11 @@
     .h5p-choice-list-target {
       .h5p-choice {
         border-radius: 0 $border-radius-choice $border-radius-choice 0;
-        border-left-color: transparent;
         transform: translateX($element-displacement);
+
+        &.h5p-text-choice {
+          border-left-color: transparent;
+        }
       }
 
       .h5p-choice-selected,

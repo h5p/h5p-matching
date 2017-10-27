@@ -130,7 +130,7 @@
   }
 </script>
 <style lang="scss"  type="text/scss">
-  .h5p-combine-pairs {
+  .h5p-matching {
     .h5p-choice-list {
       li {
         position: relative;

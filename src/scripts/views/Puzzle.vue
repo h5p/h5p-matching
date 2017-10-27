@@ -29,33 +29,36 @@
 <style lang="scss"  type="text/scss">
   @import '../../styles/variables';
 
-  .h5p-choice {
-    position: relative;
+  .h5p-matching {
+    .h5p-choice {
+      position: relative;
 
-    .h5p-puzzle {
-      position: absolute;
-      top: -0.083em;
-      width: 0.55em;
-      height: 1em + ($choice-padding * 2);
+      .h5p-puzzle {
+        position: absolute;
+        top: -0.083em;
+        width: 0.55em;
+        height: 1em + ($choice-padding * 2);
 
-      svg {
-        height: 100%;
+        svg {
+          height: 100%;
+        }
       }
     }
-  }
 
-  .h5p-choice-list-source .h5p-choice {
-    background-repeat: no-repeat;
-    background-size: calc(100% - 8px) 100%;
-    background-origin: border-box;
+    .h5p-choice-list-source .h5p-choice {
+      background-repeat: no-repeat;
+      background-size: calc(100% - 8px) 100%;
+      background-origin: border-box;
+      // border-right: 0;
 
-    .h5p-puzzle {
-      right: 0;
+      .h5p-puzzle {
+        right: 0;
+      }
     }
-  }
 
-  .h5p-puzzle-target {
-    left: 0;
-    transform: translateX(-100%);
+    .h5p-puzzle-target {
+      left: 0;
+      transform: translateX(-100%);
+    }
   }
 </style>

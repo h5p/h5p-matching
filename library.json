@@ -13,12 +13,12 @@
   ],
   "preloadedJs": [
     {
-      "path": "dist/h5p-combine-pairs.js"
+      "path": "dist/h5p-matching.js"
     }
   ],
   "preloadedCss": [
     {
-      "path": "dist/h5p-combine-pairs.css"
+      "path": "dist/h5p-matching.css"
     }
   ],
   "preloadedDependencies": [
