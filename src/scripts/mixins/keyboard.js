@@ -1,5 +1,5 @@
 import { __, always, defaultTo, ifElse, equals, prop } from 'ramda';
-import NavigationList from 'a11y-keyboard-nav';
+import NavigationList from 'roving-tabindex-element-list';
 
 
 /**
