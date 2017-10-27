@@ -1,4 +1,4 @@
-# H5P Combine Pairs
+# H5P Matching
 
 ## Getting started
 
@@ -12,12 +12,6 @@ Build project:
 
 ```bash
 npm run build
-```
-
-Run tests:
-
-```bash
-npm test
 ```
 
 ## License
