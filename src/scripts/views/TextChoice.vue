@@ -4,7 +4,7 @@
       class="h5p-choice h5p-text-choice"
       :class="[{'h5p-choice-selected  ' : selected}, 'h5p-choice-' + state]"
       :aria-label="ariaLabel()"
-      :title="titleIfOverflow()"
+      :title="hasOverflow() ? title : null"
       v-keyboard.sort="keyboardListName"
       @click="select"
       @keyup.enter="select"
@@ -18,7 +18,7 @@
 <script>
   import Vue from 'vue'
   import pairState from '../components/pair-state';
-  import { forEachObjIndexed, invoker } from 'ramda';
+  import { forEachObjIndexed, invoker, lt, or } from 'ramda';
 
   /**
    * Calls compareDocumentPosition on two elements
@@ -29,6 +29,18 @@
    */
   const compareDocumentPosition = invoker(1, 'compareDocumentPosition');
 
+  /**
+   * Returns true if the element has overflow
+   * @param element
+   */
+  const hasOverflow = element => or(
+    lt(element.clientWidth, element.scrollWidth),
+    lt(element.clientHeight, element.scrollHeight)
+  );
+
+  /**
+   * Configuration
+   */
   export default {
     props: ['title', 'selected','state', 'keyboardListName', 'i18n', 'oppositeAnswer'],
 
@@ -55,16 +67,8 @@
         }
       },
 
-      titleIfOverflow: function() {
-        if(this.$el) {
-          const element = this.$el.querySelector('.h5p-choice-title');
-          const horizontalOverflow = element.clientWidth < element.scrollWidth;
-          const verticalOverflow = element.clientHeight < element.scrollHeight;
-
-          if(horizontalOverflow || verticalOverflow) {
-            return this.title;
-          }
-        }
+      hasOverflow: function(){
+        return this.$el && hasOverflow(this.$el.querySelector('.h5p-choice-title'));
       }
     },
 
@@ -107,7 +111,6 @@
     padding-left: $choice-padding;
     padding-right: $choice-padding;
     margin-bottom: 0.667em;
-    will-change: transform;
     transition: transform .2s ease-in, padding .2s ease-in;
     box-sizing: border-box;
     text-align: left;

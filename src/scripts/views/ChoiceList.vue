@@ -1,13 +1,18 @@
 <template>
+  <!-- Ordered list of choices-->
   <transition-group
       name="pair-list"
       tag="ol"
       class="h5p-choice-list unstyled-list"
       :class="['h5p-' + choiceType + '-choice-list' ,listClass]">
+
+    <!-- List item to move vertically-->
     <li
         v-for="(element, index) in list"
         v-bind:key="element.position"
         v-bind:data-index="index">
+
+      <!-- Text based choice button -->
       <text-choice
           v-if="choiceType !== 'image'"
           v-bind:selected="index === selectedIndex"
@@ -20,6 +25,7 @@
           {{element.title}}
       </text-choice>
 
+      <!-- Image based choice button -->
       <image-choice
           v-if="choiceType === 'image'"
           v-bind:selected="index === selectedIndex"
@@ -32,21 +38,43 @@
           @select="select(index)">
       </image-choice>
 
-      <result-indicator ref="resultIndicators" v-bind:i18n="i18n" v-bind:state="element.state" v-show="showSuccessIndicator(element.state)"></result-indicator>
+      <!-- The result indicator (only shown on the source side)-->
+      <result-indicator
+          ref="resultIndicators"
+          v-bind:i18n="i18n"
+          v-bind:state="element.state"
+          v-show="name === 'source' && showSuccessIndicator(element.state)">
+      </result-indicator>
     </li>
   </transition-group>
 </template>
 
 <script>
-  import { contains, findIndex, map, prop, propEq } from 'ramda';
+  import { __, contains, findIndex, map, prop, propEq } from 'ramda';
   import Vue from 'vue';
   import pairState from '../components/pair-state';
   import choiceListName from '../components/choice-list-name';
   const NO_SELECTION = undefined;
 
-  const getIds = map(prop('id'));
-  const getStates = map(prop('state'));
+  /**
+   * Returns an ordered list of the ids
+   * @function
+   * @param {Choice[]} choiceList
+   * @return {string[]}
+   */
+  const getAllIds = map(prop('id'));
 
+  /**
+   * Returns an ordered list of the states
+   * @function
+   * @param {Choice[]} choiceList
+   * @return {string[]}
+   */
+  const getAllStates = map(prop('state'));
+
+  /**
+   * Configuration
+   */
   export default {
     props: ['listClass', 'name', 'choiceType', 'i18n', 'oppositeAnswers'],
     data: () => ({
@@ -90,15 +118,12 @@
         this.selectedIndex = NO_SELECTION;
       },
 
-      showSuccessIndicator: function (state) {
-        return this.name === choiceListName.SOURCE
-          && contains(state, [pairState.SUCCESS, pairState.FAILURE, pairState.SHOW_SOLUTION]);
-      },
+      showSuccessIndicator: contains(__, [pairState.SUCCESS, pairState.FAILURE, pairState.SHOW_SOLUTION]),
 
       getCurrentState: function () {
         return {
-          states: getStates(this.list),
-          ids: getIds(this.list),
+          states: getAllStates(this.list),
+          ids: getAllIds(this.list),
         };
       }
     }
@@ -109,7 +134,6 @@
     .h5p-choice-list {
       li {
         position: relative;
-        will-change: transform;
         transition: transform .2s ease-in;
       }
     }

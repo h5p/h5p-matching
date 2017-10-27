@@ -78,7 +78,7 @@
   import choiceListName from '../components/choice-list-name';
   import { jQuery as $, JoubelScoreBar } from '../components/globals';
   import { switchArrayElements, forEachDelayed, mapIndexed } from '../components/array-utils';
-  import { all, assoc, compose, equals, forEach, head, length, map, prop, range, tail } from 'ramda';
+  import { all, assoc, equals, forEach, map, prop, range } from 'ramda';
 
   const refocus = () => {
     Vue.nextTick(() => {
@@ -438,7 +438,6 @@
       .h5p-choice {
         border-radius: $border-radius-choice 0 0 $border-radius-choice;
         border-right: 0;
-        z-index: 1;
       }
 
       .h5p-choice-selected,
