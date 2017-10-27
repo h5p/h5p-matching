@@ -7,8 +7,7 @@
     <li
         v-for="(element, index) in list"
         v-bind:key="element.position"
-        v-bind:data-index="index"
-        @transitionend="transitionEnd(element, index)">
+        v-bind:data-index="index">
       <text-choice
           v-if="choiceType !== 'image'"
           v-bind:selected="index === selectedIndex"
@@ -56,11 +55,6 @@
     }),
 
     methods: {
-      transitionEnd: function(choice, index) {
-        if(choice.state !== pairState.NONE) {
-          this.$emit('matchAnimationCompleted', { choice, index });
-        }
-      },
       select: function (index) {
         const alreadySelected = (this.selectedIndex === index);
         this.selectedIndex = alreadySelected ? NO_SELECTION : index;
@@ -115,6 +109,7 @@
     .h5p-choice-list {
       li {
         position: relative;
+        will-change: transform;
         transition: transform .2s ease-in;
       }
     }

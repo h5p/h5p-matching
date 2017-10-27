@@ -107,6 +107,7 @@
     padding-left: $choice-padding;
     padding-right: $choice-padding;
     margin-bottom: 0.667em;
+    will-change: transform;
     transition: transform .2s ease-in, padding .2s ease-in;
     box-sizing: border-box;
     text-align: left;
