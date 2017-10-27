@@ -1,9 +1,9 @@
 /**
  * @enum {string}
  */
-const side = {
+const choiceListName = {
   SOURCE: 'source',
   TARGET: 'target'
 };
 
-export default side;
+export default choiceListName;

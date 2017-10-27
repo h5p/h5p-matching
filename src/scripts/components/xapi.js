@@ -1,6 +1,7 @@
 import { compose, map, join, length, range, prop } from 'ramda';
+import choiceListName from './choice-list-name';
 
-const TYPE = 'http://adlnet.gov/expapi/activities/cmi.interaction';
+const TYPE_INTERACTION = 'http://adlnet.gov/expapi/activities/cmi.interaction';
 
 /**
  * @enum {string}
@@ -61,12 +62,12 @@ const choiceToXapiOption = choice => ({
  */
 export const setDefinitionOnXapiEvent = (event, title, pairs) => {
   const definition = event.getVerifiedStatementValue(['object', 'definition']);
-  const source = map(prop('left'), pairs);
-  const target = map(prop('right'), pairs);
+  const source = map(prop(choiceListName.SOURCE), pairs);
+  const target = map(prop(choiceListName.TARGET), pairs);
 
   Object.assign(definition, {
     description: localizeString(title),
-    type: TYPE,
+    type: TYPE_INTERACTION,
     interactionType: xAPIInteractionType.MATCHING,
     correctResponsesPattern: [createCorrectResponsesPattern(pairs)],
     source: map(choiceToXapiOption, source),
@@ -82,6 +83,6 @@ export const setDefinitionOnXapiEvent = (event, title, pairs) => {
  */
 export const setResponseOnXApiEvent = (event, pairs) => {
   event.data.statement.result.response = pairs
-    .map(pair => `${pair.left.id}[.]${pair.right.id}`)
+    .map(pair => `${pair[choiceListName.SOURCE].id}[.]${pair[choiceListName.TARGET].id}`)
     .join('[,]');
 };

@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import CombinePairsView from './views/CombinePairs.vue';
+import CombinePairsView from './views/App.vue';
 import ChoiceListView from './views/ChoiceList.vue';
 import TextChoiceView from './views/TextChoice.vue';
 import ImageChoiceView from './views/ImageChoice.vue';
@@ -7,10 +7,10 @@ import PuzzleView from './views/Puzzle.vue';
 import ResultIndicatorView from './views/ResultIndicator.vue';
 import { EventDispatcher, getPath } from './components/globals';
 import { setDefinitionOnXapiEvent, setResponseOnXApiEvent } from './components/xapi';
-import { always, assoc, curry, equals, path, map, unless, zipWith } from 'ramda';
+import { always, assoc, curry, compose, equals, path, map, unless, zipWith } from 'ramda';
 import appState from './components/app-state';
 import { pairState } from './components/pair-state';
-import side from './components/side';
+import choiceListName from './components/choice-list-name';
 import defaultTranslations from './components/default-translations';
 import shuffle from 'shuffle-array';
 import KeyboardMixin from './mixins/keyboard';
@@ -47,8 +47,8 @@ const getAbsolutePath = (path, contentId) => path ? getPath(path, contentId) : u
  */
 /**
  * @typedef {object} Pair
- * @property {Choice} left
- * @property {Choice} right
+ * @property {Choice} source
+ * @property {Choice} target
  */
 /**
  * @typedef {object} CurrentState
@@ -70,7 +70,7 @@ const orderChoices = curry((order, choices) => map(index => choices[index], orde
  * Initializes choices
  *
  * @param {PairConfig[]} pairConfigs
- * @param {side} side
+ * @param {choiceListName} side
  * @param {string} contentId
  * @param {CurrentState} previousState
  *
@@ -88,8 +88,10 @@ const initPairs = (pairConfigs, side, contentId, previousState) => {
 
   if(previousState && previousState[side]) {
     const orderedChoices = orderChoices(previousState[side], choices);
-    const restoredChoices = zipWith(assoc('state'), previousState.pairStates, orderedChoices);
-    return map(choice => assoc('matchCompleted', choice.state !== pairState.NONE, choice), restoredChoices);
+    return zipWith((state, choice) => {
+      const setState = compose(assoc('state', state),  assoc('matchCompleted', choice.state !== pairState.NONE));
+      return setState(choice);
+    }, previousState.pairStates, orderedChoices);
   }
   else {
     return shuffle(choices);
@@ -130,8 +132,8 @@ export default class App extends EventDispatcher {
     super();
 
     const rootElement = document.createElement('div');
-    const sourceList = initPairs(config.pairs, side.SOURCE, contentId, contentData.previousState);
-    const targetList = initPairs(config.pairs, side.TARGET, contentId, contentData.previousState);
+    const sourceList = initPairs(config.pairs, choiceListName.SOURCE, contentId, contentData.previousState);
+    const targetList = initPairs(config.pairs, choiceListName.TARGET, contentId, contentData.previousState);
 
     // defaultTranslations can be replaced by a flat json language file .en
     const i18n = Object.assign({}, defaultTranslations, config.l10n);
@@ -188,8 +190,8 @@ export default class App extends EventDispatcher {
 
       return {
         pairStates: map(removeSuccessState, source.states),
-        [side.SOURCE]: source.ids,
-        [side.TARGET]: target.ids
+        [choiceListName.SOURCE]: source.ids,
+        [choiceListName.TARGET]: target.ids
       };
     };
 

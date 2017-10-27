@@ -9,9 +9,9 @@
     <div class="h5p-choice-lists">
       <!-- Source choice list-->
       <choice-list
-          ref="left"
-          name="left"
-          list-class="h5p-choice-list-left"
+          ref="source"
+          name="source"
+          list-class="h5p-choice-list-source"
           v-bind:choice-type="choiceType"
           v-bind:i18n="i18n"
           v-bind:oppositeAnswers="textual.target"
@@ -20,9 +20,9 @@
 
       <!-- Target choice list -->
       <choice-list
-          ref="right"
-          name="right"
-          list-class="h5p-choice-list-right"
+          ref="target"
+          name="target"
+          list-class="h5p-choice-list-target"
           choice-type="text"
           v-bind:i18n="i18n"
           v-bind:oppositeAnswers="textual.source"
@@ -74,9 +74,10 @@
   import Vue from 'vue';
   import appState from '../components/app-state';
   import pairState from '../components/pair-state';
-  import listSide from '../components/side';
+  import listSide from '../components/choice-list-name';
   import defaultTranslations from '../components/default-translations';
   import shuffle from 'shuffle-array';
+  import choiceListName from '../components/choice-list-name';
   import { jQuery as $, JoubelScoreBar } from '../components/globals';
   import { switchArrayElements, forEachDelayed, mapIndexed } from '../components/array-utils';
   import { all, assoc, compose, equals, forEach, head, length, map, prop, range, tail } from 'ramda';
@@ -141,8 +142,8 @@
        * @return {boolean}
        */
       isBothSidesSelected: function() {
-        return this.$refs.left.hasSelected()
-          && this.$refs.right.hasSelected();
+        return this.$refs.source.hasSelected()
+          && this.$refs.target.hasSelected();
       },
 
       /**
@@ -153,8 +154,8 @@
        */
       isMatched: function(index) {
         return index !== undefined
-          && this.$refs.left.getState(index) === pairState.MATCHED
-          && this.$refs.right.getState(index) === pairState.MATCHED;
+          && this.$refs.source.getState(index) === pairState.MATCHED
+          && this.$refs.target.getState(index) === pairState.MATCHED;
       },
 
       /**
@@ -220,8 +221,8 @@
        * Creates textual lists with the titles
        */
       updateTextualLists: function () {
-        this.textual[listSide.SOURCE] = this.$refs.left.list.map(prop('title'));
-        this.textual[listSide.TARGET] = this.$refs.right.list.map(prop('title'));
+        this.textual[listSide.SOURCE] = this.$refs.source.list.map(prop('title'));
+        this.textual[listSide.TARGET] = this.$refs.target.list.map(prop('title'));
       },
 
       /**
@@ -231,8 +232,8 @@
        */
       getPairs: function () {
         return this.range().map(index => ({
-          left: this.$refs.left.list[index],
-          right: this.$refs.right.list[index],
+          [choiceListName.SOURCE]: this.$refs.source.list[index],
+          [choiceListName.TARGET]: this.$refs.target.list[index],
         }));
       },
 
@@ -251,23 +252,23 @@
        * @return {boolean}
        */
       isPairCorrect: function(index) {
-        const leftElement = this.$refs.left.list[index];
-        const rightElement = this.$refs.right.list[index];
+        const sourceChoice = this.$refs.source.list[index];
+        const targetChoice = this.$refs.target.list[index];
 
-        return equals(leftElement.id, rightElement.id);
+        return equals(sourceChoice.id, targetChoice.id);
       },
 
       /**
        * Displays the solution, and sets the view in a new state
        */
       showSolution: function () {
-        const leftList = this.$refs.left.list;
+        const sourceList = this.$refs.source.list;
 
-        leftList.forEach((choice, index) => {
+        sourceList.forEach((choice, index) => {
           if(choice.state !== pairState.SUCCESS) {
-            const otherIndex = this.$refs.right.getIndexById(choice.id);
+            const otherIndex = this.$refs.target.getIndexById(choice.id);
 
-            switchArrayElements(this.$refs.right.list, index, otherIndex);
+            switchArrayElements(this.$refs.target.list, index, otherIndex);
 
             // apply show solution to both lists on THIS index
             this.forEachSide(side => side.setState(index ,pairState.SHOW_SOLUTION))
@@ -284,10 +285,10 @@
        */
       retry: function () {
         this.range().forEach(index => {
-          this.$refs.left.setState(index, pairState.NONE);
-          this.$refs.right.setState(index, pairState.NONE);
-          this.$refs.left.setMatchCompleted(index, false);
-          this.$refs.right.setMatchCompleted(index, false);
+          this.$refs.source.setState(index, pairState.NONE);
+          this.$refs.target.setState(index, pairState.NONE);
+          this.$refs.source.setMatchCompleted(index, false);
+          this.$refs.target.setMatchCompleted(index, false);
         });
 
         this.forEachSide(side => {
@@ -296,7 +297,7 @@
         });
 
         this.state = appState.DEFAULT;
-        Vue.nextTick(() => this.$refs.left.$el.querySelector('[tabindex="0"]').focus());
+        Vue.nextTick(() => this.$refs.source.$el.querySelector('[tabindex="0"]').focus());
       },
 
       /**
@@ -305,7 +306,7 @@
        * @param {function} callback
        */
       forEachSide: function(callback) {
-        forEach(callback, [this.$refs.left, this.$refs.right]);
+        forEach(callback, [this.$refs.source, this.$refs.target]);
       },
 
       /**
@@ -313,8 +314,8 @@
        */
       getCurrentState: function() {
         return {
-          source: this.$refs.left.getCurrentState(),
-          target: this.$refs.right.getCurrentState()
+          source: this.$refs.source.getCurrentState(),
+          target: this.$refs.target.getCurrentState()
         }
       },
 
@@ -323,7 +324,7 @@
        * @return {boolean}
        */
       getAnswerGiven: function() {
-        return this.$refs.left.list
+        return this.$refs.source.list
           .some(choice => choice.state !== pairState.NONE)
       },
 
@@ -365,22 +366,22 @@
 
     watch: {
       /**
-       * Generates shuffled right and left lists
+       * Generates shuffled source and target lists
        * @param {Pair[]} pairs
        */
       pairs: function({ sourceList, targetList }) {
         const initPosition = mapIndexed((choice, index) => assoc('position', index, choice));
 
-        this.$refs.left.list = initPosition(sourceList);
-        this.$refs.right.list = initPosition(targetList);
+        this.$refs.source.list = initPosition(sourceList);
+        this.$refs.target.list = initPosition(targetList);
 
-        this.$refs.left.$on('select', () => {
-          this.handleSelected(this.$refs.left, this.$refs.right);
+        this.$refs.source.$on('select', () => {
+          this.handleSelected(this.$refs.source, this.$refs.target);
           this.$emit('interacted')
         });
 
-        this.$refs.right.$on('select', () => {
-          this.handleSelected(this.$refs.right, this.$refs.left);
+        this.$refs.target.$on('select', () => {
+          this.handleSelected(this.$refs.target, this.$refs.source);
           this.$emit('interacted')
         });
 
@@ -442,7 +443,7 @@
       flex: 1;
     }
 
-    .h5p-choice-list-left {
+    .h5p-choice-list-source {
       .h5p-choice {
         border-radius: $border-radius-choice 0 0 $border-radius-choice;
         border-right: 0;
@@ -458,7 +459,7 @@
       }
     }
 
-    .h5p-choice-list-right {
+    .h5p-choice-list-target {
       .h5p-choice {
         border-radius: 0 $border-radius-choice $border-radius-choice 0;
         border-left: 0;

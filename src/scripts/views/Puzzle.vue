@@ -2,7 +2,7 @@
   <div :class="puzzleClasses" v-html="images[choiceListName]"></div>
 </template>
 <script>
-  import side from '../components/side';
+  import choiceListName from '../components/choice-list-name';
   import imagePuzzleLeft from '../../images/puzzle-left.svg';
   import imagePuzzleRight from '../../images/puzzle-right.svg';
 
@@ -11,8 +11,8 @@
 
     data: () => ({
       images: {
-        left: imagePuzzleLeft,
-        right: imagePuzzleRight
+        [choiceListName.SOURCE]: imagePuzzleLeft,
+        [choiceListName.TARGET]: imagePuzzleRight
       }
     }),
 
@@ -44,7 +44,7 @@
       }
     }
 
-    .h5p-puzzle-left {
+    .h5p-puzzle-source {
       right: -0.083em;
 
       &.h5p-puzzle-match-completed .st0 {
@@ -52,7 +52,7 @@
       }
     }
 
-    .h5p-puzzle-right {
+    .h5p-puzzle-target {
       left: -0.083em;
 
       &.h5p-puzzle-match-completed {

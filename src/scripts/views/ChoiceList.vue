@@ -44,6 +44,7 @@
   import { contains, findIndex, map, prop, propEq } from 'ramda';
   import Vue from 'vue';
   import pairState from '../components/pair-state';
+  import choiceListName from '../components/choice-list-name';
   const NO_SELECTION = undefined;
 
   const getIds = map(prop('id'));
@@ -98,7 +99,7 @@
       },
 
       showSuccessIndicator: function (state) {
-        return this.name === 'left'
+        return this.name === choiceListName.SOURCE
           && contains(state, [pairState.SUCCESS, pairState.FAILURE, pairState.SHOW_SOLUTION]);
       },
 
