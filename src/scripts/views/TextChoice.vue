@@ -12,7 +12,7 @@
     <div class="h5p-choice-title">
       <slot></slot>
     </div>
-    <puzzle :choiceListName="listName"></puzzle>
+    <puzzle :listName="listName"></puzzle>
   </div>
 </template>
 <script>

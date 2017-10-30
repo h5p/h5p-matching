@@ -11,7 +11,7 @@
     <div class="h5p-image-choice-image">
       <img v-bind:src="imagePath" v-bind:alt="title" />
     </div>
-    <puzzle choiceListName="source"></puzzle>
+    <puzzle listName="source"></puzzle>
   </div>
 </template>
 <script>
@@ -75,6 +75,14 @@
       box-sizing: border-box;
       text-align: left;
       padding-right: $choice-padding;
+
+      .puzzle-inner {
+        fill: white;
+      }
+
+      .puzzle-border {
+        fill: #bbd8ea;
+      }
 
       &.h5p-choice-none,
       &.h5p-choice-matched {

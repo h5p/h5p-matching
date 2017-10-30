@@ -1,5 +1,5 @@
 <template>
-  <div :class="puzzleClasses" v-html="images[choiceListName]"></div>
+  <div :class="puzzleClasses" v-html="images[listName]"></div>
 </template>
 <script>
   import choiceListName from '../components/choice-list-name';
@@ -7,7 +7,7 @@
   import imagePuzzleRight from '../../images/puzzle-right.svg';
 
   export default {
-    props: ['choiceListName'],
+    props: ['listName'],
 
     data: () => ({
       images: {
@@ -20,7 +20,7 @@
       puzzleClasses: function() {
         return {
           'h5p-puzzle': true,
-          [`h5p-puzzle-${this.choiceListName}`]: true
+          [`h5p-puzzle-${this.listName}`]: true
         };
       }
     }
