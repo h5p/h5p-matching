@@ -1,14 +1,5 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 86.8 644.1">
+<svg id="puzzle-left" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 86.8 644.1">
   <defs>
-    <style>
-      .puzzle-inner {
-        fill: url(#puzzle-none);
-      }
-
-      .puzzle-border {
-        fill: #bbd4e5;
-      }
-    </style>
     <linearGradient id="puzzle-none" gradientUnits="userSpaceOnUse" x1="44.9" y1="6.9" x2="44.9" y2="637">
       <stop  offset="0" style="stop-color:#f1fbfd"/>
       <stop  offset="1" style="stop-color:#e3f1f4"/>
@@ -30,7 +21,6 @@
       <stop  offset="1" style="stop-color:#da1b44"/>
     </linearGradient>
   </defs>
-  <title>left-inverted-2</title>
   <path class="puzzle-inner" d="M79.7,632.1V535.3a.87.87,0,0,0-.6-.9c-19.3-.1-37.9-9.7-52.4-27.1C13,490.9,4,470.1,4,450.1v-256c0-39.7,33.5-85.8,75.3-86,.2-.1.5-.2.5-.6V12a5,5,0,0,0-5-5H0V637.1H74.7A5,5,0,0,0,79.7,632.1Z"/>
   <path class="puzzle-border" d="M74.8,0H0V7H74.8a5,5,0,0,1,5,5v95.5c0,.4-.3.5-.5.6-41.8.2-75.3,46.3-75.3,86v256c0,20,9,40.8,22.7,57.2,14.5,17.4,33.1,27,52.4,27.1a.87.87,0,0,1,.6.9v96.8a5,5,0,0,1-5,5H0v7H74.8a12,12,0,0,0,12-12V535.3a8,8,0,0,0-6.8-7.9h-.5c-38,0-68.5-41.6-68.5-77.3v-256c0-18.2,8.6-38.3,21.1-53.7,13.3-16.3,30.2-25.3,47.4-25.3h.3a7.62,7.62,0,0,0,7-7.6V12A12,12,0,0,0,74.8,0Z"/>
 </svg>
