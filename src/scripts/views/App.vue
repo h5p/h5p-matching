@@ -185,14 +185,19 @@
        * Displays the results and updates the score bar
        */
       showResults: function() {
-        forEachDelayed(this.range(), index => {
-          const isCorrect = this.isPairCorrect(index);
-          const state = isCorrect ? pairState.SUCCESS : pairState.FAILURE;
+        this.state = appState.CHECK_RESULT;
 
-          this.forEachSide(side => side.setState(index, state));
+        forEachDelayed(this.range(), index => {
+          const stillCheckingResults = this.state === appState.CHECK_RESULT;
+
+          if (stillCheckingResults) {
+            const isCorrect = this.isPairCorrect(index);
+            const state = isCorrect ? pairState.SUCCESS : pairState.FAILURE;
+
+            this.forEachSide(side => side.setState(index, state));
+          }
         }, 100);
 
-        this.state = appState.CHECK_RESULT;
         this.updateScoreBar();
         this.$emit('answered', {
           pairs: this.getPairs()
