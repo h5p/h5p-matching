@@ -10,21 +10,21 @@
       <!-- Source choice list-->
       <choice-list
           ref="source"
-          name="source"
-          list-class="h5p-choice-list-source"
+          listName="source"
+          v-bind:list="sourceList"
+          v-bind:otherList="targetList"
           v-bind:choice-type="choiceType"
-          v-bind:i18n="i18n"
-          v-bind:oppositeAnswers="textual.target">
+          v-bind:i18n="i18n">
       </choice-list>
 
       <!-- Target choice list -->
       <choice-list
           ref="target"
-          name="target"
-          list-class="h5p-choice-list-target"
+          listName="target"
+          v-bind:list="targetList"
+          v-bind:otherList="sourceList"
           choice-type="text"
-          v-bind:i18n="i18n"
-          v-bind:oppositeAnswers="textual.source">
+          v-bind:i18n="i18n">
       </choice-list>
     </div>
 
@@ -95,7 +95,9 @@
    */
   export default {
     data: () => ({
-      pairs: {},
+      sourceList: [],
+      targetList: [],
+      pairsLength: undefined,
       title: 'Combine the data',
       i18n: {},
       state: appState.DEFAULT,
@@ -103,10 +105,6 @@
       enableRetry: true,
       enableSolutionsButton: true,
       keyboardMode: false,
-      textual: {
-        source: [],
-        target: []
-      }
     }),
 
     methods: {
@@ -179,7 +177,6 @@
             side.unsetSelectedIndex();
           });
 
-          this.updateTextualLists();
           refocus();
         }
       },
@@ -207,14 +204,6 @@
             button.focus()
           }
         });
-      },
-
-      /**
-       * Creates textual lists with the titles
-       */
-      updateTextualLists: function () {
-        this.textual[listSide.SOURCE] = this.$refs.source.list.map(prop('title'));
-        this.textual[listSide.TARGET] = this.$refs.target.list.map(prop('title'));
       },
 
       /**
@@ -268,7 +257,6 @@
         });
 
         this.state = appState.SHOW_SOLUTION;
-        this.updateTextualLists();
         Vue.nextTick(() => this.$refs.retryButton.focus());
       },
 
@@ -355,30 +343,21 @@
     },
 
     watch: {
-      /**
-       * Generates shuffled source and target lists
-       * @param {Pair[]} pairs
-       */
-      pairs: function({ sourceList, targetList }) {
-        const initPosition = mapIndexed((choice, index) => assoc('position', index, choice));
-
-        this.$refs.source.list = initPosition(sourceList);
-        this.$refs.target.list = initPosition(targetList);
-
-        this.$refs.source.$on('select', () => {
-          this.handleSelected(this.$refs.source, this.$refs.target);
-          this.$emit('interacted')
-        });
-
-        this.$refs.target.$on('select', () => {
-          this.handleSelected(this.$refs.target, this.$refs.source);
-          this.$emit('interacted')
-        });
-
-        this.pairsLength = sourceList.length;
-        this.initScoreBar(sourceList.length);
-        this.updateTextualLists();
+      pairsLength: function(maxScore){
+        this.initScoreBar(maxScore);
       }
+    },
+
+    mounted: function(){
+      this.$refs.source.$on('select', () => {
+        this.handleSelected(this.$refs.source, this.$refs.target);
+        this.$emit('interacted')
+      });
+
+      this.$refs.target.$on('select', () => {
+        this.handleSelected(this.$refs.target, this.$refs.source);
+        this.$emit('interacted')
+      });
     },
 
     computed: {

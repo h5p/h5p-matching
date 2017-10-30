@@ -4,7 +4,7 @@
       name="pair-list"
       tag="ol"
       class="h5p-choice-list unstyled-list"
-      :class="['h5p-' + choiceType + '-choice-list' ,listClass]">
+      :class="['h5p-' + choiceType + '-choice-list' , 'h5p-choice-list-' + listName]">
 
     <!-- List item to move vertically-->
     <li
@@ -17,8 +17,8 @@
           v-if="choiceType !== 'image'"
           v-bind:selected="index === selectedIndex"
           v-bind:state="element.state"
-          v-bind:keyboardListName="name"
-          v-bind:oppositeAnswer="oppositeAnswers[index]"
+          v-bind:listName="listName"
+          v-bind:otherChoice="otherList[index]"
           v-bind:i18n="i18n"
           v-bind:title="element.title"
           @select="select(index)">
@@ -29,11 +29,11 @@
       <image-choice
           v-if="choiceType === 'image'"
           v-bind:selected="index === selectedIndex"
-          v-bind:keyboardListName="name"
+          v-bind:listName="listName"
           v-bind:state="element.state"
           v-bind:image="element.image"
           v-bind:title="element.title"
-          v-bind:oppositeAnswer="oppositeAnswers[index]"
+          v-bind:otherChoice="otherList[index]"
           v-bind:i18n="i18n"
           @select="select(index)">
       </image-choice>
@@ -43,7 +43,7 @@
           ref="resultIndicators"
           v-bind:i18n="i18n"
           v-bind:state="element.state"
-          v-show="name === 'source' && showSuccessIndicator(element.state)">
+          v-show="listName === 'source' && showSuccessIndicator(element.state)">
       </result-indicator>
     </li>
   </transition-group>
@@ -76,9 +76,8 @@
    * Configuration
    */
   export default {
-    props: ['listClass', 'name', 'choiceType', 'i18n', 'oppositeAnswers'],
+    props: ['listName', 'choiceType', 'i18n', 'list', 'otherList'],
     data: () => ({
-      list: [],
       selectedIndex: NO_SELECTION
     }),
 

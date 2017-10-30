@@ -5,14 +5,14 @@
       :class="[{'h5p-choice-selected  ' : selected}, 'h5p-choice-' + state]"
       :aria-label="ariaLabel()"
       :title="hasOverflow() ? title : null"
-      v-keyboard.sort="keyboardListName"
+      v-keyboard.sort="listName"
       @click="select"
       @keyup.enter="select"
       @keyup.space="select">
     <div class="h5p-choice-title">
       <slot></slot>
     </div>
-    <puzzle :choiceListName="keyboardListName"></puzzle>
+    <puzzle :choiceListName="listName"></puzzle>
   </div>
 </template>
 <script>
@@ -42,7 +42,7 @@
    * Configuration
    */
   export default {
-    props: ['title', 'selected','state', 'keyboardListName', 'i18n', 'oppositeAnswer'],
+    props: ['title', 'selected','state', 'listName', 'i18n', 'otherChoice'],
 
     data: () => ({
       labels: {}
@@ -63,7 +63,7 @@
         if (this.labels[this.state]) {
           return this.labels[this.state]
             .replace('@title', this.title)
-            .replace('@oppositeTitle', this.oppositeAnswer);
+            .replace('@oppositeTitle', this.otherChoice.title);
         }
       },
 

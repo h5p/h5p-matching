@@ -7,12 +7,13 @@ import PuzzleView from './views/Puzzle.vue';
 import ResultIndicatorView from './views/ResultIndicator.vue';
 import { EventDispatcher, getPath } from './components/globals';
 import { setDefinitionOnXapiEvent, setResponseOnXApiEvent } from './components/xapi';
-import { always, assoc, curry, compose, equals, path, map, unless, zipWith } from 'ramda';
+import { always, assoc, curry, equals, path, map, unless, zipWith } from 'ramda';
 import appState from './components/app-state';
 import { pairState } from './components/pair-state';
 import choiceListName from './components/choice-list-name';
 import defaultTranslations from './components/default-translations';
 import shuffle from 'shuffle-array';
+import { mapIndexed } from './components/array-utils';
 import KeyboardMixin from './mixins/keyboard';
 
 // Register components
@@ -65,6 +66,8 @@ const getAbsolutePath = (path, contentId) => path ? getPath(path, contentId) : u
  */
 const orderChoices = curry((order, choices) => map(index => choices[index], order));
 
+const initPosition = mapIndexed((choice, index) => assoc('position', index, choice));
+
 /**
  * Initializes choices
  *
@@ -86,10 +89,10 @@ const initPairs = (pairConfigs, side, contentId, previousState) => {
 
   if(previousState && previousState[side]) {
     const orderedChoices = orderChoices(previousState[side], choices);
-    return zipWith(assoc('state'), previousState.pairStates, orderedChoices);
+    return initPosition(zipWith(assoc('state'), previousState.pairStates, orderedChoices));
   }
   else {
-    return shuffle(choices);
+    return initPosition(shuffle(choices));
   }
 };
 
@@ -126,7 +129,11 @@ export default class App extends EventDispatcher {
   constructor(config, contentId, contentData = {}) {
     super();
 
+    contentData.previousState = undefined;
+
     const rootElement = document.createElement('div');
+
+    // creates the configs for the two vertical lists
     const sourceList = initPairs(config.pairs, choiceListName.SOURCE, contentId, contentData.previousState);
     const targetList = initPairs(config.pairs, choiceListName.TARGET, contentId, contentData.previousState);
 
@@ -134,6 +141,7 @@ export default class App extends EventDispatcher {
     const i18n = Object.assign({}, defaultTranslations, config.l10n);
     const maxScore = config.pairs.length;
 
+    // initiates the view model
     const viewModel = new Vue({
       ...CombinePairsView,
       components: {
@@ -143,7 +151,9 @@ export default class App extends EventDispatcher {
 
     viewModel.choiceType = config.choiceType;
     viewModel.title = config.title;
-    viewModel.pairs = { sourceList, targetList };
+    viewModel.pairsLength = maxScore;
+    viewModel.sourceList = sourceList;
+    viewModel.targetList = targetList;
     viewModel.enableRetry = config.behaviour.enableRetry;
     viewModel.enableSolutionsButton = config.behaviour.enableSolutionsButton;
     viewModel.i18n = i18n;

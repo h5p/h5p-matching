@@ -30,7 +30,21 @@ const config = {
         options: {
           preserveWhitespace: false,
           loaders: {
-            scss: 'vue-style-loader!css-loader!sass-loader'
+            scss: extractSass.extract({
+              use: [
+                {
+                  loader: "css-loader?sourceMap"
+                },
+                {
+                  loader: "resolve-url-loader"
+                },
+                {
+                  loader: "sass-loader?outputStyle=expanded&sourceMap=true&sourceMapContents=true"
+                }
+              ],
+
+              fallback: "style-loader"
+            })
           }
         }
       },

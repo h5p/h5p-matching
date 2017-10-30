@@ -4,7 +4,7 @@
       class="h5p-choice h5p-image-choice"
       :class="[{'h5p-choice-selected  ' : selected}, 'h5p-choice-' + state]"
       :aria-label="ariaLabel()"
-      v-keyboard.sort="keyboardListName"
+      v-keyboard.sort="listName"
       @keyup.enter="select"
       @keyup.space="select"
       @click="select">
@@ -18,7 +18,7 @@
   import pairState from '../components/pair-state';
 
   export default {
-    props: ['selected','state', 'image', 'title', 'oppositeAnswer', 'i18n', 'keyboardListName'],
+    props: ['selected', 'state', 'image', 'title', 'otherChoice', 'i18n', 'listName'],
     data: () => ({
       labels: {}
     }),
@@ -35,7 +35,7 @@
         if(this.labels[this.state]) {
           return this.labels[this.state]
             .replace('@title', this.title)
-            .replace('@oppositeTitle', this.oppositeAnswer);
+            .replace('@oppositeTitle', this.otherChoice.title);
         }
       }
     },
