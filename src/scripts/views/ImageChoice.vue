@@ -9,7 +9,7 @@
       @keyup.space="select"
       @click="select">
     <div class="h5p-image-choice-image">
-      <img v-bind:src="image" v-bind:alt="title" />
+      <img v-bind:src="imagePath" v-bind:alt="title" />
     </div>
     <puzzle choiceListName="source"></puzzle>
   </div>
@@ -18,7 +18,7 @@
   import pairState from '../components/pair-state';
 
   export default {
-    props: ['selected', 'state', 'image', 'title', 'otherChoice', 'i18n', 'listName'],
+    props: ['selected', 'state', 'imagePath', 'title', 'otherChoice', 'i18n', 'listName'],
     data: () => ({
       labels: {}
     }),

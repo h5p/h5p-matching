@@ -31,7 +31,7 @@
           v-bind:selected="index === selectedIndex"
           v-bind:listName="listName"
           v-bind:state="element.state"
-          v-bind:image="element.image"
+          v-bind:imagePath="element.imagePath"
           v-bind:title="element.title"
           v-bind:otherChoice="otherList[index]"
           v-bind:i18n="i18n"
