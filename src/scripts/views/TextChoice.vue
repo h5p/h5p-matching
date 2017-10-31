@@ -87,24 +87,16 @@
   @import '../../styles/variables';
   @import '../../styles/mixins';
 
-  @mixin choice-colors($border-color, $background-color1, $background-color2, $puzzle-fill, $color: white) {
+  @mixin choice-colors($border-color, $background-color1, $background-color2, $color: white) {
     @include linear-gradient($background-color1, $background-color2);
     background-origin: border-box;
     border: 0.083em solid $border-color;
     color: $color;
-
-    .puzzle-inner {
-      fill: url($puzzle-fill);
-    }
-
-    .puzzle-border {
-      fill: $border-color;
-    }
   }
 
   .h5p-matching {
     .h5p-text-choice {
-      @include choice-colors(#bbd8ea, #f1fbfd, #e3f1f4, #puzzle-none, #353533);
+      @include choice-colors(#bbd8ea, #f1fbfd, #e3f1f4, #353533);
       width: $choice-width;
       display: block;
       font-size: 1.042em;
@@ -117,7 +109,7 @@
       text-align: left;
 
       &:hover {
-        @include choice-colors(#e6c6dd, #f9edf7, #f2e2ef, #puzzle-hover, #353533);
+        @include choice-colors(#e6c6dd, #f9edf7, #f2e2ef, #353533);
       }
 
       &.h5p-choice-none,
@@ -128,15 +120,15 @@
       &.h5p-choice-matched,
       &.h5p-choice-selected,
       &.h5p-choice-show-solution {
-        @include choice-colors(#1c74cd, #4c93e5, #1b72db, #puzzle-matched);
+        @include choice-colors(#1c74cd, #4c93e5, #1b72db);
       }
 
       &.h5p-choice-success {
-        @include choice-colors(#3ca587, #50c9a8, #3ea98b, #puzzle-success);
+        @include choice-colors(#3ca587, #50c9a8, #3ea98b);
       }
 
       &.h5p-choice-failure {
-        @include choice-colors(#cb183f, #e54b55, #da1b44, #puzzle-failure);
+        @include choice-colors(#cb183f, #e54b55, #da1b44);
       }
     }
 

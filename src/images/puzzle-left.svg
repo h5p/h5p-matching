@@ -1,5 +1,51 @@
 <svg id="puzzle-left" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 86.8 644.1">
   <defs>
+    <style>
+      .h5p-text-choice.h5p-choice-none .puzzle-inner {
+        fill: url(#puzzle-none);
+      }
+
+      .h5p-text-choice.h5p-choice-none .puzzle-border {
+        fill: #bbd4e5;
+      }
+
+      .h5p-text-choice.h5p-choice-none:hover .puzzle-inner {
+        fill: url(#puzzle-hover);
+      }
+
+      .h5p-text-choice.h5p-choice-none:hover .puzzle-border {
+        fill: #e6c6dd;
+      }
+
+      .h5p-text-choice.h5p-choice-matched .puzzle-inner,
+      .h5p-text-choice.h5p-choice-selected .puzzle-inner,
+      .h5p-text-choice.h5p-choice-none.h5p-choice-selected .puzzle-inner,
+      .h5p-text-choice.h5p-choice-show-solution .puzzle-inner {
+        fill: url(#puzzle-matched);
+      }
+
+      .h5p-text-choice.h5p-choice-matched .puzzle-border,
+      .h5p-text-choice.h5p-choice-selected .puzzle-border,
+      .h5p-text-choice.h5p-choice-show-solution .puzzle-border {
+        fill: #1c74cd;
+      }
+
+      .h5p-text-choice.h5p-choice-success .puzzle-inner {
+        fill: url(#puzzle-success);
+      }
+
+      .h5p-text-choice.h5p-choice-success .puzzle-border {
+        fill: #3ca587;
+      }
+
+      .h5p-text-choice.h5p-choice-failure .puzzle-inner {
+        fill: url(#puzzle-failure);
+      }
+
+      .h5p-text-choice.h5p-choice-failure .puzzle-border {
+        fill: #cb183f;
+      }
+    </style>
     <linearGradient id="puzzle-none" gradientUnits="userSpaceOnUse" x1="44.9" y1="6.9" x2="44.9" y2="637">
       <stop  offset="0" style="stop-color:#f1fbfd"/>
       <stop  offset="1" style="stop-color:#e3f1f4"/>
