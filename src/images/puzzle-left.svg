@@ -17,6 +17,7 @@
         fill: #e6c6dd;
       }
 
+      .sortable-drag .h5p-text-choice.h5p-choice-none .puzzle-inner,
       .h5p-text-choice.h5p-choice-matched .puzzle-inner,
       .h5p-text-choice.h5p-choice-selected .puzzle-inner,
       .h5p-text-choice.h5p-choice-none.h5p-choice-selected .puzzle-inner,
@@ -24,6 +25,7 @@
         fill: url(#puzzle-matched);
       }
 
+      .sortable-drag .h5p-text-choice.h5p-choice-none .puzzle-border,
       .h5p-text-choice.h5p-choice-matched .puzzle-border,
       .h5p-text-choice.h5p-choice-selected .puzzle-border,
       .h5p-text-choice.h5p-choice-show-solution .puzzle-border {

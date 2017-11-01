@@ -4,6 +4,7 @@
       class="h5p-choice h5p-image-choice"
       :class="[{'h5p-choice-selected  ' : selected}, 'h5p-choice-' + state]"
       :aria-label="ariaLabel()"
+      :aria-dropeffect="droppable ? 'execute' : undefined"
       v-keyboard.sort="listName"
       @keyup.enter="select"
       @keyup.space="select"
@@ -15,10 +16,14 @@
   </div>
 </template>
 <script>
+  import PuzzleView from './Puzzle.vue';
   import pairState from '../components/pair-state';
+  import KeyboardMixin from '../mixins/keyboard';
 
   export default {
-    props: ['selected', 'state', 'imagePath', 'title', 'otherChoice', 'i18n', 'listName'],
+    props: ['selected', 'state', 'imagePath', 'title', 'otherChoice', 'i18n', 'listName', 'droppable'],
+    components: { puzzle: PuzzleView },
+    mixins: [KeyboardMixin],
     data: () => ({
       labels: {}
     }),

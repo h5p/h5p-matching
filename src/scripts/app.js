@@ -1,13 +1,6 @@
 import Vue from 'vue';
 
-import CombinePairsView from './views/App.vue';
-import ChoiceListView from './views/ChoiceList.vue';
-import TextChoiceView from './views/TextChoice.vue';
-import ImageChoiceView from './views/ImageChoice.vue';
-import PuzzleView from './views/Puzzle.vue';
-import ResultIndicatorView from './views/ResultIndicator.vue';
-import KeyboardMixin from './mixins/keyboard';
-
+import AppView from './views/App.vue';
 import { always, equals, map, unless } from 'ramda';
 import { EventDispatcher } from './components/globals';
 import { setDefinitionOnXapiEvent, setResponseOnXApiEvent } from './components/xapi';
@@ -16,15 +9,6 @@ import pairState from './components/pair-state';
 import choiceListName from './components/choice-list-name';
 import defaultTranslations from './components/default-translations';
 import initChoices from './components/init-choices';
-
-
-// Register components
-Vue.mixin(KeyboardMixin);
-Vue.component('puzzle', PuzzleView);
-Vue.component('textChoice', TextChoiceView);
-Vue.component('imageChoice', ImageChoiceView);
-Vue.component('resultIndicator', ResultIndicatorView);
-
 
 /**
  * @typedef {object} PairConfig
@@ -108,10 +92,7 @@ export default class App extends EventDispatcher {
 
     // initiates the view model
     const viewModel = new Vue({
-      ...CombinePairsView,
-      components: {
-        choiceList: ChoiceListView
-      }
+      ...AppView
     });
 
     viewModel.choiceType = config.choiceType;

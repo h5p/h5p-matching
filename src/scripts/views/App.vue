@@ -11,7 +11,6 @@
       <choice-list
           ref="source"
           listName="source"
-          v-bind:list="sourceList"
           v-bind:otherList="targetList"
           v-bind:choice-type="choiceType"
           v-bind:i18n="i18n">
@@ -21,7 +20,6 @@
       <choice-list
           ref="target"
           listName="target"
-          v-bind:list="targetList"
           v-bind:otherList="sourceList"
           choice-type="text"
           v-bind:i18n="i18n">
@@ -70,6 +68,7 @@
 
 <script>
   import Vue from 'vue';
+  import choiceList from './ChoiceList.vue';
   import shuffle from 'shuffle-array';
   import appState from '../components/app-state';
   import pairState from '../components/pair-state';
@@ -94,6 +93,7 @@
    * Vue configuration
    */
   export default {
+    components: { choiceList },
     data: () => ({
       sourceList: [],
       targetList: [],
@@ -344,10 +344,65 @@
        */
       range: function() {
         return range(0, this.pairsLength);
+      },
+
+      /**
+       * Sets the droppableIndex attribute on a list
+       * @param {number} index
+       * @param {number} otherIndex
+       * @param {choiceListName} listName
+       */
+      setDroppable: function(index, otherIndex, listName) {
+        const otherName = this.otherChoiceListName(listName);
+        const bothUnmatched = [
+          this.$refs[listName].list[index].state,
+          this.$refs[otherName].list[otherIndex].state
+        ].every(state => equals(pairState.NONE, state));
+
+        if (bothUnmatched) {
+          this.$refs[otherName].droppableIndex = otherIndex;
+        }
+      },
+
+      /**
+       * Makes a match when a Choice is dropped
+       * @param {number} index
+       * @param {number} otherIndex
+       * @param {choiceListName} listName
+       */
+      performDropMatch: function(index, otherIndex, listName) {
+        const otherName = this.otherChoiceListName(listName);
+        const hasIndexes = [index, otherIndex].every(num => num !== undefined);
+
+        if (hasIndexes) {
+          this.$refs[otherName].droppableIndex = undefined;
+          switchArrayElements(this.$refs[listName].list, index, otherIndex);
+          this.forEachSide(side => side.setState(otherIndex, pairState.MATCHED));
+        }
+      },
+
+      /**
+       * Returns the other choice list name from the given one
+       *
+       * @param {choiceListName} name
+       * @return {choiceListName}
+       */
+      otherChoiceListName: function(name) {
+        return (name === choiceListName.SOURCE)
+          ? choiceListName.TARGET
+          : choiceListName.SOURCE;
       }
     },
 
     watch: {
+      sourceList: function (list) {
+        this.$refs.source.list = list;
+      },
+
+      targetList: function (list) {
+        this.$refs.target.list = list;
+      },
+
       pairsLength: function(maxScore){
         this.initScoreBar(maxScore);
       }
@@ -356,12 +411,30 @@
     mounted: function(){
       this.$refs.source.$on('select', () => {
         this.handleSelected(this.$refs.source, this.$refs.target);
-        this.$emit('interacted')
+        this.$emit('interacted');
       });
 
       this.$refs.target.$on('select', () => {
         this.handleSelected(this.$refs.target, this.$refs.source);
-        this.$emit('interacted')
+        this.$emit('interacted');
+      });
+
+      this.$refs.source.$on('draggable', ({ index, otherIndex }) => {
+        this.setDroppable(index, otherIndex, choiceListName.SOURCE);
+      });
+
+      this.$refs.target.$on('draggable', ({ index, otherIndex }) => {
+        this.setDroppable(index, otherIndex, choiceListName.TARGET);
+      });
+
+      this.$refs.source.$on('dragEnd', ({ index }) => {
+        this.performDropMatch(index, this.$refs.target.droppableIndex, choiceListName.SOURCE);
+        this.$emit('interacted');
+      });
+
+      this.$refs.target.$on('dragEnd', ({ index }) => {
+        this.performDropMatch(index, this.$refs.source.droppableIndex, choiceListName.TARGET);
+        this.$emit('interacted');
       });
     },
 

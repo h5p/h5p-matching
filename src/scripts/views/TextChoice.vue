@@ -4,6 +4,7 @@
       class="h5p-choice h5p-text-choice"
       :class="[{'h5p-choice-selected  ' : selected}, 'h5p-choice-' + state]"
       :aria-label="ariaLabel()"
+      :aria-dropeffect="droppable ? 'execute' : undefined"
       :title="hasOverflow() ? title : null"
       v-keyboard.sort="listName"
       @click="select"
@@ -18,8 +19,9 @@
 <script>
   import Vue from 'vue'
   import pairState from '../components/pair-state';
+  import PuzzleView from './Puzzle.vue';
   import { forEachObjIndexed, invoker, lt, or } from 'ramda';
-
+  import KeyboardMixin from '../mixins/keyboard';
   /**
    * Calls compareDocumentPosition on two elements
    *
@@ -42,8 +44,9 @@
    * Configuration
    */
   export default {
-    props: ['title', 'selected','state', 'listName', 'i18n', 'otherChoice'],
-
+    props: ['title', 'selected','state', 'listName', 'i18n', 'otherChoice', 'droppable'],
+    components: { puzzle: PuzzleView },
+    mixins: [KeyboardMixin],
     data: () => ({
       labels: {}
     }),
@@ -60,7 +63,7 @@
        * Returns the aria-label for this choice
        */
       ariaLabel: function() {
-        if (this.labels[this.state]) {
+        if (this.labels[this.state] && this.otherChoice) {
           return this.labels[this.state]
             .replace('@title', this.title)
             .replace('@oppositeTitle', this.otherChoice.title);
@@ -114,7 +117,7 @@
 
       &.h5p-choice-none,
       &.h5p-choice-matched {
-        cursor: pointer;
+        cursor: move;
       }
 
       &.h5p-choice-matched,
@@ -140,6 +143,14 @@
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
+    }
+
+    .sortable-drag .h5p-text-choice {
+      @include choice-colors(#1c74cd, #4c93e5, #1b72db);
+    }
+
+    [aria-dropeffect] {
+      border: (0.083em * 2) dashed #1c74cd ! important;
     }
   }
 </style>
