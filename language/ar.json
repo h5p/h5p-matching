@@ -1,0 +1,102 @@
+{
+  "semantics": [
+    {
+      "label": "نوع النشاط",
+      "description": "اختر نوع النشاط",
+      "options": [
+        {
+          "label": "طابق نص مع نص"
+        },
+        {
+          "label": "طابق صورة مع نص"
+        }
+      ]
+    },
+    {
+      "label": "عنوان رئيسي",
+      "default": "Match text on the left side with the corresponding text on the right side",
+      "description": "وصف المهمة"
+    },
+    {
+      "widgets": [
+        {
+          "label": "افتراضي"
+        }
+      ],
+      "label": "أزواج",
+      "entity": "pair",
+      "field": {
+        "label": "زوج",
+        "fields": [
+          {
+            "label": "صورة الجانب الأيسر"
+          },
+          {
+            "label": "نص الجانب الايسر",
+            "description": "سيتم استخدام النص كسمة 'alt ' في حالة تم المطابقة مع صورة"
+          },
+          {
+            "label": "نص الجانب الايمن"
+          }
+        ]
+      }
+    },
+    {
+      "label": "التمركز",
+      "fields": [
+        {
+          "label": "نص زر \" تحقق\"",
+          "default": "Check"
+        },
+        {
+          "label": "نص زر \" اظهر الحل\"",
+          "default": "Show solution"
+        },
+        {
+          "label": "نص زر \" اعادة المحاولة\"",
+          "default": "Retry"
+        },
+        {
+          "label": "لافتة لزوج مطابقة صحيح",
+          "default": "Correct!"
+        },
+        {
+          "label": "لافتة لزوج مطابقة غير صحيح",
+          "default": "Incorrect!"
+        },
+        {
+          "label": "لافتة لحل صحيح",
+          "default": "Correct solution"
+        },
+        {
+          "label": "لافتة تشير ان الاختيار لا مثيل له",
+          "default": "@title. Unmatched"
+        },
+        {
+          "label": "لافتة تشير إلى أن هناك خيارًا متطابقًا",
+          "default": "@title matched with @oppositeTitle"
+        },
+        {
+          "label": "لافتة لوضع الحل تشير إلى ماهية الحل الصحيح",
+          "default": "@title should have been matched with @oppositeTitle"
+        }
+      ]
+    },
+    {
+      "label": "الإعدادات السلوكية",
+      "description": " هذه الخيارات ستتيح لك التحكم  في كيفية تصرف المهمة.",
+      "fields": [
+        {
+          "label": "زر تمكين \" اعادة المحاولة\""
+        },
+        {
+          "label": "زر تمكين \"اظهار الحل \""
+        },
+        {
+          "label": "نسبة النجاح",
+          "description": "النسبة المئوية من الدرجة الإجمالية المطلوبة لاجتياز المهمة."
+        }
+      ]
+    }
+  ]
+}
