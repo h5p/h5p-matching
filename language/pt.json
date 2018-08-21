@@ -1,0 +1,102 @@
+{
+  "semantics": [
+    {
+      "label": "Tipo de atividade",
+      "description": "Escolha o tipo de atividade",
+      "options": [
+        {
+          "label": "Combine um texto com um texto"
+        },
+        {
+          "label": "Combine uma imagem com um texto"
+        }
+      ]
+    },
+    {
+      "label": "Título",
+      "default": "Combine o texto do lado esquerdo com o texto correspondente do lado direito",
+      "description": "Descrição da tarefa"
+    },
+    {
+      "widgets": [
+        {
+          "label": "Padrão"
+        }
+      ],
+      "label": "Pares",
+      "entity": "pair",
+      "field": {
+        "label": "Par",
+        "fields": [
+          {
+            "label": "Imagem do lado esquerdo"
+          },
+          {
+            "label": "Texto do lado esquerdo",
+            "description": "O texto será usado como o atributo \"alternativo\" se estiver sendo combinado com uma imagem"
+          },
+          {
+            "label": "Texto do lado direito"
+          }
+        ]
+      }
+    },
+    {
+      "label": "Localização",
+      "fields": [
+        {
+          "label": "Texto para botão de \"Verificar resposta\"",
+          "default": "Verificar resposta"
+        },
+        {
+          "label": "Texto para botão \"Mostrar solução\"",
+          "default": "Mostrar solução"
+        },
+        {
+          "label": "Texto para botão \"Tentar novamente\"",
+          "default": "Tentar novamente"
+        },
+        {
+          "label": "Rótulo para um par corretamente combinado",
+          "default": "Correto!"
+        },
+        {
+          "label": "Rótulo para um par incorretamente combinado",
+          "default": "Incorreto!"
+        },
+        {
+          "label": "Rótulo para solução correta",
+          "default": "Solução correta"
+        },
+        {
+          "label": "Rótulo indicando que uma questão não foi combinada",
+          "default": "@title. Não combinado"
+        },
+        {
+          "label": "Rótulo para indicar que uma questão foi combinada",
+          "default": "@title combinado com @oppositeTitle"
+        },
+        {
+          "label": "Rótulo para modo de solução indicando qual é a solução correta",
+          "default": "@title Deveria ter sido combinado com @oppositeTitle"
+        }
+      ]
+    },
+    {
+      "label": "Configurações comportamentais",
+      "description": "Estas opções permitirão que você controle como a tarefa se comporta.",
+      "fields": [
+        {
+          "label": "Habilitar o botão \"Tentar novamente\""
+        },
+        {
+          "label": "Habilitar o botão \"Mostrar solução\""
+        },
+        {
+          "label": "Porcentagem de aprovação",
+          "description": "Porcentagem de pontos totais requeridos para passar na tarefa."
+        }
+      ]
+    }
+  ]
+}
