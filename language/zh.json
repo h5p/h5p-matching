@@ -1,0 +1,102 @@
+{
+  "semantics": [
+    {
+      "label": "類型",
+      "description": "選擇一種類型",
+      "options": [
+        {
+          "label": "文字與文字配對"
+        },
+        {
+          "label": "文字與圖像配對"
+        }
+      ]
+    },
+    {
+      "label": "標題",
+      "default": "將左邊的文本和右側的文本進行配對。",
+      "description": "測試你是不是認識這些東西。"
+    },
+    {
+      "widgets": [
+        {
+          "label": "Default"
+        }
+      ],
+      "label": "配對",
+      "entity": "pair",
+      "field": {
+        "label": "Pair",
+        "fields": [
+          {
+            "label": "左側圖像"
+          },
+          {
+            "label": "左側文字",
+            "description": "當類型為圖像時，這會作為圖像的替代文字。"
+          },
+          {
+            "label": "右側文字"
+          }
+        ]
+      }
+    },
+    {
+      "label": "使用介面本地化",
+      "fields": [
+        {
+          "label": "核對答案按鈕的顯示文字",
+          "default": "核對答案"
+        },
+        {
+          "label": "顯示正解按鈕的顯示文字",
+          "default": "顯示正解"
+        },
+        {
+          "label": "再試一次按鈕的顯示文字",
+          "default": "再試一次"
+        },
+        {
+          "label": "答對時的顯示文字",
+          "default": "答對啦！"
+        },
+        {
+          "label": "答錯時的顯示文字",
+          "default": "答錯囉…"
+        },
+        {
+          "label": "顯示正解按鈕的顯示文字",
+          "default": "顯示正解"
+        },
+        {
+          "label": "指出配對失敗的說明文字",
+          "default": "@title 配對失敗。"
+        },
+        {
+          "label": "指出配對成功的說明文字",
+          "default": "@title 與 @oppositeTitle 配對成功。"
+        },
+        {
+          "label": "指出正確解法的說明文字（啟用顯示正解時有用）",
+          "default": "@title 應該和 @oppositeTitle 配對。"
+        }
+      ]
+    },
+    {
+      "label": "行為設置",
+      "description": "用來控制任務行為的一些設定。",
+      "fields": [
+        {
+          "label": "啟用「再試一次」按鈕"
+        },
+        {
+          "label": "啟用「顯示正解」按鈕"
+        },
+        {
+          "label": "過關門檻（百分比）",
+          "description": "需要達到多少分數才能通過這個測試。"
+        }
+      ]
+    }
+  ]
+}
