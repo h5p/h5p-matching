@@ -1,0 +1,102 @@
+{
+  "semantics": [
+    {
+      "label": "Jarduera mota",
+      "description": "Aukeratu jarduera mota",
+      "options": [
+        {
+          "label": "Parekatu testu bat beste batekin"
+        },
+        {
+          "label": "Parekatu irudi bat testu batekin"
+        }
+      ]
+    },
+    {
+      "label": "Goiburua",
+      "default": "Parekatu ezker aldeko testua eskuin aldean dagokion testuarekin",
+      "description": "Zereginaren deskribapena"
+    },
+    {
+      "widgets": [
+        {
+          "label": "Lehenetsia"
+        }
+      ],
+      "label": "Bikoteak",
+      "entity": "bikotea",
+      "field": {
+        "label": "Bikotea",
+        "fields": [
+          {
+            "label": "Ezker aldeko irudia"
+          },
+          {
+            "label": "Ezker aldeko testua",
+            "description": "Testua irudiaren \"alt\" atributua bilakatuko da"
+          },
+          {
+            "label": "Eskuin aldeko testua"
+          }
+        ]
+      }
+    },
+    {
+      "label": "Lokalizazioa",
+      "fields": [
+        {
+          "label": "\"Egiaztatu\" botoiarentzako testua",
+          "default": "Egiaztatu"
+        },
+        {
+          "label": "\"Erakutsi soluzioa\" botoiarentzako testua",
+          "default": "Erakutsi soluzioa"
+        },
+        {
+          "label": "\"Saiatu berriro\" botoiarentzako testua",
+          "default": "Saiatu berriro"
+        },
+        {
+          "label": "Parekatze zuzenentzako etiketa",
+          "default": "Zuzena!"
+        },
+        {
+          "label": "Parekatze akatsdunentzako etiketa",
+          "default": "Erantzun okerra!"
+        },
+        {
+          "label": "Soluzio zuzenentzako etiketa",
+          "default": "Soluzio zuzena"
+        },
+        {
+          "label": "Aukera parekatu gabe dagoela adierazteko etiketa",
+          "default": "@title. Parekatu gabe"
+        },
+        {
+          "label": "Aukera parekatuta dagoela adierazteko etiketa",
+          "default": "@title eta @oppositeTitle parekatuta daude"
+        },
+        {
+          "label": "Soluzio moduarentzako etiketa, soluzio zuzena zein izan behar zen erakusten duena",
+          "default": "@title @oppositeTitle-kin parekatua egon beharko litzateke"
+        }
+      ]
+    },
+    {
+      "label": "Portaera-ezarpenak",
+      "description": "Aukera hauen bidez kontrolatu ahal izango duzu zereginaren portaera.",
+      "fields": [
+        {
+          "label": "Gaitu \"Saiatu berriro\" botoia"
+        },
+        {
+          "label": "Gaitu \"Erakutsi soluzioa\" botoia"
+        },
+        {
+          "label": "Gainditzeko portzentajea",
+          "description": "Puntuazio totalaren portzentajea zeregina gainditzeko."
+        }
+      ]
+    }
+  ]
+}
