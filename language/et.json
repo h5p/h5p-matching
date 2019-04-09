@@ -1,0 +1,102 @@
+{
+  "semantics": [
+    {
+      "label": "Tegevuse tüüp",
+      "description": "Vali tegevuse tüüp",
+      "options": [
+        {
+          "label": "Sobita tekst teise tekstiga"
+        },
+        {
+          "label": "Sobita pilt tekstiga"
+        }
+      ]
+    },
+    {
+      "label": "Pealkiri",
+      "default": "Sobita vasakul pool olev tekst paremal pool oleva sobiva tekstiga",
+      "description": "Ülesande kirjeldus"
+    },
+    {
+      "widgets": [
+        {
+          "label": "Vaikimisi"
+        }
+      ],
+      "label": "Paarid",
+      "entity": "paar",
+      "field": {
+        "label": "Paar",
+        "fields": [
+          {
+            "label": "Vasaku poole pilt"
+          },
+          {
+            "label": "Vasaku poole tekst",
+            "description": "Seda teksti kasutatakse \"alt\" atribuudina pildiga sobitamisel"
+          },
+          {
+            "label": "Parema poole tekst"
+          }
+        ]
+      }
+    },
+    {
+      "label": "Kohandamine",
+      "fields": [
+        {
+          "label": "\"Kontrolli\" nupu tekst",
+          "default": "Kontrolli"
+        },
+        {
+          "label": "\"Näita lahendust\" nupu tekst",
+          "default": "Näita lahendust"
+        },
+        {
+          "label": "\"Proovi uuesti\" nupu tekst",
+          "default": "Proovi uuesti"
+        },
+        {
+          "label": "Õigesti sobitatud paari silt",
+          "default": "Õige!"
+        },
+        {
+          "label": "Valesti sobitatud paari silt",
+          "default": "Vale!"
+        },
+        {
+          "label": "Õige lahenduse silt",
+          "default": "Õige lahendus"
+        },
+        {
+          "label": "Sobitamata valikule viitav silt",
+          "default": "@title. Sobitamata"
+        },
+        {
+          "label": "Sobitatud lahendusele viitav silt",
+          "default": "@title ja @oppositeTitle on sobitatud"
+        },
+        {
+          "label": "Õigele lahendusele viitav lahendusviisi silt",
+          "default": "@title paariliseks oleks sobinud @oppositeTitle"
+        }
+      ]
+    },
+    {
+      "label": "Käitumisseaded",
+      "description": "Need valikud lubavad sul kontrollida ülesande käitumist.",
+      "fields": [
+        {
+          "label": "Luba \"Proovi uuesti\" nupp"
+        },
+        {
+          "label": "Luba \"Näita lahendust\" nupp"
+        },
+        {
+          "label": "Edenemise protsent",
+          "description": "Protsent ülesande läbimiseks vajalikust punktisummast."
+        }
+      ]
+    }
+  ]
+}
