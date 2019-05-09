@@ -1,0 +1,102 @@
+{
+  "semantics": [
+    {
+      "label": "Tipo di attività",
+      "description": "Scegli il tipo di attività",
+      "options": [
+        {
+          "label": "Abbina un testo con un altro testo"
+        },
+        {
+          "label": "Abbina un'immagine con un testo"
+        }
+      ]
+    },
+    {
+      "label": "Titolo principale",
+      "default": "Abbina il testo sul lato sinistro con il testo corrispondente sul lato destro",
+      "description": "Descrizione del compito"
+    },
+    {
+      "widgets": [
+        {
+          "label": "Predefinito"
+        }
+      ],
+      "label": "Coppie",
+      "entity": "coppia",
+      "field": {
+        "label": "Coppia",
+        "fields": [
+          {
+            "label": "Immagine lato sinistro"
+          },
+          {
+            "label": "Testo lato sinistro",
+            "description": "Il testo sarà usato come attributo \"alt\" se l'abbinamento è con un'immagine"
+          },
+          {
+            "label": "Testo lato destro"
+          }
+        ]
+      }
+    },
+    {
+      "label": "Localizzazione",
+      "fields": [
+        {
+          "label": "Testo per il pulsante \"Verifica\"",
+          "default": "Verifica"
+        },
+        {
+          "label": "Testo per il pulsante \"Mostra soluzione\"",
+          "default": "Mostra soluzione"
+        },
+        {
+          "label": "Testo per il pulsante \"Riprova\"",
+          "default": "Riprova"
+        },
+        {
+          "label": "Etichetta per una coppia abbinata correttamente",
+          "default": "Giusto!"
+        },
+        {
+          "label": "Etichetta per una coppia abbinata in maniera scorretta",
+          "default": "Sbagliato!"
+        },
+        {
+          "label": "Etichetta per la soluzione corretta",
+          "default": "Soluzione corretta"
+        },
+        {
+          "label": "Etichetta indicante che una scelta non ha un abbinamento",
+          "default": "@title. Non abbinata"
+        },
+        {
+          "label": "Etichetta indicante che una scelta ha un abbinamento",
+          "default": "@title è abbinata con @oppositeTitle"
+        },
+        {
+          "label": "Etichetta per la modalità di soluzione che indica quale sarebbe la soluzione corretta",
+          "default": "@title dovrebbe abbinarsi con @oppositeTitle"
+        }
+      ]
+    },
+    {
+      "label": "Impostazioni di esecuzione",
+      "description": "Queste opzioni ti permettono di controllare il comportamento del compito.",
+      "fields": [
+        {
+          "label": "Attiva il pulsante \"Riprova\""
+        },
+        {
+          "label": "Attiva il pulsante \"Mostra soluzione\""
+        },
+        {
+          "label": "Percentuale di superamento",
+          "description": "Percentuale del punteggio totale richiesta per il superamento della prova."
+        }
+      ]
+    }
+  ]
+}
