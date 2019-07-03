@@ -1,0 +1,102 @@
+{
+  "semantics": [
+    {
+      "label": "Aktiviteetin tyyppi",
+      "description": "Valitse aktiviteetin tyyppi",
+      "options": [
+        {
+          "label": "Yhdistä teksti tekstiin"
+        },
+        {
+          "label": "Yhdistä kuva tekstiin"
+        }
+      ]
+    },
+    {
+      "label": "Otsikko",
+      "default": "Yhdistä vasemmalla ja oikealla olevat tekstit oikealla tavalla.",
+      "description": "Tehtävänkuvaus"
+    },
+    {
+      "widgets": [
+        {
+          "label": "Oletus"
+        }
+      ],
+      "label": "Parit",
+      "entity": "pari",
+      "field": {
+        "label": "Pari",
+        "fields": [
+          {
+            "label": "Vasemman puolen kuva"
+          },
+          {
+            "label": "Vasemman puolen teksti",
+            "description": "Tätä tekstiä käytetään \"alt\" määreenä jos yhdistetään kuvan kanssa"
+          },
+          {
+            "label": "Oikean puolen teksti"
+          }
+        ]
+      }
+    },
+    {
+      "label": "Lokalisaatio",
+      "fields": [
+        {
+          "label": "Teksti \"Check\" painikkeelle",
+          "default": "Tarkista"
+        },
+        {
+          "label": "Teksti \"Show solution\" painikkeelle",
+          "default": "Näytä vastaukset"
+        },
+        {
+          "label": "Teksti \"Retry\" painikkeelle",
+          "default": "Yritä uudelleen"
+        },
+        {
+          "label": "Oikein yhdistetyn parin teksti",
+          "default": "Oikein!"
+        },
+        {
+          "label": "Väärin yhdistetyn parin teksti",
+          "default": "Väärin!"
+        },
+        {
+          "label": "Teksti oikealle ratkaisulle",
+          "default": "Oikea ratkaisu"
+        },
+        {
+          "label": "Teksti joka kertoo että valintalle ei ole asetettu paria.",
+          "default": "@title. pari puuttuu"
+        },
+        {
+          "label": "Teksti joka kertoo että valinnalle on määritetty pari",
+          "default": "@title yhdistetty @oppositeTitle pariksi"
+        },
+        {
+          "label": "Teksti ratkaisulle joka kertoo miten pari olisi pitänyt muodostaa oikein",
+          "default": "@title olisi pitänyt parittaa @oppositeTitle kanssa"
+        }
+      ]
+    },
+    {
+      "label": "Lisäasetukset",
+      "description": "Nämä asetukset vaikuttavat siihen miten tehtävä käyttäytyy",
+      "fields": [
+        {
+          "label": "Salli \"Retry\" painike"
+        },
+        {
+          "label": "Salli \"Show Solution\" painike"
+        },
+        {
+          "label": "Läpäisyprosentti",
+          "description": "Läpäisyprosentti jolla tehtävä lasketaan suoritetuksi"
+        }
+      ]
+    }
+  ]
+}
