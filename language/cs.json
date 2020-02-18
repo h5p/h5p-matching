@@ -1,0 +1,102 @@
+{
+  "semantics": [
+    {
+      "label": "Typ aktivity",
+      "description": "Vyberte typ aktivity",
+      "options": [
+        {
+          "label": "Přiřazení textů"
+        },
+        {
+          "label": "Přiřazení obrázku a textu"
+        }
+      ]
+    },
+    {
+      "label": "Nadpis",
+      "default": "Přiřaďte text na levé straně k odpovídajícímu textu na pravé straně",
+      "description": "Popis úkolu"
+    },
+    {
+      "widgets": [
+        {
+          "label": "Výchozí"
+        }
+      ],
+      "label": "Páry",
+      "entity": "pár",
+      "field": {
+        "label": "Pár",
+        "fields": [
+          {
+            "label": "Obrázek na levé straně"
+          },
+          {
+            "label": "Text na levé straně",
+            "description": "Text bude použit jako atribut \"alt\", pokud se shoduje s obrázkem"
+          },
+          {
+            "label": "Text na pravé straně"
+          }
+        ]
+      }
+    },
+    {
+      "label": "Lokalizace",
+      "fields": [
+        {
+          "label": "Text tlačítka \"Kontrola\" ",
+          "default": "Kontrola"
+        },
+        {
+          "label": "Text tlačítka \"Zobrazit řešení\" ",
+          "default": "Zobrazit řešení"
+        },
+        {
+          "label": "Text tlačítka \"Opakovat\" ",
+          "default": "Opakovat"
+        },
+        {
+          "label": "Popisek pro správný pár",
+          "default": "Správně!"
+        },
+        {
+          "label": "Popisek pro chybný pár",
+          "default": "Chyba!"
+        },
+        {
+          "label": "Popisek pro správné řešení",
+          "default": "Správné řešení"
+        },
+        {
+          "label": "Popisek označující, že výběr nebyl přiřazen",
+          "default": "@title. Nepřiřazen"
+        },
+        {
+          "label": "Popisek označující, že výběr byl přiřazen",
+          "default": "@title přiřazen k @oppositeTitle"
+        },
+        {
+          "label": "Popišek pro režim Správné řešení označující, jaké řešen by bylo správnéí",
+          "default": "@title měl být přiřazen with @oppositeTitle"
+        }
+      ]
+    },
+    {
+      "label": "Nastavení chování",
+      "description": "Tyto možnosti vám umožní řídit, jak se bude úloha chovat.",
+      "fields": [
+        {
+          "label": "Povolit tlačítko \"Opakovat\" "
+        },
+        {
+          "label": "Povolit tlačítko \"Ukázat řešení\" "
+        },
+        {
+          "label": "Procento úspěšnosti",
+          "description": "Procento z celkového skóre požadovaného pro absolvování úkolu."
+        }
+      ]
+    }
+  ]
+}
