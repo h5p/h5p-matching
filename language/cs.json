@@ -36,7 +36,7 @@
             "description": "Text bude použit jako atribut \"alt\", pokud se shoduje s obrázkem"
           },
           {
-            "label": Text na pravé straně"
+            "label": "Text na pravé straně"
           }
         ]
       }
