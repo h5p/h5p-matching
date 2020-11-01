@@ -1,0 +1,102 @@
+{
+  "semantics": [
+    {
+      "label": "활동 유형",
+      "description": "활동 유형 선택",
+      "options": [
+        {
+          "label": "텍스트와 텍스트 일치"
+        },
+        {
+          "label": "이미지와 텍스트 일치"
+        }
+      ]
+    },
+    {
+      "label": "헤드라인",
+      "default": "왼쪽 텍스트와 오른쪽 텍스트 일치",
+      "description": "과제 설명"
+    },
+    {
+      "widgets": [
+        {
+          "label": "기본값"
+        }
+      ],
+      "label": "쌍",
+      "entity": "쌍",
+      "field": {
+        "label": "쌍",
+        "fields": [
+          {
+            "label": "왼쪽 이미지"
+          },
+          {
+            "label": "왼쪽 텍스트",
+            "description": "이미지와 일치할 경우 텍스트가 \"alt\" 속성으로 사용됨"
+          },
+          {
+            "label": "우측 텍스트"
+          }
+        ]
+      }
+    },
+    {
+      "label": "맞춤형 설정",
+      "fields": [
+        {
+         "label": "\"Check\" 버튼 텍스트",
+         "default": "확인"
+        },
+        {
+           "label": " \"Show Solution\" 버튼 텍스트",
+      "default": "해답보이기"
+        },
+        {
+         "label": "\"Retry\" 버튼 텍스트",
+      "default": "재시도"
+        },
+        {
+          "label": "올바르게 매치된 쌍에 대한 라벨",
+          "default": "정답입니다!"
+        },
+        {
+          "label": "올바르지 않게 매치된 쌍에 대한 라벨",
+          "default": "오답입니다!"
+        },
+        {
+          "label": "올바른 해답에 대한 라벨",
+          "default": "올바른 해답입니다."
+        },
+        {
+          "label": "선택이 일치하지 않음을 나타내는 라벨",
+          "default": "@title. 일치하지 않음"
+        },
+        {
+          "label": "선택사항이 일치함을 나타내는 라벨",
+          "default": "@title 이 @oppositeTitle 와 바르게 일치합니다."
+        },
+        {
+          "label": "올바른 해답을 나타내는 해답 모드의 라벨",
+          "default": "@title 은 @oppositeTitle 와 매치되었어야 합니다."
+        }
+      ]
+    },
+    {
+      "label": "과제가 수행되는 방법 설정",
+      "description": "이 옵션은 과제가 어떻게 수행될 지 환경을 설정합니다.",
+      "fields": [
+        {
+            "label": "\"Retry\"(재시도) 버튼 활성화"
+        },
+        {
+          "label": "\"Show Solution\" (해답 보기) 버튼 활성화"
+        },
+        {
+          "label": "통과 백분율",
+          "description": "과제 통과에 필요한 백분율"
+        }
+      ]
+    }
+  ]
+}
