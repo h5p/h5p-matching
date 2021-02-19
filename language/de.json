@@ -1,0 +1,102 @@
+{
+  "semantics": [
+    {
+      "label": "\u00dcbungstyp",
+      "description": "W\u00e4hle einen \u00dcbungstyp aus!",
+      "options": [
+        {
+          "label": "Kombiniere einen Text mit einem anderen Text."
+        },
+        {
+          "label": "Kombiniere einen Text mit einem Bild."
+        }
+      ]
+    },
+    {
+      "label": "Beschreibung",
+      "default": "Ordne die Bestandteile richtig zu",
+      "description": "Formuliere eine Aufgabenstellung."
+    },
+    {
+      "widgets": [
+        {
+          "label": "Default"
+        }
+      ],
+      "label": "Paare",
+      "entity": "Paar",
+      "field": {
+        "label": "Paar",
+        "fields": [
+          {
+            "label": "Bild links"
+          },
+          {
+            "label": "Text auf der linken Seite",
+            "description": "Der Text wird als \"alt\" Attribut verwendet."
+          },
+          {
+            "label": "Text auf der rechten Seite"
+          }
+        ]
+      }
+    },
+    {
+      "label": "\u00dcbersetzungen",
+      "fields": [
+        {
+          "label": "Beschriftung der \"\u00dcberpr\u00fcfen\"-Schaltfl\u00e4che",
+          "default": "\u00dcberpr\u00fcfen"
+        },
+        {
+          "label": "Beschriftung der \"L\u00f6sung anzeigen\"-Schaltfl\u00e4che",
+          "default": "L\u00f6sung anzeigen"
+        },
+        {
+          "label": "Beschriftung der \"Nochmal versuchen\"-Schaltfl\u00e4che",
+          "default": "Nochmal versuchen"
+        },
+        {
+          "label": "Beschriftung bei richtig kombinierten Paaren",
+          "default": "Richtig!"
+        },
+        {
+          "label": "Beschriftung bei falsch kombinierten Paaren",
+          "default": "Falsch!"
+        },
+        {
+          "label": "Beschriftung bei richtiger L\u00f6sung",
+          "default": "Fertig!"
+        },
+        {
+          "label": "Beschriftung bei nicht zugeordneten Paaren",
+          "default": "@title. ist nicht zugeordnet."
+        },
+        {
+          "label": "Beschriftung bei zugeordneten Paaren",
+          "default": "@title er zugeordnet mit @oppositeTitle"
+        },
+        {
+          "label": "Beschriftung bei der Aufl\u00f6sung",
+          "default": "@title sollte @oppositeTitle zugeordnet werden."
+        }
+      ]
+    },
+    {
+      "label": "Interaktionseinstellungen",
+      "description": "Mit diesen Einstellungen werden die Parameter der Interaktion eingestellt.",
+      "fields": [
+        {
+          "label": "\"Wiederholen\" zulassen"
+        },
+        {
+          "label": "\"L\u00f6sung anzeigen\"-Button anzeigen"
+        },
+        {
+          "label": "Prozentsatz zum Bestehen",
+          "description": "Prozentsatz der Gesamtpunktzahl, die zum Bestehen der Aufgabe erforderlich ist."
+        }
+      ]
+    }
+  ]
+}
