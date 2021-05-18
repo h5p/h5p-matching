@@ -9,6 +9,7 @@ import pairState from './components/pair-state';
 import choiceListName from './components/choice-list-name';
 import defaultTranslations from './components/default-translations';
 import initChoices from './components/init-choices';
+import he from 'he';
 
 /**
  * @typedef {object} PairConfig
@@ -68,6 +69,19 @@ export default class App extends EventDispatcher {
    */
   constructor(config, contentId, contentData = {}) {
     super();
+
+    // Sanitize for use as text
+    for (let word in config.l10n) {
+      config.l10n[word] = he.decode(config.l10n[word]);
+    }
+
+    // Sanitze pairs
+    config.pairs = (config.pairs || [])
+      .filter(pair => pair.source && pair.target)
+      .map(pair => ({
+        source: he.decode(pair.source),
+        target: he.decode(pair.target)
+      }));
 
     const rootElement = document.createElement('div');
 
