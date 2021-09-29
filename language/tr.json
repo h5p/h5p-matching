@@ -1,0 +1,102 @@
+{
+  "semantics": [
+    {
+      "label": "Etkinlik türü",
+      "description": "Etkinlik türünü seçiniz",
+      "options": [
+        {
+          "label": "Metin - metin eşleştirme"
+        },
+        {
+          "label": "Resim - metin eşleştirme"
+        }
+      ]
+    },
+    {
+      "label": "Başlık",
+      "default": "Sol taraftaki metni sağ taraftaki ilgili metinle eşleştirin.",
+      "description": "Etkinliği tanımlayın"
+    },
+    {
+      "widgets": [
+        {
+          "label": "Varsayılan"
+        }
+      ],
+      "label": "Çiftler",
+      "entity": "çift",
+      "field": {
+        "label": "Çift",
+        "fields": [
+          {
+            "label": "Soldaki resim"
+          },
+          {
+            "label": "soldaki metin",
+            "description": "Metin bir resimle eşleştirilmişse \"alt metin\" özelliği olarak kullanılacaktır."
+          },
+          {
+            "label": "Sağdaki metin"
+          }
+        ]
+      }
+    },
+    {
+      "label": "Bölge ve Dil Seçenekleri",
+      "fields": [
+        {
+          "label": "\"Kontrol\" butonu için metin",
+          "default": "Kontrol"
+        },
+        {
+          "label": "\"Çözümü göster\" butonu için metin",
+          "default": "Çözümü göster"
+        },
+        {
+          "label": "\"Tekrar dene\" butonu için metin",
+          "default": "Tekrar dene"
+        },
+        {
+          "label": "Doğru eşleşme için metin",
+          "default": "Doğru!"
+        },
+        {
+          "label": "Yanlış eşleşme için metin",
+          "default": "Yanlış!"
+        },
+        {
+          "label": "Doğru çözüm için metin",
+          "default": "Doğru çözüm"
+        },
+        {
+          "label": "Bir eşleştirmenin eksik kaldığını gösteren etiket.",
+          "default": "@title. eşleşmedi"
+        },
+        {
+          "label": "bir eşleştirmenin yapıldığını gösteren etiket",
+          "default": "@title, @oppositeTitle ile eşleşti."
+        },
+        {
+          "label": "Doğru çözümü gösteren çözüm modu etiketi",
+          "default": "@title, @oppositeTitle ile eşleşmeliydi."
+        }
+      ]
+    },
+    {
+      "label": "Etkinlik ayarları",
+      "description": "Bu seçenekler etkinlik ayarlarını denetlemenizi sağlar. ",
+      "fields": [
+        {
+          "label": "\"Tekrar dene\" butonunu aktifleştir."
+        },
+        {
+          "label": "\"Çözümü göster\" butonunu aktifleştir."
+        },
+        {
+          "label": "Geçme puanı (%)",
+          "description": "Etkinliği geçmek için gerekli toplam puan yüzdesi."
+        }
+      ]
+    }
+  ]
+}
