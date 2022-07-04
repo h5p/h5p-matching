@@ -7,7 +7,7 @@ import { setDefinitionOnXapiEvent, setResponseOnXApiEvent } from './components/x
 import appState from './components/app-state';
 import pairState from './components/pair-state';
 import choiceListName from './components/choice-list-name';
-import defaultTranslations from './components/default-translations';
+import defaultTranslations from '../../language/default-translations.json';
 import initChoices from './components/init-choices';
 
 /**
