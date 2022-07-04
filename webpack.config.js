@@ -10,7 +10,7 @@ const config = {
   mode: nodeEnv,
   context: path.resolve(__dirname, 'src'),
   entry: "./entries/dist.js",
-  devtool: isProd ? 'inline-source-map' : undefined,
+  devtool: !isProd ? 'inline-source-map' : undefined,
   output: {
     path: path.join(__dirname, 'dist'),
     filename: `${libraryName}.js`
