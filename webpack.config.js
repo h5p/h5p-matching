@@ -43,8 +43,18 @@ const config = {
       {
         test: /\.(s[ac]ss|css)$/,
         use: [
-          'css-loader',
-          'sass-loader'
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              publicPath: ''
+            }
+          },
+          { 
+            loader: "css-loader" 
+          },
+          {
+            loader: "sass-loader"
+          }
         ]
       },
       {
@@ -55,6 +65,9 @@ const config = {
     ]
   },
   plugins: [
+    new MiniCssExtractPlugin({
+      filename: `${libraryName}.css`
+    }),
     new VueLoaderPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
