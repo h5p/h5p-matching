@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const { VueLoaderPlugin } = require('vue-loader');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProd = (process.env.NODE_ENV === 'production');
@@ -16,7 +17,7 @@ const config = {
     filename: `${libraryName}.js`
   },
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js', '.vue' ],
+    extensions: ['.tsx', '.ts', '.js', '.vue'],
     alias: {
       'vue': '@vue/runtime-dom'
     },
@@ -49,8 +50,8 @@ const config = {
               publicPath: ''
             }
           },
-          { 
-            loader: "css-loader" 
+          {
+            loader: "css-loader"
           },
           {
             loader: "sass-loader"

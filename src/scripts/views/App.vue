@@ -67,7 +67,7 @@
 </template>
 
 <script>
-  import Vue from 'vue';
+  import { nextTick } from 'vue';
   import choiceList from './ChoiceList.vue';
   import shuffle from 'shuffle-array';
   import appState from '../components/app-state';
@@ -79,7 +79,7 @@
   import { all, assoc, equals, forEach, map, prop, range } from 'ramda';
 
   const refocus = () => {
-    Vue.nextTick(() => {
+    nextTick(() => {
       const element = document.activeElement;
 
       if(element) {

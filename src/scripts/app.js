@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import { createApp } from 'vue';
 
 import AppView from './views/App.vue';
 import { always, equals, map, unless } from 'ramda';
@@ -91,7 +91,7 @@ export default class App extends EventDispatcher {
     const maxScore = config.pairs.length;
 
     // initiates the view model
-    const viewModel = new Vue({
+    const viewModel = createApp({
       ...AppView
     });
 
