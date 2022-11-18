@@ -19,7 +19,7 @@
   "author": "Tom Arild Jakobsen <tajakobsen@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "ava": "^0.23.0",
+    "ava": "^5.1.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
