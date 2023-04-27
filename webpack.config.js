@@ -1,84 +1,75 @@
 const path = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const isProd = (process.env.NODE_ENV === 'production');
+const { VueLoaderPlugin } = require('vue-loader');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const extractSass = new ExtractTextPlugin({
-  filename: "h5p-matching.css"
-});
+const nodeEnv = process.env.NODE_ENV || 'development';
+const isProd = (process.env.NODE_ENV === 'production');
+const libraryName = process.env.npm_package_name;
 
 const config = {
-  entry: "./src/entries/dist.js",
+  mode: nodeEnv,
+  context: path.resolve(__dirname, 'src'),
+  entry: "./entries/dist.js",
+  devtool: !isProd ? 'inline-source-map' : undefined,
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: "h5p-matching.js"
+    filename: `${libraryName}.js`
   },
   resolve: {
+    extensions: ['.tsx', '.ts', '.js', '.vue'],
     alias: {
-      'vue$': 'vue/dist/vue.esm.js' // 'vue/dist/vue.common.js' for webpack 1
+      'vue': '@vue/runtime-dom'
     },
     modules: [
       path.resolve('./src'),
-      path.resolve('./node_modules'),
+      path.resolve('./node_modules')
     ]
   },
   module: {
     rules: [
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          preserveWhitespace: false,
-          loaders: {
-            scss: extractSass.extract({
-              use: [
-                {
-                  loader: "css-loader?sourceMap"
-                },
-                {
-                  loader: "resolve-url-loader"
-                },
-                {
-                  loader: "sass-loader?outputStyle=expanded&sourceMap=true&sourceMapContents=true"
-                }
-              ],
-
-              fallback: "style-loader"
-            })
-          }
-        }
+        use: [
+          {
+            loader: 'vue-loader',
+          },
+        ],
       },
       {
         test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
         use: 'babel-loader'
       },
       {
-        test: /\.scss$/,
-        use: extractSass.extract({
-          use: [
-            {
-              loader: "css-loader?sourceMap"
-            },
-            {
-              loader: "resolve-url-loader"
-            },
-            {
-              loader: "sass-loader?outputStyle=expanded&sourceMap=true&sourceMapContents=true"
+        test: /\.(s[ac]ss|css)$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              publicPath: ''
             }
-          ],
-
-          fallback: "style-loader"
-        })
+          },
+          {
+            loader: "css-loader"
+          },
+          {
+            loader: "sass-loader"
+          }
+        ]
       },
       {
         test: /\.svg$/,
         include: path.join(__dirname, 'src/images'),
-        loader: 'svg-inline-loader'
+        type: 'asset/inline'
       }
     ]
   },
   plugins: [
-    extractSass,
+    new MiniCssExtractPlugin({
+      filename: `${libraryName}.css`
+    }),
+    new VueLoaderPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
@@ -86,9 +77,5 @@ const config = {
     })
   ]
 };
-
-if(!isProd) {
-  config.devtool = 'inline-source-map';
-}
 
 module.exports = config;

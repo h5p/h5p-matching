@@ -59,8 +59,7 @@
 </template>
 
 <script>
-  import { __, contains, findIndex, map, prop, propEq } from 'ramda';
-  import Vue from 'vue';
+  import { __, findIndex, map, prop, propEq } from 'ramda';
   import pairState from '../components/pair-state';
   import choiceListName from '../components/choice-list-name';
   import draggable from 'vuedraggable'
@@ -128,7 +127,7 @@
 
       setState: function (index, state) {
         const element = Object.assign({}, this.list[index], {state});
-        Vue.set(this.list, index, element);
+        this.list[index] = element;
       },
 
       getState: function (index) {
@@ -155,7 +154,7 @@
         this.selectedIndex = NO_SELECTION;
       },
 
-      showSuccessIndicator: contains(__, [pairState.SUCCESS, pairState.FAILURE, pairState.SHOW_SOLUTION]),
+      showSuccessIndicator: __.contains(__, [pairState.SUCCESS, pairState.FAILURE, pairState.SHOW_SOLUTION]),
 
       getCurrentState: function () {
         return {

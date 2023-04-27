@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import { createApp } from 'vue';
 
 import AppView from './views/App.vue';
 import { always, equals, map, unless } from 'ramda';
@@ -7,7 +7,7 @@ import { setDefinitionOnXapiEvent, setResponseOnXApiEvent } from './components/x
 import appState from './components/app-state';
 import pairState from './components/pair-state';
 import choiceListName from './components/choice-list-name';
-import defaultTranslations from './components/default-translations';
+import defaultTranslations from '../../language/default-translations.json';
 import initChoices from './components/init-choices';
 
 /**
@@ -91,7 +91,7 @@ export default class App extends EventDispatcher {
     const maxScore = config.pairs.length;
 
     // initiates the view model
-    const viewModel = new Vue({
+    const viewModel = createApp({
       ...AppView
     });
 
