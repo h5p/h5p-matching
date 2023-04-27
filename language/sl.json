@@ -1,0 +1,102 @@
+{
+  "semantics": [
+    {
+      "label": "Tip aktivnosti",
+      "description": "Izbira tipa aktivnosti",
+      "options": [
+        {
+          "label": "Povezava besedila z besedilom"
+        },
+        {
+          "label": "Povezava slike z besedilom"
+        }
+      ]
+    },
+    {
+      "label": "Naslov",
+      "default": "Poveži besedilo iz leve strani z ujemajočim besedilom na desni strani.",
+      "description": "Opis naloge"
+    },
+    {
+      "widgets": [
+        {
+          "label": "Privzeto"
+        }
+      ],
+      "label": "Pari",
+      "entity": "par",
+      "field": {
+        "label": "Par",
+        "fields": [
+          {
+            "label": "Slika na levi strani"
+          },
+          {
+            "label": "Besedilo na levi strani",
+            "description": "Besedilo bo uporabljeno kot nadomestno besedilo za bralnike zaslonov (atribut \"alt\")"
+          },
+          {
+            "label": "Besedilo na desni strani"
+          }
+        ]
+      }
+    },
+    {
+      "label": "Določitev",
+      "fields": [
+        {
+          "label": "Besedilo za gumb \"Preveri\"",
+          "default": "Preveri"
+        },
+        {
+          "label": "Besedilo za gumb \"Prikaži rešitev\"",
+          "default": "Prikaži rešitev"
+        },
+        {
+          "label": "Besedilo za gumb \"Poskusi ponovno\"",
+          "default": "Poskusi ponovno"
+        },
+        {
+          "label": "Besedilo za pravilno povezavo",
+          "default": "Pravilno!"
+        },
+        {
+          "label": "Besedilo za nepravilno povezavo",
+          "default": "Nepravilno!"
+        },
+        {
+          "label": "Besedilo za pravilno rešitev",
+          "default": "Pravilna rešitev"
+        },
+        {
+          "label": "Besedilo za nepovezano izbiro",
+          "default": "Nepovezano: @title"
+        },
+        {
+          "label": "Besedilo za povezano izbiro",
+          "default": "@title povezano z @oppositeTitle"
+        },
+        {
+          "label": "Besedilo za prikaz pravilne rešitve para",
+          "default": "@title mora biti povezan z @oppositeTitle"
+        }
+      ]
+    },
+    {
+      "label": "Nastavitve interakcije",
+      "description": "Nastavitve omogočajo nadzor nad interakcijo aktivnosti za udeležence.",
+      "fields": [
+        {
+          "label": "Omogoči gumb \"Poskusi ponovno\""
+        },
+        {
+          "label": "Omogoči gumb \"Prikaži rešitev\""
+        },
+        {
+          "label": "Prag za napredovanje",
+          "description": "Odstotek, ki je potreben za uspešen zaključek naloge."
+        }
+      ]
+    }
+  ]
+}
